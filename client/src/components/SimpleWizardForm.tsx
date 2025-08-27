@@ -328,6 +328,46 @@ export function SimpleWizardForm() {
     return 'cols-3';
   };
 
+  const isCurrentQuestionAnswered = () => {
+    const currentQ = questions[currentStep];
+    
+    // For form fields, check if all required fields are filled
+    if (currentQ.type === 'form-fields') {
+      return currentQ.fields?.every(field => {
+        if (field.required) {
+          return formData[field.id] && formData[field.id].trim() !== '';
+        }
+        return true;
+      }) || false;
+    }
+    
+    // For combined questions, check if all sub-questions are answered
+    if (currentQ.type === 'combined-questions') {
+      return currentQ.subQuestions?.every((subQ: any) => 
+        formData[subQ.id] && formData[subQ.id] !== ''
+      ) || false;
+    }
+    
+    // For single choice, check if option is selected
+    if (currentQ.type === 'single-choice') {
+      const hasAnswer = formData[currentQ.id] && formData[currentQ.id] !== '';
+      
+      // If has sub-questions (like marriage), check those too
+      if (hasAnswer && showSubQuestions === currentQ.id) {
+        return Object.keys(subAnswers[currentQ.id] || {}).length > 0;
+      }
+      
+      // If has input field, check if it's filled
+      if (hasAnswer && showInput === currentQ.id) {
+        return inputValue.trim() !== '';
+      }
+      
+      return hasAnswer;
+    }
+    
+    return false;
+  };
+
   const nextQuestion = () => {
     if (currentStep < questions.length - 1) {
       setCurrentStep(currentStep + 1);
@@ -588,7 +628,9 @@ export function SimpleWizardForm() {
             <button
               key={option.value}
               onClick={() => handleOptionSelect(option.value, option.hasInput, option.hasForm)}
-              className="option-button text-left"
+              className={`option-button text-left ${
+                formData[currentQuestion.id] === option.value ? 'selected' : ''
+              }`}
               data-testid={`option-${option.value}`}
             >
               <div className="flex items-center">
@@ -603,15 +645,22 @@ export function SimpleWizardForm() {
       {/* Combined Questions (Leadership & Recognition) */}
       {currentQuestion.type === 'combined-questions' && (
         <div className="space-y-8">
-          {currentQuestion.subQuestions?.map((subQ, index) => (
+          {currentQuestion.subQuestions?.map((subQ: any, index: number) => (
             <div key={subQ.id} className="sub-questions">
               <h3 className="text-xl font-semibold text-gray-800 mb-4">{subQ.subtitle}</h3>
               <div className={`options-grid ${getColumnsClass(subQ.options?.length || 0)}`}>
-                {subQ.options?.map((option) => (
+                {subQ.options?.map((option: any) => (
                   <button
                     key={`${subQ.id}-${option.value}`}
-                    onClick={() => handleOptionSelect(`${subQ.id}-${option.value}`, option.hasInput, false)}
-                    className="option-button text-left"
+                    onClick={() => {
+                      setFormData({ ...formData, [subQ.id]: option.value });
+                      if (option.hasInput) {
+                        setShowInput(subQ.id);
+                      }
+                    }}
+                    className={`option-button text-left ${
+                      formData[subQ.id] === option.value ? 'selected' : ''
+                    }`}
                     data-testid={`option-${subQ.id}-${option.value}`}
                   >
                     <div className="flex items-center">
@@ -773,7 +822,7 @@ export function SimpleWizardForm() {
         
         <button
           onClick={nextQuestion}
-          disabled={!formData[currentQuestion.id] && currentQuestion.type !== 'form-fields' && !showSubQuestions && !showInput}
+          disabled={!isCurrentQuestionAnswered()}
           className="btn-nav patriotic"
           data-testid="button-next"
         >

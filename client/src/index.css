@@ -221,6 +221,19 @@
     min-width: 250px;
   }
 
+  .option-button.selected {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    color: white;
+    border-color: #1d4ed8;
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+    transform: translateY(-2px);
+  }
+
+  .option-button.selected .fas,
+  .option-button.selected .fab {
+    color: white !important;
+  }
+
   .option-button:hover {
     border-color: #667eea;
     background: rgba(255, 255, 255, 1);

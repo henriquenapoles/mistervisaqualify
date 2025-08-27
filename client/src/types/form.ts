@@ -57,11 +57,16 @@ export interface Question {
   id: string;
   title: string;
   subtitle: string;
-  type: 'single-choice' | 'form-fields' | 'multiple-choice';
+  type: 'single-choice' | 'form-fields' | 'multiple-choice' | 'combined-questions';
   icon: string;
   options?: Option[];
   fields?: FormField[];
   questions?: SubQuestion[];
+  subQuestions?: Array<{
+    id: string;
+    subtitle: string;
+    options: Option[];
+  }>;
 }
 
 export interface Option {
