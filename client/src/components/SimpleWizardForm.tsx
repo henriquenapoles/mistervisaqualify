@@ -240,25 +240,28 @@ const questions: Question[] = [
     ]
   },
   {
-    id: 'hasLeadership',
-    title: '👔 Liderança',
-    subtitle: 'Já exerceu cargos de liderança/gerência?',
-    type: 'single-choice',
-    icon: 'fas fa-users-cog',
-    options: [
-      { value: 'sim', label: 'Sim', score: 5, hasInput: true },
-      { value: 'nao', label: 'Não', score: 0 }
-    ]
-  },
-  {
-    id: 'hasRecognition',
-    title: '🏆 Reconhecimento',
-    subtitle: 'Já teve reconhecimento nacional/internacional (prêmios, publicações, etc.)?',
-    type: 'single-choice',
-    icon: 'fas fa-trophy',
-    options: [
-      { value: 'sim', label: 'Sim', score: 25, hasInput: true },
-      { value: 'nao', label: 'Não', score: 0 }
+    id: 'leadership-recognition',
+    title: '🏆 Bloco 8 - Liderança e Reconhecimento',
+    subtitle: 'Experiência em liderança e reconhecimentos',
+    type: 'combined-questions',
+    icon: 'fas fa-crown',
+    subQuestions: [
+      {
+        id: 'hasRecognition',
+        subtitle: 'Já teve reconhecimento nacional/internacional (prêmios, publicações, etc.)?',
+        options: [
+          { value: 'sim', label: 'Sim', score: 25, hasInput: true },
+          { value: 'nao', label: 'Não', score: 0 }
+        ]
+      },
+      {
+        id: 'hasLeadership',
+        subtitle: 'Já exerceu cargos de liderança/gerência?',
+        options: [
+          { value: 'sim', label: 'Sim', score: 5, hasInput: true },
+          { value: 'nao', label: 'Não', score: 0 }
+        ]
+      }
     ]
   },
   {
@@ -305,9 +308,11 @@ export function SimpleWizardForm() {
   const [showComment, setShowComment] = useState<string | null>(null);
   const [showInput, setShowInput] = useState<string | null>(null);
   const [inputValue, setInputValue] = useState('');
-  const [eaglePosition, setEaglePosition] = useState({ x: 20, y: 20 });
+  const [eaglePosition, setEaglePosition] = useState({ x: 30, y: 120 });
   const [showCommentBubble, setShowCommentBubble] = useState(false);
   const [commentPosition, setCommentPosition] = useState({ x: 200, y: 150 });
+  const [showSubQuestions, setShowSubQuestions] = useState<string | null>(null);
+  const [subAnswers, setSubAnswers] = useState<Record<string, any>>({});
   const { toast } = useToast();
   const containerRef = useRef<HTMLDivElement>(null);
   const eagleRef = useRef<HTMLDivElement>(null);
@@ -329,11 +334,45 @@ export function SimpleWizardForm() {
       const newY = buttonRect.top - containerRect.top - 60;
       
       setEaglePosition({ x: newX, y: newY });
-      setCommentPosition({ x: newX + 140, y: newY + 40 });
+      setCommentPosition({ x: newX - 150, y: newY - 100 });
     }
   };
 
-  const handleOptionSelect = (value: string, hasInput?: boolean, event?: React.MouseEvent) => {
+  const getColumnsClass = (optionsCount: number) => {
+    if (optionsCount <= 3) return 'cols-1';
+    if (optionsCount <= 6) return 'cols-2';
+    return 'cols-3';
+  };
+
+  const nextQuestion = () => {
+    if (currentStep < questions.length - 1) {
+      setCurrentStep(currentStep + 1);
+      setShowComment(null);
+      setShowCommentBubble(false);
+      setShowSubQuestions(null);
+      // Move eagle towards USA (right side)
+      const progressRatio = (currentStep + 1) / questions.length;
+      const targetX = 30 + (progressRatio * 300);
+      setEaglePosition({ x: targetX, y: 120 });
+    } else {
+      showResultsScreen();
+    }
+  };
+
+  const previousQuestion = () => {
+    if (currentStep > 0) {
+      setCurrentStep(currentStep - 1);
+      setShowComment(null);
+      setShowCommentBubble(false);
+      setShowSubQuestions(null);
+      // Move eagle back
+      const progressRatio = (currentStep - 1) / questions.length;
+      const targetX = 30 + (progressRatio * 300);
+      setEaglePosition({ x: targetX, y: 120 });
+    }
+  };
+
+  const handleOptionSelect = (value: string, hasInput?: boolean, hasForm?: boolean, event?: React.MouseEvent) => {
     const newFormData = { ...formData, [currentQuestion.id]: value };
     setFormData(newFormData);
     
@@ -349,21 +388,10 @@ export function SimpleWizardForm() {
     
     if (hasInput) {
       setShowInput(currentQuestion.id);
-    } else {
-      setTimeout(() => {
-        setShowCommentBubble(false);
-        setTimeout(() => {
-          if (currentStep < questions.length - 1) {
-            setCurrentStep(currentStep + 1);
-            setShowComment(null);
-            // Reset eagle position for next question
-            setEaglePosition({ x: 20, y: 20 });
-          } else {
-            showResultsScreen();
-          }
-        }, 300);
-      }, 3000);
+    } else if (hasForm) {
+      setShowSubQuestions(currentQuestion.id);
     }
+    // Remove auto-advance - user will click Next button
   };
 
   const handleInputSubmit = () => {
@@ -371,16 +399,27 @@ export function SimpleWizardForm() {
       setFormData({ ...formData, [`${showInput}Detail`]: inputValue });
       setShowInput(null);
       setInputValue('');
-      
-      setTimeout(() => {
-        if (currentStep < questions.length - 1) {
-          setCurrentStep(currentStep + 1);
-          setShowComment(null);
-        } else {
-          showResultsScreen();
-        }
-      }, 500);
     }
+  };
+
+  const handleSubQuestionSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const form = e.target as HTMLFormElement;
+    const formDataObj = new FormData(form);
+    const subData: Record<string, any> = {};
+    
+    // Get spouse/family data
+    subData.spouseName = formDataObj.get('spouseName') as string;
+    subData.spouseAge = formDataObj.get('spouseAge') as string;
+    subData.spouseEducation = formDataObj.get('spouseEducation') as string;
+    
+    if (formData.maritalStatus === 'casado-filhos') {
+      subData.childrenCount = formDataObj.get('childrenCount') as string;
+      subData.childrenAges = formDataObj.get('childrenAges') as string;
+    }
+    
+    setSubAnswers({ ...subAnswers, [showSubQuestions!]: subData });
+    setShowSubQuestions(null);
   };
 
   const handleFormSubmit = (e: React.FormEvent) => {
@@ -557,9 +596,10 @@ export function SimpleWizardForm() {
         ref={eagleRef}
         className={`eagle-avatar ${showCommentBubble ? 'moving' : ''}`}
         style={{
-          left: `${eaglePosition.x}px`,
+          right: '30px',
           top: `${eaglePosition.y}px`
         }}
+        data-testid="eagle-avatar"
       ></div>
 
       {/* Comment Bubble from Eagle */}
@@ -605,12 +645,12 @@ export function SimpleWizardForm() {
       </div>
 
       {currentQuestion.type === 'single-choice' && (
-        <div className="space-y-3 max-w-2xl mx-auto">
+        <div className={`options-grid ${getColumnsClass(currentQuestion.options?.length || 0)}`}>
           {currentQuestion.options?.map((option) => (
             <button
               key={option.value}
-              onClick={(e) => handleOptionSelect(option.value, option.hasInput, e)}
-              className="option-button w-full p-4 text-left border rounded-lg hover:bg-gray-50"
+              onClick={(e) => handleOptionSelect(option.value, option.hasInput, option.hasForm, e)}
+              className="option-button text-left"
               data-testid={`option-${option.value}`}
             >
               <div className="flex items-center">
@@ -622,32 +662,141 @@ export function SimpleWizardForm() {
         </div>
       )}
 
+      {/* Combined Questions (Leadership & Recognition) */}
+      {currentQuestion.type === 'combined-questions' && (
+        <div className="space-y-8">
+          {currentQuestion.subQuestions?.map((subQ, index) => (
+            <div key={subQ.id} className="sub-questions">
+              <h3 className="text-xl font-semibold text-gray-800 mb-4">{subQ.subtitle}</h3>
+              <div className={`options-grid ${getColumnsClass(subQ.options?.length || 0)}`}>
+                {subQ.options?.map((option) => (
+                  <button
+                    key={`${subQ.id}-${option.value}`}
+                    onClick={(e) => handleOptionSelect(`${subQ.id}-${option.value}`, option.hasInput, false, e)}
+                    className="option-button text-left"
+                    data-testid={`option-${subQ.id}-${option.value}`}
+                  >
+                    <div className="flex items-center">
+                      <span className="font-medium">{option.label}</span>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Show Sub-Questions for Marriage Details */}
+      {showSubQuestions === 'maritalStatus' && (
+        <div className="sub-questions">
+          <h3 className="text-xl font-semibold text-gray-800 mb-4">Detalhes do Cônjuge</h3>
+          <form onSubmit={handleSubQuestionSubmit} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Nome do(a) Cônjuge
+              </label>
+              <input
+                type="text"
+                name="spouseName"
+                required
+                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Idade do(a) Cônjuge
+              </label>
+              <input
+                type="number"
+                name="spouseAge"
+                required
+                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Nível de Escolaridade do(a) Cônjuge
+              </label>
+              <select
+                name="spouseEducation"
+                required
+                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+              >
+                <option value="">Selecione...</option>
+                <option value="ensino-medio">Ensino Médio</option>
+                <option value="graduacao">Graduação</option>
+                <option value="pos">Pós-graduação</option>
+                <option value="mestrado">Mestrado</option>
+                <option value="doutorado">Doutorado</option>
+              </select>
+            </div>
+            
+            {formData.maritalStatus === 'casado-filhos' && (
+              <>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Quantidade de Filhos
+                  </label>
+                  <input
+                    type="number"
+                    name="childrenCount"
+                    min="1"
+                    required
+                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Idades dos Filhos (separadas por vírgula)
+                  </label>
+                  <input
+                    type="text"
+                    name="childrenAges"
+                    placeholder="Ex: 5, 8, 12"
+                    required
+                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                  />
+                </div>
+              </>
+            )}
+            
+            <button
+              type="submit"
+              className="btn-primary px-6 py-3 rounded-lg"
+            >
+              Salvar Informações
+            </button>
+          </form>
+        </div>
+      )}
+
       {/* Show Input for Additional Details */}
       {showInput && (
-        <div className="max-w-md mx-auto mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-          <label className="block text-sm font-medium text-blue-700 mb-2">
-            Nos conte mais detalhes:
-          </label>
-          <input
-            type="text"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            placeholder="Digite aqui..."
-            className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-600"
-            data-testid="input-details"
-          />
-          <button
-            onClick={handleInputSubmit}
-            className="btn-primary mt-3 px-4 py-2 rounded-lg"
-            data-testid="button-submit-details"
-          >
-            Continuar →
-          </button>
+        <div className="sub-questions">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">Nos conte mais detalhes:</h3>
+          <div className="space-y-4">
+            <input
+              type="text"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              placeholder="Digite aqui..."
+              className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+              data-testid="input-details"
+            />
+            <button
+              onClick={handleInputSubmit}
+              className="btn-primary px-6 py-3 rounded-lg"
+              data-testid="button-submit-details"
+            >
+              Salvar Detalhes
+            </button>
+          </div>
         </div>
       )}
 
       {currentQuestion.type === 'form-fields' && (
-        <form onSubmit={handleFormSubmit} className="max-w-md mx-auto space-y-4">
+        <div className="max-w-lg mx-auto space-y-4">
           {currentQuestion.fields?.map((field) => (
             <div key={field.id}>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -655,22 +804,45 @@ export function SimpleWizardForm() {
               </label>
               <input
                 type={field.type}
-                name={field.id}
+                value={formData[field.id] || ''}
+                onChange={(e) => setFormData({ ...formData, [field.id]: e.target.value })}
                 required={field.required}
-                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
                 data-testid={`input-${field.id}`}
               />
             </div>
           ))}
-          <button
-            type="submit"
-            className="btn-primary w-full text-lg font-bold py-3 rounded-lg"
-            data-testid="button-continue"
-          >
-            Continuar →
-          </button>
-        </form>
+        </div>
       )}
+      
+      {/* Navigation Buttons */}
+      <div className="navigation-buttons">
+        <button
+          onClick={previousQuestion}
+          disabled={currentStep === 0}
+          className="btn-nav patriotic"
+          data-testid="button-previous"
+        >
+          <i className="fas fa-arrow-left"></i>
+          Voltar
+        </button>
+        
+        <div className="text-center">
+          <span className="text-sm text-gray-600 font-medium">
+            {currentStep + 1} de {questions.length}
+          </span>
+        </div>
+        
+        <button
+          onClick={nextQuestion}
+          disabled={!formData[currentQuestion.id] && currentQuestion.type !== 'form-fields' && !showSubQuestions && !showInput}
+          className="btn-nav patriotic"
+          data-testid="button-next"
+        >
+          Avançar
+          <i className="fas fa-arrow-right"></i>
+        </button>
+      </div>
     </div>
   );
 }
