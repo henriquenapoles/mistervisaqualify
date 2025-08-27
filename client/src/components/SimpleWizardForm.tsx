@@ -533,12 +533,13 @@ export function SimpleWizardForm() {
         </div>
       )}
       
-      <div className="text-center mb-8">
-        <div className="mb-4">
-          <i className={`${currentQuestion.icon} text-blue-600 text-4xl mb-4`}></i>
-        </div>
-        <h2 className="text-3xl font-bold text-blue-600 mb-2">{currentQuestion.title}</h2>
-        <p className="text-lg text-gray-600">{currentQuestion.subtitle}</p>
+      <div className="text-center mb-8 relative">
+        <div className="eagle-avatar mb-4"></div>
+        <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-800 to-red-600 bg-clip-text text-transparent mb-2">
+          {currentQuestion.title}
+        </h2>
+        <p className="text-xl text-blue-700 font-medium">{currentQuestion.subtitle}</p>
+        <div className="absolute top-0 right-0 text-2xl animate-pulse">🇺🇸</div>
       </div>
 
       {currentQuestion.type === 'single-choice' && (
@@ -559,12 +560,12 @@ export function SimpleWizardForm() {
         </div>
       )}
 
-      {/* Show Comment */}
+      {/* Show Comment with Patriotic Bubble */}
       {showComment && (
-        <div className="max-w-md mx-auto mb-6 p-4 bg-green-100 border border-green-200 rounded-lg">
+        <div className="comment-bubble max-w-lg mx-auto mb-6" data-testid="comment-bubble">
           <div className="flex items-start">
-            <i className="fas fa-comment-dots text-green-600 mr-3 mt-1"></i>
-            <p className="text-green-800 text-sm">{showComment}</p>
+            <div className="text-2xl mr-3">🦅</div>
+            <p className="text-white font-medium">{showComment}</p>
           </div>
         </div>
       )}

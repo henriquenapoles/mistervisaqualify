@@ -19,58 +19,92 @@ export default function Home() {
   return (
     <div className="container mx-auto px-4 py-8 max-w-2xl">
       <div className="wizard-container rounded-lg shadow-lg p-8 text-center" data-testid="welcome-screen">
-        <div className="mb-8">
-          {/* Patriotic header with stars */}
-          <div className="flex justify-center mb-6">
-            <div className="flex space-x-2">
-              <i className="fas fa-star text-yellow-500 text-2xl"></i>
-              <i className="fas fa-star text-yellow-500 text-3xl"></i>
-              <i className="fas fa-star text-yellow-500 text-2xl"></i>
+        <div className="flag-stripes"></div>
+        <div className="stars-decoration">⭐🇺🇸⭐</div>
+        
+        <div className="mb-8 relative z-10">
+          {/* Eagle Avatar */}
+          <div className="eagle-avatar"></div>
+          
+          {/* Main title with American patriotic style */}
+          <h1 className="text-6xl font-black mb-4 text-center">
+            <span className="bg-gradient-to-r from-blue-800 via-white to-red-600 bg-clip-text text-transparent drop-shadow-lg">
+              WIZARD EMIGRATION
+            </span>
+          </h1>
+          
+          <div className="flex justify-center items-center mb-6">
+            <span className="text-4xl mr-2">🦅</span>
+            <h2 className="text-3xl font-bold text-blue-800 text-center">
+              Descubra Suas Chances de Viver o Sonho Americano!
+            </h2>
+            <span className="text-4xl ml-2">🗽</span>
+          </div>
+          
+          <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-8 mb-8 shadow-2xl border-4 border-blue-200 relative">
+            <div className="absolute top-4 right-4 text-2xl">🇺🇸</div>
+            <div className="space-y-4">
+              <div className="flex items-center justify-center">
+                <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center mr-3">
+                  <i className="fas fa-star text-white"></i>
+                </div>
+                <p className="text-xl text-blue-800 font-semibold">
+                  <strong>Avaliação Completa</strong> do seu perfil para imigração
+                </p>
+              </div>
+              <div className="flex items-center justify-center">
+                <div className="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center mr-3">
+                  <i className="fas fa-chart-line text-white"></i>
+                </div>
+                <p className="text-xl text-red-800 font-semibold">
+                  <strong>Pontuação Personalizada</strong> baseada em critérios oficiais
+                </p>
+              </div>
+              <div className="flex items-center justify-center">
+                <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center mr-3">
+                  <i className="fas fa-medal text-white"></i>
+                </div>
+                <p className="text-xl text-blue-800 font-semibold">
+                  <strong>Recomendações de Vistos</strong> ideais para você
+                </p>
+              </div>
             </div>
           </div>
           
-          {/* American flag image */}
-          <img 
-            src="https://images.unsplash.com/photo-1502764613149-7f1d229e230f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&h=200" 
-            alt="American Flag" 
-            className="rounded-lg mb-6 w-full h-32 object-cover"
-          />
-          
-          <h1 className="text-4xl font-bold text-primary mb-4">
-            Bem-vindo(a) à sua Jornada para os EUA! 🇺🇸
-          </h1>
-          
-          <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-            Este questionário é o seu primeiro passo para descobrir o melhor caminho para o Green Card. 
-            Leva menos de <strong className="text-accent">5 minutos</strong> e cada resposta te deixa mais perto do seu objetivo.
-          </p>
-          
-          {/* Journey steps preview */}
-          <div className="grid grid-cols-4 gap-2 mb-8 text-xs">
-            <div className="flex flex-col items-center p-2 bg-secondary rounded-lg">
-              <i className="fas fa-bullseye text-primary mb-1"></i>
-              <span>Missão</span>
+          {/* American patriotic journey elements */}
+          <div className="grid grid-cols-4 gap-6 text-center mb-8">
+            <div className="flex flex-col items-center transform hover:scale-105 transition-transform">
+              <div className="w-20 h-20 bg-gradient-to-br from-blue-600 to-blue-800 rounded-full flex items-center justify-center mb-3 shadow-xl">
+                <i className="fas fa-passport text-white text-3xl"></i>
+              </div>
+              <span className="font-bold text-blue-800 text-lg">📄 Documents</span>
             </div>
-            <div className="flex flex-col items-center p-2 bg-secondary rounded-lg">
-              <i className="fas fa-user text-primary mb-1"></i>
-              <span>Perfil</span>
+            <div className="flex flex-col items-center transform hover:scale-105 transition-transform">
+              <div className="w-20 h-20 bg-gradient-to-br from-red-600 to-red-800 rounded-full flex items-center justify-center mb-3 shadow-xl">
+                <i className="fas fa-graduation-cap text-white text-3xl"></i>
+              </div>
+              <span className="font-bold text-red-800 text-lg">🎓 Education</span>
             </div>
-            <div className="flex flex-col items-center p-2 bg-secondary rounded-lg">
-              <i className="fas fa-users text-primary mb-1"></i>
-              <span>Time</span>
+            <div className="flex flex-col items-center transform hover:scale-105 transition-transform">
+              <div className="w-20 h-20 bg-gradient-to-br from-blue-600 to-blue-800 rounded-full flex items-center justify-center mb-3 shadow-xl">
+                <i className="fas fa-briefcase text-white text-3xl"></i>
+              </div>
+              <span className="font-bold text-blue-800 text-lg">💼 Career</span>
             </div>
-            <div className="flex flex-col items-center p-2 bg-secondary rounded-lg">
-              <i className="fas fa-graduation-cap text-primary mb-1"></i>
-              <span>Skills</span>
+            <div className="flex flex-col items-center transform hover:scale-105 transition-transform">
+              <div className="w-20 h-20 bg-gradient-to-br from-red-600 to-red-800 rounded-full flex items-center justify-center mb-3 shadow-xl">
+                <i className="fas fa-trophy text-white text-3xl"></i>
+              </div>
+              <span className="font-bold text-red-800 text-lg">🏆 Success</span>
             </div>
           </div>
           
           <button
             onClick={startJourney}
-            className="btn-primary text-xl font-bold px-8 py-4 rounded-lg"
+            className="btn-primary text-xl font-bold px-8 py-4 rounded-lg transform hover:scale-105 transition-all"
             data-testid="button-start-journey"
           >
-            🚀 COMEÇAR SUA JORNADA
+            🚀 COMEÇAR SUA JORNADA AMERICANA
           </button>
         </div>
       </div>
