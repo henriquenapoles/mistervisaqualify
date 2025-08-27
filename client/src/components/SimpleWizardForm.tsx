@@ -403,61 +403,61 @@ export function SimpleWizardForm() {
   const getComment = (questionId: string, value: string): string => {
     const comments: Record<string, Record<string, string>> = {
       objective: {
-        trabalho: "Profissionais qualificados têm grandes oportunidades! H1B e EB-2/EB-3 são ideais para você.",
-        negocios: "Empreendedores são muito bem-vindos! E-2 e EB-5 são excelentes opções de visto.",
-        estudo: "Educação americana é um investimento fantástico! F-1 pode levar ao OPT e H1B.",
-        familia: "Reunificação familiar é prioridade absoluta nos EUA! Processo mais direto.",
-        investimento: "Investidores têm acesso privilegiado! EB-5 oferece Green Card direto."
+        trabalho: "Ótimo! Os EUA buscam talentos em diversas áreas. Seu perfil pode ser ideal para vistos de trabalho como o H1B ou EB-2.",
+        negocios: "Empreendedores são muito bem-vindos! E-2 e EB-5 são excelentes opções de visto para negócios.",
+        estudo: "As universidades americanas são de nível mundial. O visto de estudante (F-1) pode ser um caminho para oportunidades futuras no país.",
+        familia: "A base de toda imigração é a família. Este é um processo prioritário para o governo americano.",
+        investimento: "Esse é um dos caminhos mais diretos para um Green Card! O visto de investidor (EB-5) pode ser a sua porta de entrada."
       },
       capital: {
-        'menos-20k': "Sem problemas! Vistos de trabalho e estudo não exigem muito capital inicial.",
-        '20k-500k': "Capital suficiente para E-2 e outras categorias interessantes!",
-        '500k-1m': "Valor ideal para EB-5! Você se qualifica para o programa de investidor.",
-        'mais-1m': "Capital excelente! Todas as portas estão abertas, incluindo EB-5 premium."
+        'menos-20k': "Não se preocupe, existem diversas opções para quem não possui alto capital. Vamos explorar todas elas!",
+        '20k-500k': "Esse capital pode ser um diferencial para vistos de empreendedorismo ou para dar suporte ao processo.",
+        '500k-1m': "Excelente! Você se enquadra na faixa de investimento para o visto EB-5 em determinadas áreas. Isso é uma vantagem enorme.",
+        'mais-1m': "Isso abre as portas para todas as oportunidades de visto de investidor (EB-5), inclusive em centros regionais de alta demanda."
       },
       maritalStatus: {
-        solteiro: "Processo individual é mais ágil! Foco total no seu perfil.",
-        casado: "Cônjuge pode trabalhar nos EUA com visto dependente! Grande vantagem.",
-        'casado-filhos': "Família completa pode imigrar! Filhos terão educação americana de qualidade."
-      },
-      education: {
-        'ensino-medio': "Experiência prática vale muito! Focaremos em vistos de trabalho e investimento.",
-        graduacao: "Graduação abre portas para H1B e EB-2! Base sólida para imigração.",
-        pos: "Pós-graduação é diferencial competitivo! EB-2 Advanced Degree disponível.",
-        mestrado: "Mestrado acelera processo EB-2! Você está na categoria preferencial.",
-        doutorado: "PhD é altamente valorizado! EB-1 Extraordinary Ability pode ser uma opção."
-      },
-      englishLevel: {
-        basico: "Inglês básico precisa melhorar. Fundamental para sucesso profissional nos EUA.",
-        intermediario: "Inglês intermediário é bom começo. Continue praticando para entrevistas.",
-        avancado: "Inglês avançado é grande diferencial! Facilita muito o processo de visto.",
-        fluente: "Fluência em inglês é seu maior trunfo! Elimina barreiras de comunicação."
-      },
-      experience: {
-        'menos-1': "Experiência inicial é válida! Foque em desenvolver habilidades específicas.",
-        '1-5': "Experiência sólida! Ideal para H1B e processos de trabalho.",
-        '5-10': "Experiência robusta! Você se qualifica para posições sênior nos EUA.",
-        '10-plus': "Experiência excepcional! EB-1 e posições executivas são possíveis."
+        solteiro: "O processo para solteiros costuma ser mais simples e rápido. Ótimo!",
+        casado: "É uma jornada para toda a família! Quando você obtém o visto de imigrante, seu cônjuge também se qualifica.",
+        'casado-filhos': "É uma jornada para toda a família! Quando você obtém o visto de imigrante, seu cônjuge e filhos menores de 21 anos também se qualificam."
       },
       citizenship: {
-        sim: "Dupla cidadania facilita muito! Processo de visto é mais simples.",
-        nao: "Cidadania brasileira única é normal! Não afeta suas chances de visto."
+        sim: "Isso pode acelerar ou até abrir novos caminhos! Algumas nacionalidades têm acordos especiais com os EUA.",
+        nao: "Não há problema! A cidadania brasileira já é um ótimo ponto de partida para a maioria dos processos."
+      },
+      education: {
+        'ensino-medio': "Perfeito! Vamos focar em outras áreas do seu perfil, como experiência profissional e vínculos familiares, para encontrar o visto ideal.",
+        graduacao: "Ótimo! Sua formação acadêmica é um dos principais pilares para vistos de trabalho, especialmente o EB-2 e o H1B.",
+        pos: "Excelente! Pós-graduação é muito valorizada e abre portas para EB-2 Advanced Degree.",
+        mestrado: "Fantástico! Mestrado acelera significativamente processos EB-2 e aumenta suas chances no H1B.",
+        doutorado: "Incrível! PhD é altamente valorizado e pode qualificar para EB-1 Extraordinary Ability."
+      },
+      englishLevel: {
+        basico: "Não se preocupe, a falta de fluência não impede a maioria dos processos. No entanto, é algo que podemos trabalhar juntos para melhorar.",
+        intermediario: "Bom nível! Isso já é um diferencial importante para muitos processos de imigração.",
+        avancado: "Isso é um grande diferencial! A fluência em inglês é muito valorizada por empregadores e é um ponto forte no seu perfil.",
+        fluente: "Perfeito! Fluência elimina barreiras e é fundamental para sucesso profissional nos EUA."
+      },
+      experience: {
+        'menos-1': "Início de carreira tem potencial! Foque em desenvolver habilidades específicas para H1B futuro.",
+        '1-5': "Experiência sólida! Ideal para H1B e processos de trabalho qualificado.",
+        '5-10': "Experiência robusta! Você se qualifica para posições sênior e EB-2 nos EUA.",
+        '10-plus': "Experiência excepcional! EB-1 e posições executivas são definitivamente possíveis."
       },
       familyInUS: {
-        sim: "Família nos EUA é grande vantagem! Facilita comprovação de vínculos.",
-        nao: "Sem família nos EUA é comum! Focaremos em qualificação profissional."
+        sim: "Família nos EUA é uma grande vantagem! Facilita comprovação de vínculos e pode acelerar alguns processos.",
+        nao: "Sem família nos EUA é completamente normal! Focaremos em qualificação profissional e outros caminhos."
       },
       jobOffer: {
-        sim: "Oferta de emprego é incrível! H1B é praticamente garantido com sponsor.",
-        nao: "Sem oferta ainda, mas sua qualificação pode atrair empregadores americanos."
+        sim: "Incrível! Oferta de emprego americana é praticamente garantia para H1B com sponsor confirmado.",
+        nao: "Sem oferta ainda, mas sua qualificação pode atrair empregadores americanos dispostos a patrocinar."
       },
       companyTransfer: {
-        sim: "Transferência interna é caminho excelente! L-1 é opção muito viável.",
-        nao: "Sem transferência, mas há muitas outras rotas para os EUA."
+        sim: "Transferência interna é caminho excelente! L-1 é opção muito viável com menos burocracia.",
+        nao: "Sem transferência disponível, mas há muitas outras rotas diretas para os EUA."
       }
     };
     
-    return comments[questionId]?.[value] || "Informação registrada! Cada detalhe conta na avaliação.";
+    return comments[questionId]?.[value] || "Informação registrada! Cada detalhe conta na avaliação de imigração.";
   };
 
   const calculateCurrentScore = () => {
