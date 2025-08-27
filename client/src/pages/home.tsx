@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { WizardForm } from "@/components/WizardForm";
+import { SimpleWizardForm } from "@/components/SimpleWizardForm";
 
 export default function Home() {
   const [showForm, setShowForm] = useState(false);
@@ -13,19 +11,14 @@ export default function Home() {
   if (showForm) {
     return (
       <div className="container mx-auto px-4 py-8 max-w-2xl">
-        <WizardForm />
+        <SimpleWizardForm />
       </div>
     );
   }
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-2xl">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="wizard-container rounded-2xl shadow-2xl p-8 text-center"
-        data-testid="welcome-screen"
-      >
+      <div className="wizard-container rounded-lg shadow-lg p-8 text-center" data-testid="welcome-screen">
         <div className="mb-8">
           {/* Patriotic header with stars */}
           <div className="flex justify-center mb-6">
@@ -72,16 +65,15 @@ export default function Home() {
             </div>
           </div>
           
-          <Button
+          <button
             onClick={startJourney}
-            className="pulse-button bg-gradient-to-r from-blue-800 to-red-600 hover:from-blue-900 hover:to-red-700 text-white px-8 py-4 rounded-xl text-xl font-bold shadow-2xl transform hover:scale-105 transition-all duration-300"
-            size="lg"
+            className="btn-primary text-xl font-bold px-8 py-4 rounded-lg"
             data-testid="button-start-journey"
           >
             🚀 COMEÇAR SUA JORNADA
-          </Button>
+          </button>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }
