@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { LeadFormData, Question } from "../types/form";
 import { calculateScore } from "../utils/scoring";
-import { getVisaRecommendations, getScoreMessage } from "../utils/visa-recommendations";
+import { getVisaRecommendations, getScoreMessage, generatePersonalizedReport } from "../utils/visa-recommendations";
 import { useToast } from "@/hooks/use-toast";
 import { SimpleProgress } from "./ui/simple-progress";
 
@@ -265,36 +265,36 @@ const questions: Question[] = [
     ]
   },
   {
-    id: 'familyInUS',
-    title: '👨‍👩‍👧 Bloco 7 - Vínculos com os EUA',
-    subtitle: 'Você tem familiares diretos nos EUA com Green Card ou cidadania?',
-    type: 'single-choice',
-    icon: 'fas fa-route',
-    options: [
-      { value: 'sim', label: 'Sim', score: 10 },
-      { value: 'nao', label: 'Não', score: 0 }
-    ]
-  },
-  {
-    id: 'jobOffer',
-    title: '📑 Oferta de Emprego',
-    subtitle: 'Já tem oferta de emprego de empresa nos EUA?',
-    type: 'single-choice',
-    icon: 'fas fa-file-contract',
-    options: [
-      { value: 'sim', label: 'Sim', score: 20 },
-      { value: 'nao', label: 'Não', score: 0 }
-    ]
-  },
-  {
-    id: 'companyTransfer',
-    title: '🏢 Transferência',
-    subtitle: 'Trabalha em empresa com filial nos EUA (possibilidade de transferência)?',
-    type: 'single-choice',
-    icon: 'fas fa-building',
-    options: [
-      { value: 'sim', label: 'Sim', score: 10 },
-      { value: 'nao', label: 'Não', score: 0 }
+    id: 'usConnections',
+    title: '🇺🇸 Bloco 7 - Conexões nos EUA',
+    subtitle: 'Avalie suas conexões com os Estados Unidos',
+    type: 'combined-questions',
+    icon: 'fas fa-flag-usa',
+    subQuestions: [
+      {
+        id: 'familyInUS',
+        subtitle: 'Tem familiares diretos nos EUA (pais, irmãos, filhos) com Green Card ou cidadania?',
+        options: [
+          { value: 'sim', label: 'Sim, tenho família nos EUA', score: 10 },
+          { value: 'nao', label: 'Não tenho família nos EUA', score: 0 }
+        ]
+      },
+      {
+        id: 'jobOffer',
+        subtitle: 'Tem oferta de emprego confirmada de empresa americana?',
+        options: [
+          { value: 'sim', label: 'Sim, tenho oferta confirmada', score: 20 },
+          { value: 'nao', label: 'Não tenho oferta ainda', score: 0 }
+        ]
+      },
+      {
+        id: 'companyTransfer',
+        subtitle: 'Trabalha em empresa multinacional com filial nos EUA?',
+        options: [
+          { value: 'sim', label: 'Sim, possibilidade de transferência', score: 10 },
+          { value: 'nao', label: 'Não trabalho em multinacional', score: 0 }
+        ]
+      }
     ]
   }
 ];
@@ -403,39 +403,61 @@ export function SimpleWizardForm() {
   const getComment = (questionId: string, value: string): string => {
     const comments: Record<string, Record<string, string>> = {
       objective: {
-        trabalho: "Excelente! Os EUA precisam de profissionais qualificados!",
-        negocios: "Ótima escolha! Empreendedores são bem-vindos nos EUA!",
-        estudo: "Perfeito! Educação de qualidade abre muitas portas!",
-        familia: "Maravilhoso! Reunificação familiar é prioridade!",
-        investimento: "Fantástico! Investidores têm caminhos especiais!"
+        trabalho: "Profissionais qualificados têm grandes oportunidades! H1B e EB-2/EB-3 são ideais para você.",
+        negocios: "Empreendedores são muito bem-vindos! E-2 e EB-5 são excelentes opções de visto.",
+        estudo: "Educação americana é um investimento fantástico! F-1 pode levar ao OPT e H1B.",
+        familia: "Reunificação familiar é prioridade absoluta nos EUA! Processo mais direto.",
+        investimento: "Investidores têm acesso privilegiado! EB-5 oferece Green Card direto."
       },
       capital: {
-        'menos-20k': "Entendi. Há opções de visto mesmo com menos capital!",
-        '20k-500k': "Bom! Esse valor já abre algumas possibilidades!",
-        '500k-1m': "Excelente! Com esse capital há várias opções de visto!",
-        'mais-1m': "Perfeito! Você tem acesso aos melhores programas!"
+        'menos-20k': "Sem problemas! Vistos de trabalho e estudo não exigem muito capital inicial.",
+        '20k-500k': "Capital suficiente para E-2 e outras categorias interessantes!",
+        '500k-1m': "Valor ideal para EB-5! Você se qualifica para o programa de investidor.",
+        'mais-1m': "Capital excelente! Todas as portas estão abertas, incluindo EB-5 premium."
       },
       maritalStatus: {
-        solteiro: "Ok! Processo mais simples para solteiros!",
-        casado: "Ótimo! Cônjuge pode acompanhar no processo!",
-        'casado-filhos': "Perfeito! Família toda pode imigrar junta!"
+        solteiro: "Processo individual é mais ágil! Foco total no seu perfil.",
+        casado: "Cônjuge pode trabalhar nos EUA com visto dependente! Grande vantagem.",
+        'casado-filhos': "Família completa pode imigrar! Filhos terão educação americana de qualidade."
       },
       education: {
-        'ensino-medio': "Entendido! Há caminhos mesmo com ensino médio!",
-        graduacao: "Ótimo! Graduação é muito valorizada nos EUA!",
-        pos: "Excelente! Pós-graduação aumenta suas chances!",
-        mestrado: "Fantástico! Mestrado é altamente valorizado!",
-        doutorado: "Perfeito! PhD abre muitas portas especiais!"
+        'ensino-medio': "Experiência prática vale muito! Focaremos em vistos de trabalho e investimento.",
+        graduacao: "Graduação abre portas para H1B e EB-2! Base sólida para imigração.",
+        pos: "Pós-graduação é diferencial competitivo! EB-2 Advanced Degree disponível.",
+        mestrado: "Mestrado acelera processo EB-2! Você está na categoria preferencial.",
+        doutorado: "PhD é altamente valorizado! EB-1 Extraordinary Ability pode ser uma opção."
       },
       englishLevel: {
-        basico: "Vamos trabalhar no inglês! É fundamental!",
-        intermediario: "Bom! Continue praticando o inglês!",
-        avancado: "Excelente! Inglês avançado é um diferencial!",
-        fluente: "Perfeito! Fluência é uma grande vantagem!"
+        basico: "Inglês básico precisa melhorar. Fundamental para sucesso profissional nos EUA.",
+        intermediario: "Inglês intermediário é bom começo. Continue praticando para entrevistas.",
+        avancado: "Inglês avançado é grande diferencial! Facilita muito o processo de visto.",
+        fluente: "Fluência em inglês é seu maior trunfo! Elimina barreiras de comunicação."
+      },
+      experience: {
+        'menos-1': "Experiência inicial é válida! Foque em desenvolver habilidades específicas.",
+        '1-5': "Experiência sólida! Ideal para H1B e processos de trabalho.",
+        '5-10': "Experiência robusta! Você se qualifica para posições sênior nos EUA.",
+        '10-plus': "Experiência excepcional! EB-1 e posições executivas são possíveis."
+      },
+      citizenship: {
+        sim: "Dupla cidadania facilita muito! Processo de visto é mais simples.",
+        nao: "Cidadania brasileira única é normal! Não afeta suas chances de visto."
+      },
+      familyInUS: {
+        sim: "Família nos EUA é grande vantagem! Facilita comprovação de vínculos.",
+        nao: "Sem família nos EUA é comum! Focaremos em qualificação profissional."
+      },
+      jobOffer: {
+        sim: "Oferta de emprego é incrível! H1B é praticamente garantido com sponsor.",
+        nao: "Sem oferta ainda, mas sua qualificação pode atrair empregadores americanos."
+      },
+      companyTransfer: {
+        sim: "Transferência interna é caminho excelente! L-1 é opção muito viável.",
+        nao: "Sem transferência, mas há muitas outras rotas para os EUA."
       }
     };
     
-    return comments[questionId]?.[value] || "Ótima escolha! Vamos continuar!";
+    return comments[questionId]?.[value] || "Informação registrada! Cada detalhe conta na avaliação.";
   };
 
   const calculateCurrentScore = () => {
@@ -625,6 +647,7 @@ export function SimpleWizardForm() {
   if (showResults) {
     const visaRecommendations = getVisaRecommendations(totalScore);
     const scoreMessage = getScoreMessage(totalScore);
+    const personalizedReport = generatePersonalizedReport(formData, totalScore);
 
     return (
       <div className="wizard-container rounded-lg shadow-lg p-8 text-center" data-testid="results-screen">
@@ -656,8 +679,13 @@ export function SimpleWizardForm() {
               ))}
             </div>
             
-            <div className="mt-6 p-4 bg-gray-200 rounded-lg">
-              <p className="text-sm text-gray-700">{scoreMessage}</p>
+            <div className="mt-6 p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+              <h4 className="font-bold text-blue-700 mb-2">📋 Análise do Seu Perfil:</h4>
+              <p className="text-sm text-blue-700 leading-relaxed">{personalizedReport}</p>
+            </div>
+            
+            <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+              <p className="text-sm text-gray-700 font-medium">{scoreMessage}</p>
             </div>
           </div>
           
@@ -673,8 +701,8 @@ export function SimpleWizardForm() {
           <div className="mt-6 text-center">
             <h3 className="text-2xl font-bold text-blue-600 mb-4">Obrigado!</h3>
             <p className="text-gray-700">
-              Um consultor Wizard Emigration entrará em contato em breve 
-              com as melhores opções para o seu perfil.
+              Um consultor Mister Visa entrará em contato em breve 
+              com as melhores estratégias para o seu perfil específico.
             </p>
           </div>
         </div>
@@ -759,6 +787,18 @@ export function SimpleWizardForm() {
         <div className="saved-details">
           <i className="fas fa-users"></i>
           <span>{savedDetails['maritalStatus']}</span>
+        </div>
+      )}
+
+      {/* Show saved family details for US connections */}
+      {currentQuestion.id === 'usConnections' && (savedDetails['familyInUS'] || savedDetails['jobOffer'] || savedDetails['companyTransfer']) && (
+        <div className="saved-details">
+          <i className="fas fa-flag-usa"></i>
+          <span>
+            {savedDetails['familyInUS'] && `Família: ${formData.familyInUS === 'sim' ? 'Sim' : 'Não'}`}
+            {savedDetails['jobOffer'] && ` | Oferta de emprego: ${formData.jobOffer === 'sim' ? 'Sim' : 'Não'}`}
+            {savedDetails['companyTransfer'] && ` | Transferência: ${formData.companyTransfer === 'sim' ? 'Sim' : 'Não'}`}
+          </span>
         </div>
       )}
 

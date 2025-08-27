@@ -308,12 +308,34 @@
     background: rgba(102, 126, 234, 0.05);
     border: 2px solid rgba(102, 126, 234, 0.2);
     border-radius: 16px;
-    padding: 2rem;
-    margin: 2rem 0;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
     animation: slideDown 0.5s ease-out;
     position: sticky;
     top: 20px;
     z-index: 50;
+  }
+
+  .details-container .sub-questions {
+    margin-bottom: 1rem;
+  }
+
+  .details-container .sub-questions:last-child {
+    margin-bottom: 0;
+  }
+
+  .details-container h3 {
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .details-container .options-grid {
+    gap: 0.5rem;
+  }
+
+  .details-container .option-button {
+    padding: 1rem;
+    min-width: 200px;
   }
 
   .saved-details {
