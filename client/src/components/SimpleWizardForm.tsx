@@ -312,6 +312,7 @@ export function SimpleWizardForm() {
   const [subAnswers, setSubAnswers] = useState<Record<string, any>>({});
   const [activeComment, setActiveComment] = useState<{text: string, x: number, y: number} | null>(null);
   const [currentScore, setCurrentScore] = useState(0);
+  const [savedDetails, setSavedDetails] = useState<Record<string, string>>({});
   const { toast } = useToast();
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -486,6 +487,7 @@ export function SimpleWizardForm() {
   const handleInputSubmit = () => {
     if (showInput && inputValue.trim()) {
       setFormData({ ...formData, [`${showInput}Detail`]: inputValue });
+      setSavedDetails({ ...savedDetails, [showInput]: inputValue });
       setShowInput(null);
       setInputValue('');
     }
@@ -508,6 +510,14 @@ export function SimpleWizardForm() {
     }
     
     setSubAnswers({ ...subAnswers, [showSubQuestions!]: subData });
+    
+    // Save family details summary
+    let familySummary = `Cônjuge: ${subData.spouseName} (${subData.spouseAge} anos, ${subData.spouseEducation})`;
+    if (formData.maritalStatus === 'casado-filhos' && subData.childrenCount) {
+      familySummary += ` | Filhos: ${subData.childrenCount} (idades: ${subData.childrenAges})`;
+    }
+    setSavedDetails({ ...savedDetails, [showSubQuestions!]: familySummary });
+    
     setShowSubQuestions(null);
   };
 
@@ -733,6 +743,22 @@ export function SimpleWizardForm() {
               </div>
             </button>
           ))}
+        </div>
+      )}
+
+      {/* Show saved details for current question */}
+      {savedDetails[currentQuestion.id] && (
+        <div className="saved-details">
+          <i className="fas fa-info-circle"></i>
+          <span>Detalhes salvos: {savedDetails[currentQuestion.id]}</span>
+        </div>
+      )}
+
+      {/* Show saved family details for marriage question */}
+      {currentQuestion.id === 'maritalStatus' && savedDetails['maritalStatus'] && (
+        <div className="saved-details">
+          <i className="fas fa-users"></i>
+          <span>{savedDetails['maritalStatus']}</span>
         </div>
       )}
 
