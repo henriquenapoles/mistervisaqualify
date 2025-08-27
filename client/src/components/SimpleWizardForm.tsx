@@ -394,10 +394,10 @@ export function SimpleWizardForm() {
     
     setActiveComment({ text: comment, x, y });
     
-    // Remove comment after animation (increased duration)
+    // Remove comment after balloon animation (5 seconds)
     setTimeout(() => {
       setActiveComment(null);
-    }, 4000);
+    }, 5000);
   };
 
   const getComment = (questionId: string, value: string): string => {
