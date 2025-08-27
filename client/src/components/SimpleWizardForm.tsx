@@ -546,13 +546,10 @@ export function SimpleWizardForm() {
 
   return (
     <div ref={containerRef} className="wizard-container rounded-lg shadow-lg p-8 relative">
-      {/* Government Header */}
-      <div className="gov-header">
-        <div className="gov-seal mx-auto mb-3">
-          🦅
-        </div>
-        <h1 className="text-xl font-bold mb-1">U.S. IMMIGRATION ASSESSMENT</h1>
-        <p className="text-sm opacity-90">Question {currentStep + 1} of {questions.length}</p>
+      {/* Brand Header */}
+      <div className="brand-header">
+        <h1>Mister Visa®</h1>
+        <p>Pergunta {currentStep + 1} de {questions.length}</p>
       </div>
 
       {/* Animated Eagle Avatar */}

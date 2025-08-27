@@ -20,44 +20,41 @@ export default function Home() {
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       <div className="wizard-container rounded-lg shadow-lg p-8" data-testid="welcome-screen">
         
-        {/* Government Header */}
-        <div className="gov-header">
-          <div className="gov-seal mx-auto mb-3">
-            🦅
-          </div>
-          <h1 className="text-2xl font-bold mb-1">U.S. IMMIGRATION ASSESSMENT</h1>
-          <p className="text-sm opacity-90">Official Eligibility Evaluation System</p>
+        {/* Brand Header */}
+        <div className="brand-header">
+          <h1>Mister Visa®</h1>
+          <p>Consultoria Especializada em Vistos e Imigração</p>
         </div>
         
         <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-gray-800 mb-4">
-            Wizard Emigration Services
+          <h2 className="text-4xl font-bold text-gray-800 mb-4" style={{color: '#1a365d'}}>
+            Avaliação Gratuita de Elegibilidade
           </h2>
           <p className="text-xl text-gray-600 mb-6">
             Descubra Suas Oportunidades de Imigração para os Estados Unidos
           </p>
           
-          <div className="bg-blue-50 border-l-4 border-blue-400 p-6 mb-8 text-left">
+          <div className="border-l-4 p-6 mb-8 text-left rounded-lg" style={{background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%)', borderColor: '#667eea'}}>
             <div className="flex">
               <div className="flex-shrink-0">
-                <i className="fas fa-info-circle text-blue-400 text-xl"></i>
+                <i className="fas fa-star text-purple-500 text-xl"></i>
               </div>
               <div className="ml-3">
-                <h3 className="text-lg font-semibold text-blue-800 mb-2">
-                  Avaliação Oficial Baseada em Critérios do USCIS
+                <h3 className="text-lg font-semibold mb-2" style={{color: '#1a365d'}}>
+                  Consultoria Especializada em Imigração Americana
                 </h3>
-                <ul className="text-blue-700 space-y-2">
+                <ul className="space-y-2" style={{color: '#2d3748'}}>
                   <li className="flex items-center">
-                    <i className="fas fa-check text-green-600 mr-2"></i>
-                    Análise completa do seu perfil profissional e educacional
+                    <i className="fas fa-check-circle text-green-500 mr-2"></i>
+                    Análise personalizada do seu perfil migratório
                   </li>
                   <li className="flex items-center">
-                    <i className="fas fa-check text-green-600 mr-2"></i>
-                    Pontuação baseada em critérios oficiais de imigração
+                    <i className="fas fa-check-circle text-green-500 mr-2"></i>
+                    Estratégias baseadas em nossa experiência de mercado
                   </li>
                   <li className="flex items-center">
-                    <i className="fas fa-check text-green-600 mr-2"></i>
-                    Recomendações personalizadas de categorias de visto
+                    <i className="fas fa-check-circle text-green-500 mr-2"></i>
+                    Acompanhamento completo durante todo o processo
                   </li>
                 </ul>
               </div>
@@ -101,15 +98,15 @@ export default function Home() {
           
           <button
             onClick={startJourney}
-            className="btn-primary text-lg font-bold px-12 py-4 rounded-lg"
+            className="btn-primary text-xl font-bold px-16 py-5 rounded-lg"
             data-testid="button-start-journey"
           >
-            <i className="fas fa-flag-usa mr-2"></i>
-            INICIAR AVALIAÇÃO OFICIAL
+            <i className="fas fa-rocket mr-3"></i>
+            INICIAR MINHA AVALIAÇÃO GRATUITA
           </button>
           
-          <p className="text-sm text-gray-500 mt-4">
-            ⏱️ Tempo estimado: 8-10 minutos | 📊 Baseado em critérios oficiais do USCIS
+          <p className="text-sm text-gray-600 mt-6 font-medium">
+            ⏱️ Tempo: 8-10 minutos | 🎯 100% Personalizado | 🔒 Totalmente Confidencial
           </p>
         </div>
       </div>
