@@ -311,6 +311,7 @@ export function SimpleWizardForm() {
   const [showSubQuestions, setShowSubQuestions] = useState<string | null>(null);
   const [subAnswers, setSubAnswers] = useState<Record<string, any>>({});
   const [activeComment, setActiveComment] = useState<{text: string, x: number, y: number} | null>(null);
+  const [currentScore, setCurrentScore] = useState(0);
   const { toast } = useToast();
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -392,10 +393,10 @@ export function SimpleWizardForm() {
     
     setActiveComment({ text: comment, x, y });
     
-    // Remove comment after animation
+    // Remove comment after animation (increased duration)
     setTimeout(() => {
       setActiveComment(null);
-    }, 2000);
+    }, 4000);
   };
 
   const getComment = (questionId: string, value: string): string => {
@@ -436,9 +437,38 @@ export function SimpleWizardForm() {
     return comments[questionId]?.[value] || "Ótima escolha! Vamos continuar!";
   };
 
+  const calculateCurrentScore = () => {
+    let score = 0;
+    questions.forEach(question => {
+      if (question.options && formData[question.id]) {
+        const selectedOption = question.options.find(opt => opt.value === formData[question.id]);
+        if (selectedOption) {
+          score += selectedOption.score || 0;
+        }
+      }
+      
+      // Add scores from sub-questions
+      if (question.subQuestions) {
+        question.subQuestions.forEach((subQ: any) => {
+          if (formData[subQ.id]) {
+            const selectedSubOption = subQ.options.find((opt: any) => opt.value === formData[subQ.id]);
+            if (selectedSubOption) {
+              score += selectedSubOption.score || 0;
+            }
+          }
+        });
+      }
+    });
+    return score;
+  };
+
   const handleOptionSelect = (value: string, hasInput?: boolean, hasForm?: boolean, event?: React.MouseEvent) => {
     const newFormData = { ...formData, [currentQuestion.id]: value };
     setFormData(newFormData);
+    
+    // Update score immediately
+    const newScore = calculateCurrentScore();
+    setCurrentScore(newScore);
     
     // Show explosive comment
     if (event?.currentTarget) {
@@ -644,6 +674,12 @@ export function SimpleWizardForm() {
 
   return (
     <div ref={containerRef} className="wizard-container rounded-lg shadow-lg p-8 relative">
+      {/* Score Display */}
+      <div className="score-display">
+        🏆 Pontuação:
+        <span className="score-number">{currentScore}</span>
+      </div>
+
       {/* Brand Header */}
       <div className="brand-header">
         <h1>Mister Visa®</h1>
@@ -713,6 +749,10 @@ export function SimpleWizardForm() {
                     onClick={(e) => {
                       setFormData({ ...formData, [subQ.id]: option.value });
                       
+                      // Update score immediately
+                      const newScore = calculateCurrentScore();
+                      setCurrentScore(newScore);
+                      
                       // Show explosive comment
                       const comment = getComment(subQ.id, option.value);
                       showCommentExplosion(e.currentTarget as HTMLElement, comment);
@@ -739,8 +779,8 @@ export function SimpleWizardForm() {
 
       {/* Show Sub-Questions for Marriage Details */}
       {showSubQuestions === 'maritalStatus' && (
-        <div className="sub-questions">
-          <h3 className="text-xl font-semibold text-gray-800 mb-4">Detalhes do Cônjuge</h3>
+        <div className="details-container">
+          <h3 className="text-xl font-semibold text-gray-800 mb-4">👨‍👩‍👧‍👦 Detalhes da Família</h3>
           <form onSubmit={handleSubQuestionSubmit} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -823,14 +863,14 @@ export function SimpleWizardForm() {
 
       {/* Show Input for Additional Details */}
       {showInput && (
-        <div className="sub-questions">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Nos conte mais detalhes:</h3>
+        <div className="details-container">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">📝 Nos conte mais detalhes:</h3>
           <div className="space-y-4">
             <input
               type="text"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
-              placeholder="Digite aqui..."
+              placeholder="Digite aqui para adicionar mais informações..."
               className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
               data-testid="input-details"
             />
@@ -839,7 +879,7 @@ export function SimpleWizardForm() {
               className="btn-primary px-6 py-3 rounded-lg"
               data-testid="button-submit-details"
             >
-              Salvar Detalhes
+              ✅ Salvar Detalhes
             </button>
           </div>
         </div>
