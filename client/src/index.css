@@ -94,6 +94,42 @@
     margin: 0;
     padding: 0;
   }
+
+  .wizard-container {
+    background: white;
+    color: #333;
+  }
+
+  .btn-primary {
+    background: linear-gradient(to right, #1e40af, #dc2626);
+    color: white;
+    border: none;
+    transition: all 0.3s ease;
+  }
+
+  .btn-primary:hover {
+    background: linear-gradient(to right, #1d4ed8, #b91c1c);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .btn-primary:disabled {
+    opacity: 0.5;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .option-button {
+    border: 2px solid #e5e7eb;
+    transition: all 0.3s ease;
+  }
+
+  .option-button:hover {
+    border-color: #3b82f6;
+    background-color: #f8fafc;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
 }
 
 @layer components {
