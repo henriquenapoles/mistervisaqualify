@@ -310,6 +310,7 @@ export function SimpleWizardForm() {
   const [inputValue, setInputValue] = useState('');
   const [showSubQuestions, setShowSubQuestions] = useState<string | null>(null);
   const [subAnswers, setSubAnswers] = useState<Record<string, any>>({});
+  const [activeComment, setActiveComment] = useState<{text: string, x: number, y: number} | null>(null);
   const { toast } = useToast();
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -384,9 +385,66 @@ export function SimpleWizardForm() {
     }
   };
 
-  const handleOptionSelect = (value: string, hasInput?: boolean, hasForm?: boolean) => {
+  const showCommentExplosion = (buttonElement: HTMLElement, comment: string) => {
+    const rect = buttonElement.getBoundingClientRect();
+    const x = rect.left + rect.width / 2;
+    const y = rect.top;
+    
+    setActiveComment({ text: comment, x, y });
+    
+    // Remove comment after animation
+    setTimeout(() => {
+      setActiveComment(null);
+    }, 2000);
+  };
+
+  const getComment = (questionId: string, value: string): string => {
+    const comments: Record<string, Record<string, string>> = {
+      objective: {
+        trabalho: "Excelente! Os EUA precisam de profissionais qualificados!",
+        negocios: "Ótima escolha! Empreendedores são bem-vindos nos EUA!",
+        estudo: "Perfeito! Educação de qualidade abre muitas portas!",
+        familia: "Maravilhoso! Reunificação familiar é prioridade!",
+        investimento: "Fantástico! Investidores têm caminhos especiais!"
+      },
+      capital: {
+        'menos-20k': "Entendi. Há opções de visto mesmo com menos capital!",
+        '20k-500k': "Bom! Esse valor já abre algumas possibilidades!",
+        '500k-1m': "Excelente! Com esse capital há várias opções de visto!",
+        'mais-1m': "Perfeito! Você tem acesso aos melhores programas!"
+      },
+      maritalStatus: {
+        solteiro: "Ok! Processo mais simples para solteiros!",
+        casado: "Ótimo! Cônjuge pode acompanhar no processo!",
+        'casado-filhos': "Perfeito! Família toda pode imigrar junta!"
+      },
+      education: {
+        'ensino-medio': "Entendido! Há caminhos mesmo com ensino médio!",
+        graduacao: "Ótimo! Graduação é muito valorizada nos EUA!",
+        pos: "Excelente! Pós-graduação aumenta suas chances!",
+        mestrado: "Fantástico! Mestrado é altamente valorizado!",
+        doutorado: "Perfeito! PhD abre muitas portas especiais!"
+      },
+      englishLevel: {
+        basico: "Vamos trabalhar no inglês! É fundamental!",
+        intermediario: "Bom! Continue praticando o inglês!",
+        avancado: "Excelente! Inglês avançado é um diferencial!",
+        fluente: "Perfeito! Fluência é uma grande vantagem!"
+      }
+    };
+    
+    return comments[questionId]?.[value] || "Ótima escolha! Vamos continuar!";
+  };
+
+  const handleOptionSelect = (value: string, hasInput?: boolean, hasForm?: boolean, event?: React.MouseEvent) => {
     const newFormData = { ...formData, [currentQuestion.id]: value };
     setFormData(newFormData);
+    
+    // Show explosive comment
+    if (event?.currentTarget) {
+      const comment = getComment(currentQuestion.id, value);
+      showCommentExplosion(event.currentTarget as HTMLElement, comment);
+    }
     
     if (hasInput) {
       setShowInput(currentQuestion.id);
@@ -627,7 +685,7 @@ export function SimpleWizardForm() {
           {currentQuestion.options?.map((option) => (
             <button
               key={option.value}
-              onClick={() => handleOptionSelect(option.value, option.hasInput, option.hasForm)}
+              onClick={(e) => handleOptionSelect(option.value, option.hasInput, option.hasForm, e)}
               className={`option-button text-left ${
                 formData[currentQuestion.id] === option.value ? 'selected' : ''
               }`}
@@ -652,8 +710,13 @@ export function SimpleWizardForm() {
                 {subQ.options?.map((option: any) => (
                   <button
                     key={`${subQ.id}-${option.value}`}
-                    onClick={() => {
+                    onClick={(e) => {
                       setFormData({ ...formData, [subQ.id]: option.value });
+                      
+                      // Show explosive comment
+                      const comment = getComment(subQ.id, option.value);
+                      showCommentExplosion(e.currentTarget as HTMLElement, comment);
+                      
                       if (option.hasInput) {
                         setShowInput(subQ.id);
                       }
@@ -830,6 +893,19 @@ export function SimpleWizardForm() {
           <i className="fas fa-arrow-right"></i>
         </button>
       </div>
+
+      {/* Explosive Comment Popup */}
+      {activeComment && (
+        <div 
+          className="comment-popup"
+          style={{
+            left: `${activeComment.x - 150}px`,
+            top: `${activeComment.y - 60}px`
+          }}
+        >
+          {activeComment.text}
+        </div>
+      )}
     </div>
   );
 }

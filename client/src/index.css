@@ -234,6 +234,43 @@
     color: white !important;
   }
 
+  .comment-popup {
+    position: fixed;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 20px;
+    padding: 1rem 1.5rem;
+    max-width: 300px;
+    box-shadow: 
+      0 15px 40px rgba(102, 126, 234, 0.4),
+      0 5px 15px rgba(0, 0, 0, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    font-weight: 500;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    z-index: 1000;
+    pointer-events: none;
+    animation: commentExplode 2s ease-out forwards;
+  }
+
+  @keyframes commentExplode {
+    0% {
+      opacity: 0;
+      transform: scale(0.3) translateY(20px);
+    }
+    20% {
+      opacity: 1;
+      transform: scale(1.2) translateY(-10px);
+    }
+    40% {
+      transform: scale(1) translateY(-5px);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(0.8) translateY(-30px);
+    }
+  }
+
   .option-button:hover {
     border-color: #667eea;
     background: rgba(255, 255, 255, 1);
