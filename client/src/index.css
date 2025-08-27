@@ -1,0 +1,143 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(210, 40%, 96%);
+  --foreground: hsl(220, 13%, 13%);
+  --card: hsl(0, 0%, 100%);
+  --card-foreground: hsl(220, 13%, 13%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(220, 13%, 13%);
+  --primary: hsl(220, 100%, 30%);
+  --primary-foreground: hsl(0, 0%, 100%);
+  --secondary: hsl(210, 40%, 94%);
+  --secondary-foreground: hsl(220, 13%, 13%);
+  --muted: hsl(210, 40%, 94%);
+  --muted-foreground: hsl(220, 13%, 46%);
+  --accent: hsl(2, 72%, 51%);
+  --accent-foreground: hsl(0, 0%, 100%);
+  --destructive: hsl(2, 72%, 51%);
+  --destructive-foreground: hsl(0, 0%, 100%);
+  --border: hsl(220, 13%, 91%);
+  --input: hsl(220, 13%, 91%);
+  --ring: hsl(220, 100%, 30%);
+  --chart-1: hsl(220, 100%, 30%);
+  --chart-2: hsl(159, 78%, 36%);
+  --chart-3: hsl(42, 93%, 56%);
+  --chart-4: hsl(147, 78%, 42%);
+  --chart-5: hsl(341, 75%, 51%);
+  --sidebar: hsl(210, 40%, 94%);
+  --sidebar-foreground: hsl(220, 13%, 13%);
+  --sidebar-primary: hsl(220, 100%, 30%);
+  --sidebar-primary-foreground: hsl(0, 0%, 100%);
+  --sidebar-accent: hsl(210, 40%, 92%);
+  --sidebar-accent-foreground: hsl(220, 100%, 30%);
+  --sidebar-border: hsl(220, 13%, 91%);
+  --sidebar-ring: hsl(220, 100%, 30%);
+  --font-sans: 'Inter', sans-serif;
+  --font-serif: Georgia, serif;
+  --font-mono: Menlo, monospace;
+  --radius: 8px;
+  --shadow-2xs: 0px 2px 0px 0px hsl(220, 100%, 30%, 0.00);
+  --shadow-xs: 0px 2px 0px 0px hsl(220, 100%, 30%, 0.00);
+  --shadow-sm: 0px 2px 0px 0px hsl(220, 100%, 30%, 0.00), 0px 1px 2px -1px hsl(220, 100%, 30%, 0.00);
+  --shadow: 0px 2px 0px 0px hsl(220, 100%, 30%, 0.00), 0px 1px 2px -1px hsl(220, 100%, 30%, 0.00);
+  --shadow-md: 0px 2px 0px 0px hsl(220, 100%, 30%, 0.00), 0px 2px 4px -1px hsl(220, 100%, 30%, 0.00);
+  --shadow-lg: 0px 2px 0px 0px hsl(220, 100%, 30%, 0.00), 0px 4px 6px -1px hsl(220, 100%, 30%, 0.00);
+  --shadow-xl: 0px 2px 0px 0px hsl(220, 100%, 30%, 0.00), 0px 8px 10px -1px hsl(220, 100%, 30%, 0.00);
+  --shadow-2xl: 0px 2px 0px 0px hsl(220, 100%, 30%, 0.00);
+  --tracking-normal: 0em;
+  --spacing: 0.25rem;
+}
+
+.dark {
+  --background: hsl(220, 13%, 9%);
+  --foreground: hsl(210, 40%, 98%);
+  --card: hsl(220, 13%, 13%);
+  --card-foreground: hsl(210, 40%, 98%);
+  --popover: hsl(220, 13%, 13%);
+  --popover-foreground: hsl(210, 40%, 98%);
+  --primary: hsl(220, 100%, 50%);
+  --primary-foreground: hsl(0, 0%, 100%);
+  --secondary: hsl(220, 13%, 18%);
+  --secondary-foreground: hsl(210, 40%, 98%);
+  --muted: hsl(220, 13%, 18%);
+  --muted-foreground: hsl(220, 13%, 63%);
+  --accent: hsl(2, 72%, 60%);
+  --accent-foreground: hsl(0, 0%, 100%);
+  --destructive: hsl(2, 72%, 60%);
+  --destructive-foreground: hsl(0, 0%, 100%);
+  --border: hsl(220, 13%, 18%);
+  --input: hsl(220, 13%, 18%);
+  --ring: hsl(220, 100%, 50%);
+  --sidebar: hsl(220, 13%, 13%);
+  --sidebar-foreground: hsl(210, 40%, 98%);
+  --sidebar-primary: hsl(220, 100%, 50%);
+  --sidebar-primary-foreground: hsl(0, 0%, 100%);
+  --sidebar-accent: hsl(220, 13%, 18%);
+  --sidebar-accent-foreground: hsl(220, 100%, 50%);
+  --sidebar-border: hsl(220, 13%, 18%);
+  --sidebar-ring: hsl(220, 100%, 50%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-gradient-to-br from-blue-800 to-red-600 min-h-screen;
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+@layer components {
+  .wizard-container {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+  }
+
+  .step-transition {
+    transition: all 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
+  }
+
+  .option-button {
+    @apply transition-all duration-300 ease-out transform;
+  }
+
+  .option-button:hover {
+    @apply -translate-y-1 shadow-lg;
+  }
+
+  .option-button.selected {
+    @apply bg-gradient-to-r from-blue-800 to-red-600 text-white -translate-y-1;
+  }
+
+  .progress-star {
+    @apply transition-all duration-300;
+  }
+
+  .progress-star.completed {
+    @apply text-yellow-500 scale-125;
+  }
+
+  .pulse-button {
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+
+  .celebration {
+    animation: celebration 1s ease-out;
+  }
+
+  @keyframes celebration {
+    0% { transform: scale(0) rotate(-180deg); opacity: 0; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+}
