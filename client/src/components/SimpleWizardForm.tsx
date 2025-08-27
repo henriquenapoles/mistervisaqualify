@@ -305,38 +305,22 @@ export function SimpleWizardForm() {
   const [showResults, setShowResults] = useState(false);
   const [totalScore, setTotalScore] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showComment, setShowComment] = useState<string | null>(null);
+
   const [showInput, setShowInput] = useState<string | null>(null);
   const [inputValue, setInputValue] = useState('');
-  const [eaglePosition, setEaglePosition] = useState({ x: 30, y: 120 });
-  const [showCommentBubble, setShowCommentBubble] = useState(false);
-  const [commentPosition, setCommentPosition] = useState({ x: 200, y: 150 });
   const [showSubQuestions, setShowSubQuestions] = useState<string | null>(null);
   const [subAnswers, setSubAnswers] = useState<Record<string, any>>({});
   const { toast } = useToast();
   const containerRef = useRef<HTMLDivElement>(null);
-  const eagleRef = useRef<HTMLDivElement>(null);
 
   const currentQuestion = questions[currentStep];
 
   const goToStep = (stepIndex: number) => {
     setCurrentStep(stepIndex);
-    setShowComment(null);
     setShowInput(null);
   };
 
-  const moveEagleToButton = (buttonElement: HTMLElement) => {
-    if (containerRef.current && eagleRef.current) {
-      const containerRect = containerRef.current.getBoundingClientRect();
-      const buttonRect = buttonElement.getBoundingClientRect();
-      
-      const newX = buttonRect.left - containerRect.left - 60;
-      const newY = buttonRect.top - containerRect.top - 60;
-      
-      setEaglePosition({ x: newX, y: newY });
-      setCommentPosition({ x: newX - 150, y: newY - 100 });
-    }
-  };
+
 
   const getColumnsClass = (optionsCount: number) => {
     if (optionsCount <= 3) return 'cols-1';
@@ -347,13 +331,7 @@ export function SimpleWizardForm() {
   const nextQuestion = () => {
     if (currentStep < questions.length - 1) {
       setCurrentStep(currentStep + 1);
-      setShowComment(null);
-      setShowCommentBubble(false);
       setShowSubQuestions(null);
-      // Move eagle towards USA (right side)
-      const progressRatio = (currentStep + 1) / questions.length;
-      const targetX = 30 + (progressRatio * 300);
-      setEaglePosition({ x: targetX, y: 120 });
     } else {
       showResultsScreen();
     }
@@ -362,36 +340,19 @@ export function SimpleWizardForm() {
   const previousQuestion = () => {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
-      setShowComment(null);
-      setShowCommentBubble(false);
       setShowSubQuestions(null);
-      // Move eagle back
-      const progressRatio = (currentStep - 1) / questions.length;
-      const targetX = 30 + (progressRatio * 300);
-      setEaglePosition({ x: targetX, y: 120 });
     }
   };
 
-  const handleOptionSelect = (value: string, hasInput?: boolean, hasForm?: boolean, event?: React.MouseEvent) => {
+  const handleOptionSelect = (value: string, hasInput?: boolean, hasForm?: boolean) => {
     const newFormData = { ...formData, [currentQuestion.id]: value };
     setFormData(newFormData);
-    
-    // Mover águia para o botão clicado
-    if (event?.currentTarget) {
-      moveEagleToButton(event.currentTarget as HTMLElement);
-    }
-    
-    // Mostrar comentário da águia
-    const comment = getComment(currentQuestion.id, value);
-    setShowComment(comment);
-    setShowCommentBubble(true);
     
     if (hasInput) {
       setShowInput(currentQuestion.id);
     } else if (hasForm) {
       setShowSubQuestions(currentQuestion.id);
     }
-    // Remove auto-advance - user will click Next button
   };
 
   const handleInputSubmit = () => {
@@ -591,30 +552,7 @@ export function SimpleWizardForm() {
         <p>Pergunta {currentStep + 1} de {questions.length}</p>
       </div>
 
-      {/* Animated Eagle Avatar */}
-      <div 
-        ref={eagleRef}
-        className={`eagle-avatar ${showCommentBubble ? 'moving' : ''}`}
-        style={{
-          right: '30px',
-          top: `${eaglePosition.y}px`
-        }}
-        data-testid="eagle-avatar"
-      ></div>
 
-      {/* Comment Bubble from Eagle */}
-      {showComment && (
-        <div 
-          className={`comment-bubble ${showCommentBubble ? 'show' : ''}`}
-          style={{
-            left: `${commentPosition.x}px`,
-            top: `${commentPosition.y}px`
-          }}
-          data-testid="comment-bubble"
-        >
-          <p>{showComment}</p>
-        </div>
-      )}
 
       <div className="progress-bar">
         <div 
@@ -649,7 +587,7 @@ export function SimpleWizardForm() {
           {currentQuestion.options?.map((option) => (
             <button
               key={option.value}
-              onClick={(e) => handleOptionSelect(option.value, option.hasInput, option.hasForm, e)}
+              onClick={() => handleOptionSelect(option.value, option.hasInput, option.hasForm)}
               className="option-button text-left"
               data-testid={`option-${option.value}`}
             >
@@ -672,7 +610,7 @@ export function SimpleWizardForm() {
                 {subQ.options?.map((option) => (
                   <button
                     key={`${subQ.id}-${option.value}`}
-                    onClick={(e) => handleOptionSelect(`${subQ.id}-${option.value}`, option.hasInput, false, e)}
+                    onClick={() => handleOptionSelect(`${subQ.id}-${option.value}`, option.hasInput, false)}
                     className="option-button text-left"
                     data-testid={`option-${subQ.id}-${option.value}`}
                   >
