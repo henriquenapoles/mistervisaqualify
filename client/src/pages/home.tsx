@@ -19,27 +19,22 @@ export default function Home() {
   return (
     <div className="container mx-auto px-4 py-8 max-w-2xl">
       <div className="wizard-container rounded-lg shadow-lg p-8 text-center" data-testid="welcome-screen">
-        <div className="flag-stripes"></div>
-        <div className="stars-decoration">⭐🇺🇸⭐</div>
+        <div className="stars-decoration">🇺🇸</div>
         
         <div className="mb-8 relative z-10">
-          {/* Eagle Avatar */}
+          {/* American flag icon */}
           <div className="eagle-avatar"></div>
           
-          {/* Main title with American patriotic style */}
-          <h1 className="text-6xl font-black mb-4 text-center">
-            <span className="bg-gradient-to-r from-blue-800 via-white to-red-600 bg-clip-text text-transparent drop-shadow-lg">
+          {/* Main title */}
+          <h1 className="text-5xl font-bold mb-4 text-center">
+            <span className="bg-gradient-to-r from-blue-800 to-red-600 bg-clip-text text-transparent">
               WIZARD EMIGRATION
             </span>
           </h1>
           
-          <div className="flex justify-center items-center mb-6">
-            <span className="text-4xl mr-2">🦅</span>
-            <h2 className="text-3xl font-bold text-blue-800 text-center">
-              Descubra Suas Chances de Viver o Sonho Americano!
-            </h2>
-            <span className="text-4xl ml-2">🗽</span>
-          </div>
+          <h2 className="text-2xl font-semibold text-blue-800 text-center mb-6">
+            Descubra Suas Chances de Viver o Sonho Americano!
+          </h2>
           
           <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-8 mb-8 shadow-2xl border-4 border-blue-200 relative">
             <div className="absolute top-4 right-4 text-2xl">🇺🇸</div>
@@ -71,31 +66,31 @@ export default function Home() {
             </div>
           </div>
           
-          {/* American patriotic journey elements */}
-          <div className="grid grid-cols-4 gap-6 text-center mb-8">
-            <div className="flex flex-col items-center transform hover:scale-105 transition-transform">
-              <div className="w-20 h-20 bg-gradient-to-br from-blue-600 to-blue-800 rounded-full flex items-center justify-center mb-3 shadow-xl">
-                <i className="fas fa-passport text-white text-3xl"></i>
+          {/* Journey steps preview */}
+          <div className="grid grid-cols-4 gap-4 text-center mb-8">
+            <div className="flex flex-col items-center p-3 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
+              <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mb-2">
+                <i className="fas fa-passport text-white text-lg"></i>
               </div>
-              <span className="font-bold text-blue-800 text-lg">📄 Documents</span>
+              <span className="text-sm font-medium text-blue-800">Documents</span>
             </div>
-            <div className="flex flex-col items-center transform hover:scale-105 transition-transform">
-              <div className="w-20 h-20 bg-gradient-to-br from-red-600 to-red-800 rounded-full flex items-center justify-center mb-3 shadow-xl">
-                <i className="fas fa-graduation-cap text-white text-3xl"></i>
+            <div className="flex flex-col items-center p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors">
+              <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center mb-2">
+                <i className="fas fa-graduation-cap text-white text-lg"></i>
               </div>
-              <span className="font-bold text-red-800 text-lg">🎓 Education</span>
+              <span className="text-sm font-medium text-red-800">Education</span>
             </div>
-            <div className="flex flex-col items-center transform hover:scale-105 transition-transform">
-              <div className="w-20 h-20 bg-gradient-to-br from-blue-600 to-blue-800 rounded-full flex items-center justify-center mb-3 shadow-xl">
-                <i className="fas fa-briefcase text-white text-3xl"></i>
+            <div className="flex flex-col items-center p-3 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
+              <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mb-2">
+                <i className="fas fa-briefcase text-white text-lg"></i>
               </div>
-              <span className="font-bold text-blue-800 text-lg">💼 Career</span>
+              <span className="text-sm font-medium text-blue-800">Career</span>
             </div>
-            <div className="flex flex-col items-center transform hover:scale-105 transition-transform">
-              <div className="w-20 h-20 bg-gradient-to-br from-red-600 to-red-800 rounded-full flex items-center justify-center mb-3 shadow-xl">
-                <i className="fas fa-trophy text-white text-3xl"></i>
+            <div className="flex flex-col items-center p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors">
+              <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center mb-2">
+                <i className="fas fa-trophy text-white text-lg"></i>
               </div>
-              <span className="font-bold text-red-800 text-lg">🏆 Success</span>
+              <span className="text-sm font-medium text-red-800">Success</span>
             </div>
           </div>
           
@@ -104,7 +99,7 @@ export default function Home() {
             className="btn-primary text-xl font-bold px-8 py-4 rounded-lg transform hover:scale-105 transition-all"
             data-testid="button-start-journey"
           >
-            🚀 COMEÇAR SUA JORNADA AMERICANA
+            🚀 COMEÇAR SUA JORNADA
           </button>
         </div>
       </div>

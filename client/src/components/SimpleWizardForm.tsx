@@ -535,11 +535,11 @@ export function SimpleWizardForm() {
       
       <div className="text-center mb-8 relative">
         <div className="eagle-avatar mb-4"></div>
-        <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-800 to-red-600 bg-clip-text text-transparent mb-2">
+        <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-800 to-red-600 bg-clip-text text-transparent mb-2">
           {currentQuestion.title}
         </h2>
-        <p className="text-xl text-blue-700 font-medium">{currentQuestion.subtitle}</p>
-        <div className="absolute top-0 right-0 text-2xl animate-pulse">🇺🇸</div>
+        <p className="text-lg text-blue-700 font-medium">{currentQuestion.subtitle}</p>
+        <div className="absolute top-0 right-0 text-lg opacity-50">🇺🇸</div>
       </div>
 
       {currentQuestion.type === 'single-choice' && (
@@ -564,7 +564,7 @@ export function SimpleWizardForm() {
       {showComment && (
         <div className="comment-bubble max-w-lg mx-auto mb-6" data-testid="comment-bubble">
           <div className="flex items-start">
-            <div className="text-2xl mr-3">🦅</div>
+            <div className="text-lg mr-3">🇺🇸</div>
             <p className="text-white font-medium">{showComment}</p>
           </div>
         </div>
