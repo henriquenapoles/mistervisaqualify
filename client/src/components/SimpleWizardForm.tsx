@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { LeadFormData, Question } from "../types/form";
 import { calculateScore } from "../utils/scoring";
 import { getVisaRecommendations, getScoreMessage } from "../utils/visa-recommendations";
@@ -305,7 +305,12 @@ export function SimpleWizardForm() {
   const [showComment, setShowComment] = useState<string | null>(null);
   const [showInput, setShowInput] = useState<string | null>(null);
   const [inputValue, setInputValue] = useState('');
+  const [eaglePosition, setEaglePosition] = useState({ x: 20, y: 20 });
+  const [showCommentBubble, setShowCommentBubble] = useState(false);
+  const [commentPosition, setCommentPosition] = useState({ x: 200, y: 150 });
   const { toast } = useToast();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const eagleRef = useRef<HTMLDivElement>(null);
 
   const currentQuestion = questions[currentStep];
 
@@ -315,25 +320,49 @@ export function SimpleWizardForm() {
     setShowInput(null);
   };
 
-  const handleOptionSelect = (value: string, hasInput?: boolean) => {
+  const moveEagleToButton = (buttonElement: HTMLElement) => {
+    if (containerRef.current && eagleRef.current) {
+      const containerRect = containerRef.current.getBoundingClientRect();
+      const buttonRect = buttonElement.getBoundingClientRect();
+      
+      const newX = buttonRect.left - containerRect.left - 60;
+      const newY = buttonRect.top - containerRect.top - 60;
+      
+      setEaglePosition({ x: newX, y: newY });
+      setCommentPosition({ x: newX + 140, y: newY + 40 });
+    }
+  };
+
+  const handleOptionSelect = (value: string, hasInput?: boolean, event?: React.MouseEvent) => {
     const newFormData = { ...formData, [currentQuestion.id]: value };
     setFormData(newFormData);
     
-    // Mostrar comentário
+    // Mover águia para o botão clicado
+    if (event?.currentTarget) {
+      moveEagleToButton(event.currentTarget as HTMLElement);
+    }
+    
+    // Mostrar comentário da águia
     const comment = getComment(currentQuestion.id, value);
     setShowComment(comment);
+    setShowCommentBubble(true);
     
     if (hasInput) {
       setShowInput(currentQuestion.id);
     } else {
       setTimeout(() => {
-        if (currentStep < questions.length - 1) {
-          setCurrentStep(currentStep + 1);
-          setShowComment(null);
-        } else {
-          showResultsScreen();
-        }
-      }, 2000);
+        setShowCommentBubble(false);
+        setTimeout(() => {
+          if (currentStep < questions.length - 1) {
+            setCurrentStep(currentStep + 1);
+            setShowComment(null);
+            // Reset eagle position for next question
+            setEaglePosition({ x: 20, y: 20 });
+          } else {
+            showResultsScreen();
+          }
+        }, 300);
+      }, 3000);
     }
   };
 
@@ -516,57 +545,83 @@ export function SimpleWizardForm() {
   }
 
   return (
-    <div className="wizard-container rounded-lg shadow-lg p-8">
-      <SimpleProgress currentStep={currentStep} totalSteps={questions.length} />
+    <div ref={containerRef} className="wizard-container rounded-lg shadow-lg p-8 relative">
+      {/* Government Header */}
+      <div className="gov-header">
+        <div className="gov-seal mx-auto mb-3">
+          🦅
+        </div>
+        <h1 className="text-xl font-bold mb-1">U.S. IMMIGRATION ASSESSMENT</h1>
+        <p className="text-sm opacity-90">Question {currentStep + 1} of {questions.length}</p>
+      </div>
+
+      {/* Animated Eagle Avatar */}
+      <div 
+        ref={eagleRef}
+        className={`eagle-avatar ${showCommentBubble ? 'moving' : ''}`}
+        style={{
+          left: `${eaglePosition.x}px`,
+          top: `${eaglePosition.y}px`
+        }}
+      ></div>
+
+      {/* Comment Bubble from Eagle */}
+      {showComment && (
+        <div 
+          className={`comment-bubble ${showCommentBubble ? 'show' : ''}`}
+          style={{
+            left: `${commentPosition.x}px`,
+            top: `${commentPosition.y}px`
+          }}
+          data-testid="comment-bubble"
+        >
+          <p>{showComment}</p>
+        </div>
+      )}
+
+      <div className="progress-bar">
+        <div 
+          className="progress-fill" 
+          style={{ width: `${((currentStep + 1) / questions.length) * 100}%` }}
+        ></div>
+      </div>
       
       {/* Navigation Bar */}
       {currentStep > 0 && (
         <div className="mb-6">
           <button
             onClick={() => goToStep(currentStep - 1)}
-            className="flex items-center text-blue-600 hover:text-blue-800 transition-colors"
+            className="flex items-center text-gray-600 hover:text-gray-800 transition-colors"
             data-testid="button-back"
           >
             <i className="fas fa-arrow-left mr-2"></i>
-            Voltar
+            Voltar à pergunta anterior
           </button>
         </div>
       )}
       
-      <div className="text-center mb-8 relative">
-        <div className="eagle-avatar mb-4"></div>
-        <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-800 to-red-600 bg-clip-text text-transparent mb-2">
+      <div className="text-center mb-8">
+        <h2 className="text-2xl font-bold text-gray-800 mb-2">
           {currentQuestion.title}
         </h2>
-        <p className="text-lg text-blue-700 font-medium">{currentQuestion.subtitle}</p>
-        <div className="absolute top-0 right-0 text-lg opacity-50">🇺🇸</div>
+        <p className="text-lg text-gray-600">{currentQuestion.subtitle}</p>
       </div>
 
       {currentQuestion.type === 'single-choice' && (
-        <div className="space-y-4 max-w-md mx-auto">
+        <div className="space-y-3 max-w-2xl mx-auto">
           {currentQuestion.options?.map((option) => (
             <button
               key={option.value}
-              onClick={() => handleOptionSelect(option.value, option.hasInput)}
+              onClick={(e) => handleOptionSelect(option.value, option.hasInput, e)}
               className="option-button w-full p-4 text-left border rounded-lg hover:bg-gray-50"
               data-testid={`option-${option.value}`}
             >
               <div className="flex items-center">
-                {option.icon && <i className={`${option.icon} mr-3 text-blue-600`}></i>}
-                <span>{option.label}</span>
+                {option.icon && <i className={`${option.icon} mr-3 text-gray-700`}></i>}
+                <span className="font-medium">{option.label}</span>
               </div>
             </button>
           ))}
-        </div>
-      )}
-
-      {/* Show Comment with Patriotic Bubble */}
-      {showComment && (
-        <div className="comment-bubble max-w-lg mx-auto mb-6" data-testid="comment-bubble">
-          <div className="flex items-start">
-            <div className="text-lg mr-3">🇺🇸</div>
-            <p className="text-white font-medium">{showComment}</p>
-          </div>
         </div>
       )}
 
