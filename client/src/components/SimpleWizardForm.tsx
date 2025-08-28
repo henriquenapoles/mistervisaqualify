@@ -4,6 +4,7 @@ import { calculateScore } from "../utils/scoring";
 import { getVisaRecommendations, getScoreMessage, generatePersonalizedReport } from "../utils/visa-recommendations";
 import { useToast } from "@/hooks/use-toast";
 import { SimpleProgress } from "./ui/simple-progress";
+import flagGif from "@assets/flag-america-usa-35_1756390382970.gif";
 
 // Comentários interativos para cada resposta
 const getComment = (questionId: string, value: string): string => {
@@ -379,9 +380,23 @@ export function SimpleWizardForm() {
   };
 
   const nextQuestion = () => {
+    // Don't advance if there are sub-questions or input fields open
+    if (showSubQuestions || showInput) {
+      return;
+    }
+    
+    // Auto-submit at capital question (block 2)
+    if (currentQuestion.id === 'capital' && !midFormSubmitted) {
+      submitMidFormData(formData);
+    }
+    
+    // Clear field errors when moving to next step
+    setFieldErrors({});
+    
     if (currentStep < questions.length - 1) {
       setCurrentStep(currentStep + 1);
       setShowSubQuestions(null);
+      setShowInput(null);
     } else {
       showResultsScreen();
     }
@@ -391,6 +406,8 @@ export function SimpleWizardForm() {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
       setShowSubQuestions(null);
+      setShowInput(null);
+      setFieldErrors({});
     }
   };
 
@@ -503,6 +520,10 @@ export function SimpleWizardForm() {
       setSavedDetails(newSavedDetails);
     }
     
+    // Close any open sub-questions or inputs when selecting a new option
+    setShowSubQuestions(null);
+    setShowInput(null);
+    
     // Update score immediately
     const newScore = calculateCurrentScore();
     setCurrentScore(newScore);
@@ -569,34 +590,38 @@ export function SimpleWizardForm() {
     return cleanPhone.length === 13;
   };
 
+  const validateGraduationYear = (year: string): boolean => {
+    const currentYear = new Date().getFullYear();
+    const numYear = parseInt(year);
+    return numYear >= 1950 && numYear <= currentYear;
+  };
+
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
     const formDataObj = new FormData(form);
     const newData: Record<string, any> = {};
+    const errors: Record<string, string> = {};
     let valid = true;
     
     currentQuestion.fields?.forEach(field => {
       let value = formDataObj.get(field.id) as string;
       
+      // Clear previous error
+      delete errors[field.id];
+      
       if (field.required && !value) {
         valid = false;
-        toast({
-          variant: "destructive",
-          title: "Campo obrigatório",
-          description: `Por favor, preencha o campo ${field.label}`,
-        });
+        errors[field.id] = `Campo obrigatório`;
         return;
       }
       
       // Validate email
       if (field.id === 'email' && value && !validateEmail(value)) {
         valid = false;
-        toast({
-          variant: "destructive",
-          title: "E-mail inválido",
-          description: "Por favor, digite um e-mail válido",
-        });
+        errors[field.id] = "E-mail inválido";
         return;
       }
       
@@ -605,20 +630,25 @@ export function SimpleWizardForm() {
         const cleanPhone = value.replace(/\D/g, '');
         if (!validatePhone(value)) {
           valid = false;
-          toast({
-            variant: "destructive",
-            title: "Telefone inválido",
-            description: "Telefone deve ter 13 dígitos (ex: 5581982917181)",
-          });
+          errors[field.id] = "Telefone deve ter 13 dígitos (ex: 5581982917181)";
           return;
         }
         value = cleanPhone; // Store clean phone number
+      }
+      
+      // Validate graduation year
+      if (field.id === 'graduationYear' && value && !validateGraduationYear(value)) {
+        valid = false;
+        errors[field.id] = "Ano de formação inválido (1950-2025)";
+        return;
       }
       
       if (value) {
         newData[field.id] = field.type === 'number' ? parseInt(value) : value;
       }
     });
+
+    setFieldErrors(errors);
 
     if (valid) {
       const updatedFormData = { ...formData, ...newData };
@@ -648,14 +678,19 @@ export function SimpleWizardForm() {
       const leadData = {
         formId,
         formType: 'partial',
-        ...currentFormData,
-        ...subAnswers,
-        partialScore,
+        fullName: currentFormData.fullName || 'Dados parciais',
+        email: currentFormData.email || 'partial@temp.com',
+        phone: currentFormData.phone || '0000000000000',
+        objective: currentFormData.objective,
+        capital: currentFormData.capital,
+        maritalStatus: currentFormData.maritalStatus || 'solteiro',
+        totalScore: partialScore,
         submittedAt: new Date().toISOString(),
-        step: 'block-2-capital'
+        step: 'block-2-capital',
+        ...currentFormData
       };
 
-      await fetch('/api/leads', {
+      const response = await fetch('/api/leads', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -663,9 +698,14 @@ export function SimpleWizardForm() {
         body: JSON.stringify(leadData),
       });
       
-      setMidFormSubmitted(true);
+      if (response.ok) {
+        console.log('Mid-form data submitted successfully');
+        setMidFormSubmitted(true);
+      } else {
+        console.error('Mid-form submission failed:', response.statusText);
+      }
     } catch (error) {
-      console.error('Mid-form submission failed:', error);
+      console.error('Mid-form submission error:', error);
     }
   };
 
@@ -794,7 +834,11 @@ export function SimpleWizardForm() {
       </div>
 
       {/* Brand Header */}
-      <div className="brand-header">
+      <div className="brand-header relative">
+        {/* USA Flag */}
+        <div className="flag-container">
+          <img src={flagGif} alt="USA Flag" className="flag-gif" />
+        </div>
         <h1>Mister Visa®</h1>
         <p>Pergunta {currentStep + 1} de {questions.length}</p>
       </div>
@@ -1027,7 +1071,7 @@ export function SimpleWizardForm() {
       )}
 
       {currentQuestion.type === 'form-fields' && (
-        <div className="max-w-lg mx-auto space-y-4">
+        <form onSubmit={handleFormSubmit} className="max-w-lg mx-auto space-y-4">
           {currentQuestion.fields?.map((field) => (
             <div key={field.id}>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -1035,15 +1079,38 @@ export function SimpleWizardForm() {
               </label>
               <input
                 type={field.type}
+                name={field.id}
                 value={formData[field.id] || ''}
-                onChange={(e) => setFormData({ ...formData, [field.id]: e.target.value })}
+                onChange={(e) => {
+                  setFormData({ ...formData, [field.id]: e.target.value });
+                  // Clear error when user starts typing
+                  if (fieldErrors[field.id]) {
+                    const newErrors = { ...fieldErrors };
+                    delete newErrors[field.id];
+                    setFieldErrors(newErrors);
+                  }
+                }}
                 required={field.required}
-                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent ${
+                  fieldErrors[field.id] ? 'border-red-500 bg-red-50' : ''
+                }`}
                 data-testid={`input-${field.id}`}
               />
+              {fieldErrors[field.id] && (
+                <p className="text-red-500 text-sm mt-1 flex items-center">
+                  <i className="fas fa-exclamation-triangle mr-1"></i>
+                  {fieldErrors[field.id]}
+                </p>
+              )}
             </div>
           ))}
-        </div>
+          <button
+            type="submit"
+            className="btn-primary w-full px-6 py-3 rounded-lg mt-6"
+          >
+            Avançar
+          </button>
+        </form>
       )}
       
       {/* Navigation Buttons */}

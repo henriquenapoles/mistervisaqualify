@@ -52,10 +52,7 @@ export default function Home() {
       {/* Animated Stars */}
       {generateStars()}
       
-      {/* USA Flag */}
-      <div className="flag-container">
-        <img src={flagGif} alt="USA Flag" className="flag-gif" />
-      </div>
+
       <div className="wizard-container rounded-lg shadow-lg p-8" data-testid="welcome-screen">
         
         {/* Brand Header */}

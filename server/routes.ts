@@ -8,8 +8,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Submit lead data
   app.post("/api/leads", async (req, res) => {
     try {
-      const leadData = insertLeadSchema.parse(req.body);
-      const lead = await storage.createLead(leadData);
+      // Create a more flexible schema for validation
+      const flexibleLeadData = {
+        fullName: req.body.fullName || "",
+        email: req.body.email || "",
+        phone: req.body.phone || "",
+        birthDate: req.body.birthDate,
+        country: req.body.country || "brasil",
+        objective: req.body.objective,
+        capital: req.body.capital,
+        maritalStatus: req.body.maritalStatus || "solteiro",
+        citizenship: req.body.citizenship || "nao",
+        education: req.body.education,
+        graduationYear: req.body.graduationYear,
+        institution: req.body.institution,
+        fieldOfStudy: req.body.fieldOfStudy,
+        experience: req.body.experience,
+        currentPosition: req.body.currentPosition,
+        hasLeadership: req.body.hasLeadership || "nao",
+        hasRecognition: req.body.hasRecognition || "nao",
+        familyInUS: req.body.familyInUS,
+        jobOffer: req.body.jobOffer,
+        companyTransfer: req.body.companyTransfer,
+        howFoundUs: req.body.howFoundUs,
+        totalScore: req.body.score || req.body.totalScore || req.body.partialScore || 0,
+        formData: req.body,
+        visaRecommendations: req.body.visaRecommendations || []
+      };
+      
+      const lead = await storage.createLead(flexibleLeadData);
       
       // Submit to webhook
       try {
