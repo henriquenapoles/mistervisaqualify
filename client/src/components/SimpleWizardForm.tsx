@@ -688,24 +688,25 @@ export function SimpleWizardForm() {
   };
 
   const submitMidFormData = async (currentFormData: LeadFormData) => {
-    if (midFormSubmitted) return;
-    
     try {
       const partialScore = calculateScore(currentFormData);
+      
+      // Filter out empty/undefined values to send only filled data
+      const filteredFormData: Record<string, any> = {};
+      Object.entries(currentFormData).forEach(([key, value]) => {
+        if (value !== undefined && value !== null && value !== '' && value !== 0) {
+          filteredFormData[key] = value;
+        }
+      });
       
       const leadData = {
         formId,
         formType: 'partial',
-        fullName: currentFormData.fullName || 'Dados parciais',
-        email: currentFormData.email || 'partial@temp.com',
-        phone: currentFormData.phone || '0000000000000',
-        objective: currentFormData.objective,
-        capital: currentFormData.capital,
-        maritalStatus: currentFormData.maritalStatus || 'solteiro',
         totalScore: partialScore,
         submittedAt: new Date().toISOString(),
         step: `block-${currentStep + 1}-${currentQuestion.id}`,
-        ...currentFormData
+        currentQuestionId: currentQuestion.id,
+        ...filteredFormData
       };
 
       const response = await fetch('/api/leads', {
