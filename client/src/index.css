@@ -143,11 +143,10 @@
   /* Flag container - positioned in brand header area */
   .flag-container {
     position: absolute;
-    left: -140px;
-    top: 50%;
-    transform: translateY(-50%);
+    left: -160px;
+    top: 20px;
     z-index: 10;
-    width: 100px;
+    width: 80px;
     height: auto;
     pointer-events: none;
   }

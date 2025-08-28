@@ -188,7 +188,7 @@ const questions: Question[] = [
     type: 'form-fields',
     icon: 'fas fa-school',
     fields: [
-      { id: 'graduationYear', label: 'Ano de formação', type: 'number', required: true },
+      { id: 'graduationYear', label: 'Ano de formação', type: 'number', required: true, min: 1950, max: 2025 },
       { id: 'institution', label: 'Instituição de Ensino', type: 'text', required: true },
       { id: 'fieldOfStudy', label: 'Área de Formação', type: 'text', required: true }
     ]
@@ -385,8 +385,8 @@ export function SimpleWizardForm() {
       return;
     }
     
-    // Auto-submit at capital question (block 2)
-    if (currentQuestion.id === 'capital' && !midFormSubmitted) {
+    // Auto-submit at personal data question (block 3)
+    if (currentQuestion.id === 'personalInfo' && !midFormSubmitted) {
       submitMidFormData(formData);
     }
     
@@ -596,6 +596,18 @@ export function SimpleWizardForm() {
     return numYear >= 1950 && numYear <= currentYear;
   };
 
+  const validateBirthDate = (dateStr: string): boolean => {
+    const birthDate = new Date(dateStr);
+    const today = new Date();
+    const age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      return age - 1 >= 16 && age - 1 <= 100;
+    }
+    return age >= 16 && age <= 100;
+  };
+
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
   const handleFormSubmit = (e: React.FormEvent) => {
@@ -642,6 +654,13 @@ export function SimpleWizardForm() {
         errors[field.id] = "Ano de formação inválido (1950-2025)";
         return;
       }
+
+      // Validate birth date
+      if (field.id === 'birthDate' && value && !validateBirthDate(value)) {
+        valid = false;
+        errors[field.id] = "Data de nascimento inválida (idade entre 16-100 anos)";
+        return;
+      }
       
       if (value) {
         newData[field.id] = field.type === 'number' ? parseInt(value) : value;
@@ -654,8 +673,8 @@ export function SimpleWizardForm() {
       const updatedFormData = { ...formData, ...newData };
       setFormData(updatedFormData);
       
-      // Auto-submit at block 2 (capital question)
-      if (currentQuestion.id === 'capital' && !midFormSubmitted) {
+      // Auto-submit at block 3 (personal info question)
+      if (currentQuestion.id === 'personalInfo' && !midFormSubmitted) {
         submitMidFormData(updatedFormData);
       }
       
@@ -686,7 +705,7 @@ export function SimpleWizardForm() {
         maritalStatus: currentFormData.maritalStatus || 'solteiro',
         totalScore: partialScore,
         submittedAt: new Date().toISOString(),
-        step: 'block-2-capital',
+        step: 'block-3-personal-info',
         ...currentFormData
       };
 
@@ -1081,6 +1100,8 @@ export function SimpleWizardForm() {
                 type={field.type}
                 name={field.id}
                 value={formData[field.id] || ''}
+                min={field.min}
+                max={field.max}
                 onChange={(e) => {
                   setFormData({ ...formData, [field.id]: e.target.value });
                   // Clear error when user starts typing
