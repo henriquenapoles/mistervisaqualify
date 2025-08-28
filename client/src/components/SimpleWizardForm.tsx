@@ -1187,36 +1187,34 @@ export function SimpleWizardForm() {
         </form>
       )}
       
-      {/* Navigation Buttons - only show if not form-fields type */}
-      {currentQuestion.type !== 'form-fields' && (
-        <div className="navigation-buttons">
-          <button
-            onClick={previousQuestion}
-            disabled={currentStep === 0}
-            className="btn-nav patriotic"
-            data-testid="button-previous"
-          >
-            <i className="fas fa-arrow-left"></i>
-            Voltar
-          </button>
-          
-          <div className="text-center">
-            <span className="text-sm text-gray-600 font-medium">
-              {currentStep + 1} de {questions.length}
-            </span>
-          </div>
-          
-          <button
-            onClick={nextQuestion}
-            disabled={!isCurrentQuestionAnswered()}
-            className="btn-nav patriotic"
-            data-testid="button-next"
-          >
-            Avançar
-            <i className="fas fa-arrow-right"></i>
-          </button>
+      {/* Navigation Buttons - show for ALL question types */}
+      <div className="navigation-buttons">
+        <button
+          onClick={previousQuestion}
+          disabled={currentStep === 0}
+          className="btn-nav patriotic"
+          data-testid="button-previous"
+        >
+          <i className="fas fa-arrow-left"></i>
+          Voltar
+        </button>
+        
+        <div className="text-center">
+          <span className="text-sm text-gray-600 font-medium">
+            {currentStep + 1} de {questions.length}
+          </span>
         </div>
-      )}
+        
+        <button
+          onClick={nextQuestion}
+          disabled={!isCurrentQuestionAnswered()}
+          className="btn-nav patriotic"
+          data-testid="button-next"
+        >
+          Avançar
+          <i className="fas fa-arrow-right"></i>
+        </button>
+      </div>
 
       {/* Explosive Comment Popup */}
       {activeComment && (
