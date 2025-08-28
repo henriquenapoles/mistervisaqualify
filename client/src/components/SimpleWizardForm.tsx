@@ -385,10 +385,8 @@ export function SimpleWizardForm() {
       return;
     }
     
-    // Auto-submit data every time user clicks "Avançar" (from any step)
-    if (!midFormSubmitted) {
-      submitMidFormData(formData);
-    }
+    // Auto-submit data EVERY time user clicks "Avançar" (always send current data)
+    submitMidFormData(formData);
     
     // Clear field errors when moving to next step
     setFieldErrors({});
@@ -677,9 +675,7 @@ export function SimpleWizardForm() {
       setFormData(updatedFormData);
       
       // Auto-submit data when form is submitted (any form step)
-      if (!midFormSubmitted) {
-        submitMidFormData(updatedFormData);
-      }
+      submitMidFormData(updatedFormData);
       
       setTimeout(() => {
         if (currentStep < questions.length - 1) {
@@ -722,7 +718,6 @@ export function SimpleWizardForm() {
       
       if (response.ok) {
         console.log('Mid-form data submitted successfully');
-        setMidFormSubmitted(true);
       } else {
         console.error('Mid-form submission failed:', response.statusText);
       }
