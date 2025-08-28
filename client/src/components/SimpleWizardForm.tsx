@@ -385,8 +385,8 @@ export function SimpleWizardForm() {
       return;
     }
     
-    // Auto-submit at personal data question (block 3)
-    if (currentQuestion.id === 'personalInfo' && !midFormSubmitted) {
+    // Auto-submit data every time user clicks "Avançar" (from any step)
+    if (!midFormSubmitted) {
       submitMidFormData(formData);
     }
     
@@ -676,8 +676,8 @@ export function SimpleWizardForm() {
       const updatedFormData = { ...formData, ...newData };
       setFormData(updatedFormData);
       
-      // Auto-submit at block 3 (personal info question)
-      if (currentQuestion.id === 'personalInfo' && !midFormSubmitted) {
+      // Auto-submit data when form is submitted (any form step)
+      if (!midFormSubmitted) {
         submitMidFormData(updatedFormData);
       }
       
@@ -708,7 +708,7 @@ export function SimpleWizardForm() {
         maritalStatus: currentFormData.maritalStatus || 'solteiro',
         totalScore: partialScore,
         submittedAt: new Date().toISOString(),
-        step: 'block-3-personal-info',
+        step: `block-${currentStep + 1}-${currentQuestion.id}`,
         ...currentFormData
       };
 
@@ -1178,12 +1178,7 @@ export function SimpleWizardForm() {
               )}
             </div>
           ))}
-          <button
-            type="submit"
-            className="btn-primary w-full px-6 py-3 rounded-lg mt-6"
-          >
-            Avançar
-          </button>
+
         </form>
       )}
       
