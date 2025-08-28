@@ -140,10 +140,10 @@
     50% { opacity: 1; }
   }
 
-  /* Flag container - positioned in brand header area */
+  /* Flag container - positioned in main header */
   .flag-container {
     position: absolute;
-    left: -160px;
+    left: 20px;
     top: 20px;
     z-index: 10;
     width: 80px;

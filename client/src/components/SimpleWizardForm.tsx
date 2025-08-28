@@ -852,12 +852,13 @@ export function SimpleWizardForm() {
         <span className="score-number">{currentScore}</span>
       </div>
 
+      {/* USA Flag in header */}
+      <div className="flag-container">
+        <img src={flagGif} alt="USA Flag" className="flag-gif" />
+      </div>
+
       {/* Brand Header */}
-      <div className="brand-header relative">
-        {/* USA Flag */}
-        <div className="flag-container">
-          <img src={flagGif} alt="USA Flag" className="flag-gif" />
-        </div>
+      <div className="brand-header">
         <h1>Mister Visa®</h1>
         <p>Pergunta {currentStep + 1} de {questions.length}</p>
       </div>
@@ -1111,6 +1112,27 @@ export function SimpleWizardForm() {
                     setFieldErrors(newErrors);
                   }
                 }}
+                onBlur={(e) => {
+                  // Validate field when user leaves it
+                  const value = e.target.value;
+                  const errors: Record<string, string> = { ...fieldErrors };
+                  
+                  if (field.required && !value) {
+                    errors[field.id] = 'Campo obrigatório';
+                  } else if (field.id === 'email' && value && !validateEmail(value)) {
+                    errors[field.id] = 'E-mail inválido';
+                  } else if (field.id === 'phone' && value && !validatePhone(value)) {
+                    errors[field.id] = 'Telefone deve ter 13 dígitos (ex: 5581982917181)';
+                  } else if (field.id === 'graduationYear' && value && !validateGraduationYear(value)) {
+                    errors[field.id] = 'Ano de formação inválido (1950-2025)';
+                  } else if (field.id === 'birthDate' && value && !validateBirthDate(value)) {
+                    errors[field.id] = 'Data de nascimento inválida (idade entre 16-100 anos)';
+                  } else {
+                    delete errors[field.id];
+                  }
+                  
+                  setFieldErrors(errors);
+                }}
                 required={field.required}
                 className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent ${
                   fieldErrors[field.id] ? 'border-red-500 bg-red-50' : ''
@@ -1134,34 +1156,36 @@ export function SimpleWizardForm() {
         </form>
       )}
       
-      {/* Navigation Buttons */}
-      <div className="navigation-buttons">
-        <button
-          onClick={previousQuestion}
-          disabled={currentStep === 0}
-          className="btn-nav patriotic"
-          data-testid="button-previous"
-        >
-          <i className="fas fa-arrow-left"></i>
-          Voltar
-        </button>
-        
-        <div className="text-center">
-          <span className="text-sm text-gray-600 font-medium">
-            {currentStep + 1} de {questions.length}
-          </span>
+      {/* Navigation Buttons - only show if not form-fields type */}
+      {currentQuestion.type !== 'form-fields' && (
+        <div className="navigation-buttons">
+          <button
+            onClick={previousQuestion}
+            disabled={currentStep === 0}
+            className="btn-nav patriotic"
+            data-testid="button-previous"
+          >
+            <i className="fas fa-arrow-left"></i>
+            Voltar
+          </button>
+          
+          <div className="text-center">
+            <span className="text-sm text-gray-600 font-medium">
+              {currentStep + 1} de {questions.length}
+            </span>
+          </div>
+          
+          <button
+            onClick={nextQuestion}
+            disabled={!isCurrentQuestionAnswered()}
+            className="btn-nav patriotic"
+            data-testid="button-next"
+          >
+            Avançar
+            <i className="fas fa-arrow-right"></i>
+          </button>
         </div>
-        
-        <button
-          onClick={nextQuestion}
-          disabled={!isCurrentQuestionAnswered()}
-          className="btn-nav patriotic"
-          data-testid="button-next"
-        >
-          Avançar
-          <i className="fas fa-arrow-right"></i>
-        </button>
-      </div>
+      )}
 
       {/* Explosive Comment Popup */}
       {activeComment && (
