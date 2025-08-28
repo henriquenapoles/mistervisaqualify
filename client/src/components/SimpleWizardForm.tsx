@@ -416,7 +416,10 @@ export function SimpleWizardForm() {
     const x = rect.left + rect.width / 2;
     const y = rect.top;
     
-    setActiveComment({ text: comment, x, y });
+    // Limit comment to 3 lines (approximately 150 characters)
+    const limitedComment = comment.length > 150 ? comment.substring(0, 147) + '...' : comment;
+    
+    setActiveComment({ text: limitedComment, x, y });
     
     // Remove comment after balloon animation (5 seconds)
     setTimeout(() => {
@@ -728,10 +731,41 @@ export function SimpleWizardForm() {
     }
   };
 
-  const showResultsScreen = () => {
+  const showResultsScreen = async () => {
     const score = calculateScore(formData);
     setTotalScore(score);
     setShowResults(true);
+    
+    // Auto-submit final data when reaching results screen
+    try {
+      const visaRecommendations = getVisaRecommendations(score);
+      const leadData = {
+        formId,
+        formType: 'complete',
+        ...formData,
+        ...subAnswers,
+        score,
+        visaRecommendations: visaRecommendations.map(v => v.name),
+        submittedAt: new Date().toISOString(),
+        step: 'final-report'
+      };
+
+      const response = await fetch('/api/leads', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(leadData),
+      });
+
+      if (response.ok) {
+        console.log('Final form data submitted successfully');
+      } else {
+        console.error('Final form submission failed:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Final form submission error:', error);
+    }
   };
 
   const submitLead = async () => {
@@ -852,10 +886,7 @@ export function SimpleWizardForm() {
         <span className="score-number">{currentScore}</span>
       </div>
 
-      {/* USA Flag in header */}
-      <div className="flag-container">
-        <img src={flagGif} alt="USA Flag" className="flag-gif" />
-      </div>
+
 
       {/* Brand Header */}
       <div className="brand-header">
