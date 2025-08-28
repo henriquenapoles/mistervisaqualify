@@ -299,12 +299,19 @@ const questions: Question[] = [
   }
 ];
 
+// Generate random form ID
+const generateFormId = () => {
+  return 'form_' + Math.random().toString(36).substring(2) + Date.now().toString(36);
+};
+
 export function SimpleWizardForm() {
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<LeadFormData>({});
   const [showResults, setShowResults] = useState(false);
   const [totalScore, setTotalScore] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formId] = useState(generateFormId()); // Random form ID
+  const [midFormSubmitted, setMidFormSubmitted] = useState(false);
 
   const [showInput, setShowInput] = useState<string | null>(null);
   const [inputValue, setInputValue] = useState('');
@@ -489,6 +496,13 @@ export function SimpleWizardForm() {
     const newFormData = { ...formData, [currentQuestion.id]: value };
     setFormData(newFormData);
     
+    // Clear saved details for this question when selecting a new option
+    if (savedDetails[currentQuestion.id]) {
+      const newSavedDetails = { ...savedDetails };
+      delete newSavedDetails[currentQuestion.id];
+      setSavedDetails(newSavedDetails);
+    }
+    
     // Update score immediately
     const newScore = calculateCurrentScore();
     setCurrentScore(newScore);
@@ -543,6 +557,18 @@ export function SimpleWizardForm() {
     setShowSubQuestions(null);
   };
 
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validatePhone = (phone: string): boolean => {
+    // Remove all non-digit characters
+    const cleanPhone = phone.replace(/\D/g, '');
+    // Must have exactly 13 digits (5581982917181)
+    return cleanPhone.length === 13;
+  };
+
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
@@ -551,7 +577,8 @@ export function SimpleWizardForm() {
     let valid = true;
     
     currentQuestion.fields?.forEach(field => {
-      const value = formDataObj.get(field.id) as string;
+      let value = formDataObj.get(field.id) as string;
+      
       if (field.required && !value) {
         valid = false;
         toast({
@@ -559,13 +586,48 @@ export function SimpleWizardForm() {
           title: "Campo obrigatório",
           description: `Por favor, preencha o campo ${field.label}`,
         });
-      } else {
+        return;
+      }
+      
+      // Validate email
+      if (field.id === 'email' && value && !validateEmail(value)) {
+        valid = false;
+        toast({
+          variant: "destructive",
+          title: "E-mail inválido",
+          description: "Por favor, digite um e-mail válido",
+        });
+        return;
+      }
+      
+      // Validate and format phone
+      if (field.id === 'phone' && value) {
+        const cleanPhone = value.replace(/\D/g, '');
+        if (!validatePhone(value)) {
+          valid = false;
+          toast({
+            variant: "destructive",
+            title: "Telefone inválido",
+            description: "Telefone deve ter 13 dígitos (ex: 5581982917181)",
+          });
+          return;
+        }
+        value = cleanPhone; // Store clean phone number
+      }
+      
+      if (value) {
         newData[field.id] = field.type === 'number' ? parseInt(value) : value;
       }
     });
 
     if (valid) {
-      setFormData({ ...formData, ...newData });
+      const updatedFormData = { ...formData, ...newData };
+      setFormData(updatedFormData);
+      
+      // Auto-submit at block 2 (capital question)
+      if (currentQuestion.id === 'capital' && !midFormSubmitted) {
+        submitMidFormData(updatedFormData);
+      }
       
       setTimeout(() => {
         if (currentStep < questions.length - 1) {
@@ -574,6 +636,36 @@ export function SimpleWizardForm() {
           showResultsScreen();
         }
       }, 500);
+    }
+  };
+
+  const submitMidFormData = async (currentFormData: LeadFormData) => {
+    if (midFormSubmitted) return;
+    
+    try {
+      const partialScore = calculateScore(currentFormData);
+      
+      const leadData = {
+        formId,
+        formType: 'partial',
+        ...currentFormData,
+        ...subAnswers,
+        partialScore,
+        submittedAt: new Date().toISOString(),
+        step: 'block-2-capital'
+      };
+
+      await fetch('/api/leads', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(leadData),
+      });
+      
+      setMidFormSubmitted(true);
+    } catch (error) {
+      console.error('Mid-form submission failed:', error);
     }
   };
 
@@ -591,30 +683,13 @@ export function SimpleWizardForm() {
       const visaRecommendations = getVisaRecommendations(score);
       
       const leadData = {
-        fullName: formData.fullName || '',
-        email: formData.email || '',
-        phone: formData.phone || '',
-        birthDate: formData.birthDate,
-        country: 'brasil',
-        objective: formData.objective,
-        capital: formData.capital,
-        maritalStatus: 'solteiro',
-        citizenship: 'nao',
-        education: formData.education,
-        graduationYear: null,
-        institution: null,
-        fieldOfStudy: null,
-        experience: formData.experience,
-        currentPosition: null,
-        hasLeadership: 'nao',
-        hasRecognition: 'nao',
-        familyInUS: formData.familyInUS,
-        jobOffer: formData.jobOffer,
-        companyTransfer: formData.companyTransfer,
-        howFoundUs: formData.howFoundUs,
-        totalScore: score,
-        formData: formData,
-        visaRecommendations: visaRecommendations
+        formId,
+        formType: 'complete',
+        ...formData,
+        ...subAnswers,
+        score,
+        visaRecommendations: visaRecommendations.map(v => v.name),
+        submittedAt: new Date().toISOString()
       };
 
       const response = await fetch('/api/leads', {

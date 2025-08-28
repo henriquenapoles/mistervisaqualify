@@ -89,11 +89,74 @@
 
   body {
     font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
     margin: 0;
     padding: 0;
     color: #333;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* Animated Stars */
+  .star {
+    position: fixed;
+    width: 3px;
+    height: 3px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0;
+    animation: twinkle 3s infinite;
+    z-index: 1;
+  }
+
+  .star:nth-child(odd) {
+    animation-delay: 0s;
+    animation-duration: 2s;
+  }
+
+  .star:nth-child(even) {
+    animation-delay: 1s;
+    animation-duration: 2.5s;
+  }
+
+  .star:nth-child(3n) {
+    animation-delay: 1.5s;
+    animation-duration: 3s;
+  }
+
+  .star:nth-child(4n) {
+    animation-delay: 0.5s;
+    animation-duration: 2.2s;
+  }
+
+  .star:nth-child(5n) {
+    animation-delay: 2s;
+    animation-duration: 2.8s;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+  }
+
+  /* Flag container */
+  .flag-container {
+    position: fixed;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 120px;
+    height: auto;
+    pointer-events: none;
+  }
+
+  .flag-gif {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   }
 
   .wizard-container {

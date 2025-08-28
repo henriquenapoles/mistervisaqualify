@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { SimpleWizardForm } from "@/components/SimpleWizardForm";
+import flagGif from "@assets/flag-america-usa-35_1756390382970.gif";
 
 export default function Home() {
   const [showForm, setShowForm] = useState(false);
@@ -8,16 +9,53 @@ export default function Home() {
     setShowForm(true);
   };
 
+  // Generate random stars
+  const generateStars = () => {
+    const stars = [];
+    for (let i = 0; i < 15; i++) {
+      stars.push(
+        <div 
+          key={i}
+          className="star"
+          style={{
+            top: `${Math.random() * 100}%`,
+            left: `${Math.random() * 100}%`,
+            animationDelay: `${Math.random() * 3}s`,
+            animationDuration: `${2 + Math.random() * 2}s`
+          }}
+        />
+      );
+    }
+    return stars;
+  };
+
   if (showForm) {
     return (
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
-        <SimpleWizardForm />
+      <div className="container mx-auto px-4 py-8 max-w-4xl relative">
+        {/* Animated Stars */}
+        {generateStars()}
+        
+        {/* USA Flag */}
+        <div className="flag-container">
+          <img src={flagGif} alt="USA Flag" className="flag-gif" />
+        </div>
+        
+        <div className="relative z-20">
+          <SimpleWizardForm />
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl">
+    <div className="container mx-auto px-4 py-8 max-w-4xl relative">
+      {/* Animated Stars */}
+      {generateStars()}
+      
+      {/* USA Flag */}
+      <div className="flag-container">
+        <img src={flagGif} alt="USA Flag" className="flag-gif" />
+      </div>
       <div className="wizard-container rounded-lg shadow-lg p-8" data-testid="welcome-screen">
         
         {/* Brand Header */}
