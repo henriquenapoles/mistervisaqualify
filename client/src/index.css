@@ -204,21 +204,25 @@
 
   .brand-header-content {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     width: 100%;
+    position: relative;
   }
 
   .mister-visa-logo-left {
     height: 40px;
     width: auto;
+    position: absolute;
+    left: 0;
   }
 
   .question-counter {
     margin: 0;
     font-size: 0.8rem;
-    font-weight: 500;
-    opacity: 0.8;
+    font-weight: 600;
+    opacity: 0.9;
+    text-align: center;
   }
 
   .brand-header::before {
