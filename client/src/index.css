@@ -143,10 +143,41 @@
 
 
   .mister-visa-logo {
-    height: 50px;
+    height: 65px;
     width: auto;
     margin: 0 auto 5px auto;
     display: block;
+  }
+
+  .mister-visa-logo-home {
+    height: 80px;
+    width: auto;
+    margin: 0 auto 10px auto;
+    display: block;
+  }
+
+  .brand-header-home {
+    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 50%, #93c5fd 100%);
+    color: #1e40af;
+    padding: 1.5rem;
+    text-align: center;
+    border-radius: 20px 20px 0 0;
+    margin: 0 0 1rem 0;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .brand-header-home p {
+    position: relative;
+    z-index: 2;
+    margin: 0;
+    opacity: 0.8;
+    font-size: 1rem;
+    font-weight: 500;
   }
 
   .wizard-container {

@@ -51,8 +51,8 @@ export default function Home() {
       <div className="wizard-container rounded-lg shadow-lg p-6" data-testid="welcome-screen">
         
         {/* Brand Header */}
-        <div className="brand-header">
-          <img src={logoMisterVisa} alt="Mister Visa" className="mister-visa-logo" />
+        <div className="brand-header-home">
+          <img src={logoMisterVisa} alt="Mister Visa" className="mister-visa-logo-home" />
           <p>Consultoria Especializada em Vistos e Imigração</p>
         </div>
         
