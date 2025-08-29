@@ -163,7 +163,7 @@ const questions: Question[] = [
       { value: 'youtube', label: 'YouTube', icon: 'fab fa-youtube', score: 0 },
       { value: 'whatsapp', label: 'WhatsApp', icon: 'fab fa-whatsapp', score: 0 },
       { value: 'site', label: 'Site', icon: 'fas fa-globe', score: 0 },
-      { value: 'indicacao', label: 'Indicação', icon: 'fas fa-handshake', score: 0 },
+      { value: 'indicacao', label: 'Indicação', icon: 'fas fa-handshake', score: 0, hasInput: true, inputPlaceholder: 'Quem indicou você? (Nome da pessoa ou empresa)' },
       { value: 'evento', label: 'Evento', icon: 'fas fa-calendar', score: 0 },
       { value: 'outro', label: 'Outro', icon: 'fas fa-ellipsis-h', score: 0, hasInput: true }
     ]
