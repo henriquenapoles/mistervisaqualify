@@ -264,7 +264,7 @@ const questions: Question[] = [
   },
   {
     id: 'hasRecognition',
-    title: '🏆 Bloco 8 - Reconhecimento',
+    title: '🏆 Bloco 10 - Reconhecimento',
     subtitle: 'Já teve reconhecimento nacional/internacional (prêmios, publicações, etc.)?',
     type: 'single-choice',
     icon: 'fas fa-trophy',
@@ -275,46 +275,46 @@ const questions: Question[] = [
   },
   {
     id: 'hasLeadership',
-    title: '👔 Bloco 9 - Liderança',
+    title: '👔 Bloco 11 - Liderança',
     subtitle: 'Já exerceu cargos de liderança/gerência?',
     type: 'single-choice',
-    icon: 'fas fa-users',
+    icon: 'fas fa-crown',
     options: [
       { value: 'sim', label: 'Sim', score: 5, hasInput: true },
       { value: 'nao', label: 'Não', score: 0 }
     ]
   },
   {
-    id: 'usConnections',
-    title: '🇺🇸 Bloco 7 - Conexões nos EUA',
-    subtitle: 'Avalie suas conexões com os Estados Unidos',
-    type: 'combined-questions',
-    icon: 'fas fa-flag-usa',
-    subQuestions: [
-      {
-        id: 'familyInUS',
-        subtitle: 'Tem familiares diretos nos EUA (pais, irmãos, filhos) com Green Card ou cidadania?',
-        options: [
-          { value: 'sim', label: 'Sim, tenho família nos EUA', score: 10 },
-          { value: 'nao', label: 'Não tenho família nos EUA', score: 0 }
-        ]
-      },
-      {
-        id: 'jobOffer',
-        subtitle: 'Tem oferta de emprego confirmada de empresa americana?',
-        options: [
-          { value: 'sim', label: 'Sim, tenho oferta confirmada', score: 20 },
-          { value: 'nao', label: 'Não tenho oferta ainda', score: 0 }
-        ]
-      },
-      {
-        id: 'companyTransfer',
-        subtitle: 'Trabalha em empresa multinacional com filial nos EUA?',
-        options: [
-          { value: 'sim', label: 'Sim, possibilidade de transferência', score: 10 },
-          { value: 'nao', label: 'Não trabalho em multinacional', score: 0 }
-        ]
-      }
+    id: 'familyInUS',
+    title: '👨‍👩‍👧‍👦 Bloco 7 - Família nos EUA',
+    subtitle: 'Tem familiares diretos nos EUA (pais, irmãos, filhos) com Green Card ou cidadania?',
+    type: 'single-choice',
+    icon: 'fas fa-users',
+    options: [
+      { value: 'sim', label: 'Sim, tenho família nos EUA', score: 10 },
+      { value: 'nao', label: 'Não tenho família nos EUA', score: 0 }
+    ]
+  },
+  {
+    id: 'jobOffer',
+    title: '💼 Bloco 8 - Oferta de Emprego',
+    subtitle: 'Tem oferta de emprego confirmada de empresa americana?',
+    type: 'single-choice',
+    icon: 'fas fa-briefcase',
+    options: [
+      { value: 'sim', label: 'Sim, tenho oferta confirmada', score: 20 },
+      { value: 'nao', label: 'Não tenho oferta ainda', score: 0 }
+    ]
+  },
+  {
+    id: 'companyTransfer',
+    title: '🏢 Bloco 9 - Empresa Multinacional',
+    subtitle: 'Trabalha em empresa multinacional com filial nos EUA?',
+    type: 'single-choice',
+    icon: 'fas fa-building',
+    options: [
+      { value: 'sim', label: 'Sim, possibilidade de transferência', score: 10 },
+      { value: 'nao', label: 'Não trabalho em multinacional', score: 0 }
     ]
   }
 ];
@@ -987,61 +987,9 @@ export function SimpleWizardForm() {
         </div>
       )}
 
-      {/* Show saved family details for US connections */}
-      {currentQuestion.id === 'usConnections' && (savedDetails['familyInUS'] || savedDetails['jobOffer'] || savedDetails['companyTransfer']) && (
-        <div className="saved-details">
-          <i className="fas fa-flag-usa"></i>
-          <span>
-            {savedDetails['familyInUS'] && `Família: ${formData.familyInUS === 'sim' ? 'Sim' : 'Não'}`}
-            {savedDetails['jobOffer'] && ` | Oferta de emprego: ${formData.jobOffer === 'sim' ? 'Sim' : 'Não'}`}
-            {savedDetails['companyTransfer'] && ` | Transferência: ${formData.companyTransfer === 'sim' ? 'Sim' : 'Não'}`}
-          </span>
-        </div>
-      )}
 
-      {/* Combined Questions (Leadership & Recognition) - COMPACTED */}
-      {currentQuestion.type === 'combined-questions' && (
-        <div className="space-y-3">
-          {currentQuestion.subQuestions?.map((subQ: any, index: number) => (
-            <div key={subQ.id} className="sub-questions">
-              <h3 className="text-sm font-semibold text-gray-800 mb-2">{subQ.subtitle}</h3>
-              <div className={`options-grid ${getColumnsClass(subQ.options?.length || 0)}`}>
-                {subQ.options?.map((option: any) => (
-                  <button
-                    key={`${subQ.id}-${option.value}`}
-                    onClick={(e) => {
-                      setFormData({ ...formData, [subQ.id]: option.value });
-                      
-                      // Update score immediately
-                      const newScore = calculateCurrentScore();
-                      setCurrentScore(newScore);
-                      
-                      // Show explosive comment
-                      const comment = getComment(subQ.id, option.value);
-                      showCommentExplosion(e.currentTarget as HTMLElement, comment);
-                      
-                      if (option.hasInput) {
-                        setShowInput(subQ.id);
-                      }
-                      
-                      // Auto-submit after answering sub-question
-                      submitMidFormData(formData);
-                    }}
-                    className={`option-button text-left ${
-                      formData[subQ.id] === option.value ? 'selected' : ''
-                    }`}
-                    data-testid={`option-${subQ.id}-${option.value}`}
-                  >
-                    <div className="flex items-center">
-                      <span className="font-medium text-sm">{option.label}</span>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+
+
 
       {/* Show Sub-Questions for Marriage Details */}
       {showSubQuestions === 'maritalStatus' && (
