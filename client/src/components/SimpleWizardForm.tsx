@@ -1061,7 +1061,14 @@ export function SimpleWizardForm() {
                 onBlur={(e) => {
                   // Auto-save on blur
                   if (e.target.value) {
-                    setFormData({ ...formData, spouseName: e.target.value });
+                    const newFormData = { ...formData, spouseName: e.target.value };
+                    setFormData(newFormData);
+                    // Check if all spouse fields are filled to auto-save summary
+                    if (newFormData.spouseName && newFormData.spouseAge && newFormData.spouseEducation) {
+                      const spouseSummary = `Cônjuge: ${newFormData.spouseName} (${newFormData.spouseAge} anos, ${newFormData.spouseEducation})`;
+                      setSavedDetails({ ...savedDetails, maritalStatus: spouseSummary });
+                      setShowSubQuestions(null);
+                    }
                   }
                 }}
                 className="w-full p-2 text-sm border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
@@ -1078,7 +1085,14 @@ export function SimpleWizardForm() {
                 onBlur={(e) => {
                   // Auto-save on blur
                   if (e.target.value) {
-                    setFormData({ ...formData, spouseAge: e.target.value });
+                    const newFormData = { ...formData, spouseAge: e.target.value };
+                    setFormData(newFormData);
+                    // Check if all spouse fields are filled to auto-save summary
+                    if (newFormData.spouseName && newFormData.spouseAge && newFormData.spouseEducation) {
+                      const spouseSummary = `Cônjuge: ${newFormData.spouseName} (${newFormData.spouseAge} anos, ${newFormData.spouseEducation})`;
+                      setSavedDetails({ ...savedDetails, maritalStatus: spouseSummary });
+                      setShowSubQuestions(null);
+                    }
                   }
                 }}
                 className="w-full p-2 text-sm border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
@@ -1094,7 +1108,14 @@ export function SimpleWizardForm() {
                 onChange={(e) => {
                   // Auto-save on change
                   if (e.target.value) {
-                    setFormData({ ...formData, spouseEducation: e.target.value });
+                    const newFormData = { ...formData, spouseEducation: e.target.value };
+                    setFormData(newFormData);
+                    // Check if all spouse fields are filled to auto-save summary
+                    if (newFormData.spouseName && newFormData.spouseAge && newFormData.spouseEducation) {
+                      const spouseSummary = `Cônjuge: ${newFormData.spouseName} (${newFormData.spouseAge} anos, ${newFormData.spouseEducation})`;
+                      setSavedDetails({ ...savedDetails, maritalStatus: spouseSummary });
+                      setShowSubQuestions(null);
+                    }
                   }
                 }}
                 className="w-full p-2 text-sm border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
@@ -1107,13 +1128,6 @@ export function SimpleWizardForm() {
                 <option value="doutorado">Doutorado</option>
               </select>
             </div>
-            
-            <button
-              type="submit"
-              className="px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg text-sm font-medium hover:from-blue-700 hover:to-purple-700 transition-all"
-            >
-              Salvar Informações
-            </button>
           </form>
         </div>
       )}
@@ -1134,7 +1148,14 @@ export function SimpleWizardForm() {
                 required
                 onBlur={(e) => {
                   if (e.target.value) {
-                    setFormData({ ...formData, childrenCount: e.target.value });
+                    const newFormData = { ...formData, childrenCount: e.target.value };
+                    setFormData(newFormData);
+                    // Check if both children fields are filled to auto-save summary
+                    if (newFormData.childrenCount && newFormData.childrenAges) {
+                      const childrenSummary = `Filhos: ${newFormData.childrenCount} (idades: ${newFormData.childrenAges})`;
+                      setSavedDetails({ ...savedDetails, hasChildren: childrenSummary });
+                      setShowSubQuestions(null);
+                    }
                   }
                 }}
                 className="w-full p-2 text-sm border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
@@ -1151,19 +1172,19 @@ export function SimpleWizardForm() {
                 required
                 onBlur={(e) => {
                   if (e.target.value) {
-                    setFormData({ ...formData, childrenAges: e.target.value });
+                    const newFormData = { ...formData, childrenAges: e.target.value };
+                    setFormData(newFormData);
+                    // Check if both children fields are filled to auto-save summary
+                    if (newFormData.childrenCount && newFormData.childrenAges) {
+                      const childrenSummary = `Filhos: ${newFormData.childrenCount} (idades: ${newFormData.childrenAges})`;
+                      setSavedDetails({ ...savedDetails, hasChildren: childrenSummary });
+                      setShowSubQuestions(null);
+                    }
                   }
                 }}
                 className="w-full p-2 text-sm border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
               />
             </div>
-            
-            <button
-              type="submit"
-              className="px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg text-sm font-medium hover:from-blue-700 hover:to-purple-700 transition-all"
-            >
-              Salvar Informações
-            </button>
           </form>
         </div>
       )}
@@ -1177,17 +1198,20 @@ export function SimpleWizardForm() {
               type="text"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
+              onBlur={(e) => {
+                // Auto-save on blur
+                if (e.target.value.trim()) {
+                  setFormData({ ...formData, [`${showInput}Detail`]: e.target.value });
+                  setSavedDetails({ ...savedDetails, [showInput]: e.target.value });
+                  setShowInput(null);
+                  setInputValue('');
+                }
+              }}
               placeholder="Digite aqui para adicionar mais informações..."
               className="w-full p-2 text-sm border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
               data-testid="input-details"
             />
-            <button
-              onClick={handleInputSubmit}
-              className="px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg text-sm font-medium hover:from-blue-700 hover:to-purple-700 transition-all"
-              data-testid="button-submit-details"
-            >
-              ✅ Salvar Detalhes
-            </button>
+
           </div>
         </div>
       )}
