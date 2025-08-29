@@ -876,7 +876,7 @@ export function SimpleWizardForm() {
   }
 
   return (
-    <div ref={containerRef} className="wizard-container rounded-lg shadow-lg p-8 relative">
+    <div ref={containerRef} className="wizard-container rounded-lg shadow-lg p-4 relative">
       {/* Score Display */}
       <div className="score-display">
         🏆 Pontuação:
@@ -904,10 +904,10 @@ export function SimpleWizardForm() {
       
       {/* Navigation Bar */}
       {currentStep > 0 && (
-        <div className="mb-6">
+        <div className="mb-3">
           <button
             onClick={() => goToStep(currentStep - 1)}
-            className="flex items-center text-gray-600 hover:text-gray-800 transition-colors"
+            className="flex items-center text-gray-600 hover:text-gray-800 transition-colors text-sm"
             data-testid="button-back"
           >
             <i className="fas fa-arrow-left mr-2"></i>
@@ -916,11 +916,11 @@ export function SimpleWizardForm() {
         </div>
       )}
       
-      <div className="text-center mb-8">
-        <h2 className="text-2xl font-bold text-gray-800 mb-2">
+      <div className="text-center mb-4">
+        <h2 className="text-xl font-bold text-gray-800 mb-1">
           {currentQuestion.title}
         </h2>
-        <p className="text-lg text-gray-600">{currentQuestion.subtitle}</p>
+        <p className="text-base text-gray-600">{currentQuestion.subtitle}</p>
       </div>
 
       {currentQuestion.type === 'single-choice' && (

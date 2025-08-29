@@ -43,12 +43,12 @@ export default function Home() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-4 max-w-4xl relative">
+    <div className="container mx-auto px-4 py-2 max-w-4xl relative">
       {/* Animated Stars */}
       {generateStars()}
       
 
-      <div className="wizard-container rounded-lg shadow-lg p-6" data-testid="welcome-screen">
+      <div className="wizard-container rounded-lg shadow-lg p-4" data-testid="welcome-screen">
         
         {/* Brand Header */}
         <div className="brand-header-home">

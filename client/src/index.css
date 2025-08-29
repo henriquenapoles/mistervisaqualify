@@ -312,16 +312,17 @@
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
     border: 2px solid rgba(102, 126, 234, 0.2);
-    border-radius: 16px;
-    padding: 1rem;
-    margin: 0.3rem;
+    border-radius: 12px;
+    padding: 0.75rem;
+    margin: 0.25rem;
     cursor: pointer;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     position: relative;
     overflow: hidden;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
     flex: 1;
-    min-width: 250px;
+    min-width: 200px;
+    font-size: 0.9rem;
   }
 
   .option-button.selected {
@@ -410,9 +411,9 @@
   .details-container {
     background: rgba(102, 126, 234, 0.05);
     border: 2px solid rgba(102, 126, 234, 0.2);
-    border-radius: 16px;
-    padding: 1rem;
-    margin: 1rem 0;
+    border-radius: 12px;
+    padding: 0.5rem;
+    margin: 0.5rem 0;
     animation: slideDown 0.5s ease-out;
     position: sticky;
     top: 20px;
@@ -420,7 +421,7 @@
   }
 
   .details-container .sub-questions {
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
   }
 
   .details-container .sub-questions:last-child {
@@ -428,26 +429,28 @@
   }
 
   .details-container h3 {
-    font-size: 1rem;
-    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
   }
 
   .details-container .options-grid {
-    gap: 0.5rem;
+    gap: 0.3rem;
   }
 
   .details-container .option-button {
-    padding: 1rem;
-    min-width: 200px;
+    padding: 0.5rem 0.75rem;
+    min-width: auto;
+    font-size: 0.85rem;
   }
 
   .saved-details {
     background: linear-gradient(135deg, #e6f7ff 0%, #f0f9ff 100%);
     border: 2px solid #1890ff;
-    border-radius: 12px;
-    padding: 1rem 1.5rem;
-    margin-top: 1rem;
-    font-size: 0.9rem;
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
     color: #1890ff;
     font-weight: 500;
     display: flex;
@@ -508,8 +511,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 1rem;
-    padding-top: 1rem;
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
     border-top: 1px solid rgba(102, 126, 234, 0.2);
   }
 
@@ -643,5 +646,68 @@
 
   .btn-primary:hover {
     background-color: #1e40af;
+  }
+}
+
+/* Responsividade para mobile */
+@media (max-width: 768px) {
+  .cols-3 { grid-template-columns: repeat(2, 1fr) !important; }
+  .cols-4 { grid-template-columns: repeat(2, 1fr) !important; }
+  
+  .option-button {
+    min-width: auto !important;
+    padding: 0.5rem !important;
+    font-size: 0.85rem !important;
+  }
+  
+  .details-container {
+    padding: 0.5rem !important;
+    margin: 0.5rem 0 !important;
+  }
+  
+  .wizard-container {
+    padding: 1rem !important;
+  }
+  
+  .brand-header {
+    padding: 0.5rem 1rem !important;
+  }
+  
+  .mister-visa-logo-left {
+    height: 35px !important;
+  }
+  
+  .question-counter {
+    font-size: 0.8rem !important;
+  }
+  
+  h2 {
+    font-size: 1.25rem !important;
+  }
+  
+  .text-center.mb-4 h2 {
+    font-size: 1.25rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  .text-center.mb-4 p {
+    font-size: 0.9rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .cols-2 { grid-template-columns: 1fr !important; }
+  .cols-3 { grid-template-columns: 1fr !important; }
+  .cols-4 { grid-template-columns: 1fr !important; }
+  
+  .option-button {
+    min-width: auto !important;
+    padding: 0.75rem 0.5rem !important;
+    font-size: 0.9rem !important;
+    text-align: center !important;
+  }
+  
+  .container {
+    padding: 0.5rem !important;
   }
 }
