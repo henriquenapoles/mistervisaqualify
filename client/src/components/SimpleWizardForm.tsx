@@ -402,21 +402,19 @@ export function SimpleWizardForm() {
   };
 
   const nextQuestion = () => {
-    // Don't advance if there are sub-questions or input fields open
-    if (showSubQuestions || showInput) {
-      return;
-    }
-    
     // Auto-submit data EVERY time user clicks "Avançar" (always send current data)
     submitMidFormData(formData);
+    
+    // Close any open sub-questions or input fields and advance
+    setShowSubQuestions(null);
+    setShowInput(null);
+    setInputValue('');
     
     // Clear field errors when moving to next step
     setFieldErrors({});
     
     if (currentStep < questions.length - 1) {
       setCurrentStep(currentStep + 1);
-      setShowSubQuestions(null);
-      setShowInput(null);
     } else {
       showResultsScreen();
     }
@@ -848,57 +846,57 @@ export function SimpleWizardForm() {
     const personalizedReport = generatePersonalizedReport(formData, totalScore);
 
     return (
-      <div className="wizard-container rounded-lg shadow-lg p-8 text-center" data-testid="results-screen">
-        <div className="mb-8">
-          <div className="w-24 h-24 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
-            <i className="fas fa-trophy text-white text-4xl"></i>
+      <div className="wizard-container rounded-lg shadow-lg p-4 text-center" data-testid="results-screen">
+        <div className="mb-4">
+          <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-3">
+            <i className="fas fa-trophy text-white text-2xl"></i>
           </div>
           
-          <h2 className="text-4xl font-bold text-blue-600 mb-4">
+          <h2 className="text-2xl font-bold text-blue-600 mb-3">
             🎉 Seu Resultado
           </h2>
           
-          <div className="bg-blue-600 text-white p-6 rounded-lg mb-8">
-            <p className="text-xl mb-2">Sua pontuação é</p>
-            <p className="text-5xl font-bold" data-testid="total-score">{totalScore} pontos!</p>
+          <div className="bg-blue-600 text-white p-4 rounded-lg mb-4">
+            <p className="text-base mb-1">Sua pontuação é</p>
+            <p className="text-3xl font-bold" data-testid="total-score">{totalScore} pontos!</p>
           </div>
           
-          <div className="bg-gray-100 p-6 rounded-lg mb-8">
-            <h3 className="text-2xl font-bold text-blue-600 mb-6">
+          <div className="bg-gray-100 p-3 rounded-lg mb-4">
+            <h3 className="text-lg font-bold text-blue-600 mb-3">
               🎯 Vistos recomendados para seu perfil:
             </h3>
             
-            <div className="space-y-4">
+            <div className="space-y-2">
               {visaRecommendations.map((visa, index) => (
-                <div key={index} className="bg-white p-4 rounded-lg border">
-                  <h4 className="font-bold text-blue-600">{visa.name}</h4>
-                  <p className="text-sm text-gray-600">{visa.description}</p>
+                <div key={index} className="bg-white p-3 rounded-lg border">
+                  <h4 className="font-bold text-blue-600 text-sm">{visa.name}</h4>
+                  <p className="text-xs text-gray-600">{visa.description}</p>
                 </div>
               ))}
             </div>
             
-            <div className="mt-6 p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500">
-              <h4 className="font-bold text-blue-700 mb-2">📋 Análise do Seu Perfil:</h4>
-              <p className="text-sm text-blue-700 leading-relaxed">{personalizedReport}</p>
+            <div className="mt-3 p-3 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+              <h4 className="font-bold text-blue-700 mb-1 text-sm">📋 Análise do Seu Perfil:</h4>
+              <p className="text-xs text-blue-700 leading-relaxed">{personalizedReport}</p>
             </div>
             
-            <div className="mt-4 p-4 bg-gray-50 rounded-lg">
-              <p className="text-sm text-gray-700 font-medium">{scoreMessage}</p>
+            <div className="mt-2 p-3 bg-gray-50 rounded-lg">
+              <p className="text-xs text-gray-700 font-medium">{scoreMessage}</p>
             </div>
           </div>
           
           <button
             onClick={submitLead}
             disabled={isSubmitting}
-            className="btn-primary text-xl font-bold px-8 py-4 rounded-lg disabled:opacity-50"
+            className="btn-primary text-base font-bold px-6 py-3 rounded-lg disabled:opacity-50"
             data-testid="button-submit-lead"
           >
             {isSubmitting ? 'Enviando...' : '✅ FINALIZAR CADASTRO'}
           </button>
           
-          <div className="mt-6 text-center">
-            <h3 className="text-2xl font-bold text-blue-600 mb-4">Obrigado!</h3>
-            <p className="text-gray-700">
+          <div className="mt-4 text-center">
+            <h3 className="text-lg font-bold text-blue-600 mb-2">Obrigado!</h3>
+            <p className="text-gray-700 text-sm">
               Um consultor Mister Visa entrará em contato em breve 
               com as melhores estratégias para o seu perfil específico.
             </p>
@@ -949,11 +947,11 @@ export function SimpleWizardForm() {
         </div>
       )}
       
-      <div className="text-center mb-4">
-        <h2 className="text-xl font-bold text-gray-800 mb-1">
+      <div className="text-center mb-3">
+        <h2 className="text-lg font-bold text-gray-800 mb-1">
           {currentQuestion.title}
         </h2>
-        <p className="text-base text-gray-600">{currentQuestion.subtitle}</p>
+        <p className="text-sm text-gray-600">{currentQuestion.subtitle}</p>
       </div>
 
       {currentQuestion.type === 'single-choice' && (
@@ -1004,12 +1002,12 @@ export function SimpleWizardForm() {
         </div>
       )}
 
-      {/* Combined Questions (Leadership & Recognition) */}
+      {/* Combined Questions (Leadership & Recognition) - COMPACTED */}
       {currentQuestion.type === 'combined-questions' && (
-        <div className="space-y-8">
+        <div className="space-y-3">
           {currentQuestion.subQuestions?.map((subQ: any, index: number) => (
             <div key={subQ.id} className="sub-questions">
-              <h3 className="text-xl font-semibold text-gray-800 mb-4">{subQ.subtitle}</h3>
+              <h3 className="text-sm font-semibold text-gray-800 mb-2">{subQ.subtitle}</h3>
               <div className={`options-grid ${getColumnsClass(subQ.options?.length || 0)}`}>
                 {subQ.options?.map((option: any) => (
                   <button
@@ -1028,6 +1026,9 @@ export function SimpleWizardForm() {
                       if (option.hasInput) {
                         setShowInput(subQ.id);
                       }
+                      
+                      // Auto-submit after answering sub-question
+                      submitCurrentData();
                     }}
                     className={`option-button text-left ${
                       formData[subQ.id] === option.value ? 'selected' : ''
@@ -1035,7 +1036,7 @@ export function SimpleWizardForm() {
                     data-testid={`option-${subQ.id}-${option.value}`}
                   >
                     <div className="flex items-center">
-                      <span className="font-medium">{option.label}</span>
+                      <span className="font-medium text-sm">{option.label}</span>
                     </div>
                   </button>
                 ))}
@@ -1048,7 +1049,7 @@ export function SimpleWizardForm() {
       {/* Show Sub-Questions for Marriage Details */}
       {showSubQuestions === 'maritalStatus' && (
         <div className="details-container">
-          <h3 className="text-sm font-semibold text-gray-800 mb-2">💑 Detalhes do Cônjuge</h3>
+          <h3 className="text-xs font-semibold text-gray-800 mb-1">💑 Detalhes do Cônjuge</h3>
           <form onSubmit={handleSubQuestionSubmit} className="space-y-2">
             <div>
               <label className="block text-xs font-medium text-gray-700 mb-1">
@@ -1135,7 +1136,7 @@ export function SimpleWizardForm() {
       {/* Show Sub-Questions for Children Details */}
       {showSubQuestions === 'hasChildren' && (
         <div className="details-container">
-          <h3 className="text-sm font-semibold text-gray-800 mb-2">👶 Detalhes dos Filhos</h3>
+          <h3 className="text-xs font-semibold text-gray-800 mb-1">👶 Detalhes dos Filhos</h3>
           <form onSubmit={handleSubQuestionSubmit} className="space-y-2">
             <div>
               <label className="block text-xs font-medium text-gray-700 mb-1">
@@ -1192,7 +1193,7 @@ export function SimpleWizardForm() {
       {/* Show Input for Additional Details */}
       {showInput && (
         <div className="details-container">
-          <h3 className="text-sm font-semibold text-gray-800 mb-2">📝 Nos conte mais detalhes:</h3>
+          <h3 className="text-xs font-semibold text-gray-800 mb-1">📝 Nos conte mais detalhes:</h3>
           <div className="space-y-2">
             <input
               type="text"
