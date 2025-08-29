@@ -585,24 +585,30 @@ export function SimpleWizardForm() {
     const formDataObj = new FormData(form);
     const subData: Record<string, any> = {};
     
-    // Get spouse/family data
-    subData.spouseName = formDataObj.get('spouseName') as string;
-    subData.spouseAge = formDataObj.get('spouseAge') as string;
-    subData.spouseEducation = formDataObj.get('spouseEducation') as string;
-    
-    if (formData.maritalStatus === 'casado-filhos') {
+    if (showSubQuestions === 'maritalStatus') {
+      // Get spouse data
+      subData.spouseName = formDataObj.get('spouseName') as string;
+      subData.spouseAge = formDataObj.get('spouseAge') as string;
+      subData.spouseEducation = formDataObj.get('spouseEducation') as string;
+      
+      setFormData({ ...formData, ...subData });
+      
+      // Save spouse details summary
+      const spouseSummary = `Cônjuge: ${subData.spouseName} (${subData.spouseAge} anos, ${subData.spouseEducation})`;
+      setSavedDetails({ ...savedDetails, [showSubQuestions!]: spouseSummary });
+    } else if (showSubQuestions === 'hasChildren') {
+      // Get children data
       subData.childrenCount = formDataObj.get('childrenCount') as string;
       subData.childrenAges = formDataObj.get('childrenAges') as string;
+      
+      setFormData({ ...formData, ...subData });
+      
+      // Save children details summary
+      const childrenSummary = `Filhos: ${subData.childrenCount} (idades: ${subData.childrenAges})`;
+      setSavedDetails({ ...savedDetails, [showSubQuestions!]: childrenSummary });
     }
     
     setSubAnswers({ ...subAnswers, [showSubQuestions!]: subData });
-    
-    // Save family details summary
-    let familySummary = `Cônjuge: ${subData.spouseName} (${subData.spouseAge} anos, ${subData.spouseEducation})`;
-    if (formData.maritalStatus === 'casado-filhos' && subData.childrenCount) {
-      familySummary += ` | Filhos: ${subData.childrenCount} (idades: ${subData.childrenAges})`;
-    }
-    setSavedDetails({ ...savedDetails, [showSubQuestions!]: familySummary });
     
     setShowSubQuestions(null);
   };
@@ -1052,6 +1058,12 @@ export function SimpleWizardForm() {
                 type="text"
                 name="spouseName"
                 required
+                onBlur={(e) => {
+                  // Auto-save on blur
+                  if (e.target.value) {
+                    setFormData({ ...formData, spouseName: e.target.value });
+                  }
+                }}
                 className="w-full p-2 text-sm border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
               />
             </div>
@@ -1063,6 +1075,12 @@ export function SimpleWizardForm() {
                 type="number"
                 name="spouseAge"
                 required
+                onBlur={(e) => {
+                  // Auto-save on blur
+                  if (e.target.value) {
+                    setFormData({ ...formData, spouseAge: e.target.value });
+                  }
+                }}
                 className="w-full p-2 text-sm border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
               />
             </div>
@@ -1073,6 +1091,12 @@ export function SimpleWizardForm() {
               <select
                 name="spouseEducation"
                 required
+                onChange={(e) => {
+                  // Auto-save on change
+                  if (e.target.value) {
+                    setFormData({ ...formData, spouseEducation: e.target.value });
+                  }
+                }}
                 className="w-full p-2 text-sm border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
               >
                 <option value="">Selecione...</option>
@@ -1108,6 +1132,11 @@ export function SimpleWizardForm() {
                 name="childrenCount"
                 min="1"
                 required
+                onBlur={(e) => {
+                  if (e.target.value) {
+                    setFormData({ ...formData, childrenCount: e.target.value });
+                  }
+                }}
                 className="w-full p-2 text-sm border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
               />
             </div>
@@ -1120,6 +1149,11 @@ export function SimpleWizardForm() {
                 name="childrenAges"
                 placeholder="Ex: 5, 8, 12"
                 required
+                onBlur={(e) => {
+                  if (e.target.value) {
+                    setFormData({ ...formData, childrenAges: e.target.value });
+                  }
+                }}
                 className="w-full p-2 text-sm border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
               />
             </div>
@@ -1159,10 +1193,10 @@ export function SimpleWizardForm() {
       )}
 
       {currentQuestion.type === 'form-fields' && (
-        <form onSubmit={handleFormSubmit} className="max-w-lg mx-auto space-y-4">
+        <form onSubmit={handleFormSubmit} className="max-w-lg mx-auto space-y-2">
           {currentQuestion.fields?.map((field) => (
             <div key={field.id}>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-xs font-medium text-gray-700 mb-1">
                 {field.label}
               </label>
               <input
@@ -1179,6 +1213,7 @@ export function SimpleWizardForm() {
                     delete newErrors[field.id];
                     setFieldErrors(newErrors);
                   }
+
                 }}
                 onBlur={(e) => {
                   // Validate field when user leaves it
@@ -1202,7 +1237,7 @@ export function SimpleWizardForm() {
                   setFieldErrors(errors);
                 }}
                 required={field.required}
-                className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent ${
+                className={`w-full p-2 text-sm border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent ${
                   fieldErrors[field.id] ? 'border-red-500 bg-red-50' : ''
                 }`}
                 data-testid={`input-${field.id}`}
