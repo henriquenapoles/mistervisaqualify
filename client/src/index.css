@@ -142,11 +142,10 @@
 
 
 
-  .flag-gif {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  .mister-visa-logo {
+    height: 60px;
+    width: auto;
+    margin-bottom: 10px;
   }
 
   .wizard-container {

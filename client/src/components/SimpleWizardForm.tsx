@@ -4,6 +4,7 @@ import { calculateScore } from "../utils/scoring";
 import { getVisaRecommendations, getScoreMessage, generatePersonalizedReport } from "../utils/visa-recommendations";
 import { useToast } from "@/hooks/use-toast";
 import { SimpleProgress } from "./ui/simple-progress";
+import logoMisterVisa from "@assets/Logo2_1756485333265.png";
 
 
 // Comentários interativos para cada resposta
@@ -886,7 +887,7 @@ export function SimpleWizardForm() {
 
       {/* Brand Header */}
       <div className="brand-header">
-        <h1>Mister Visa®</h1>
+        <img src={logoMisterVisa} alt="Mister Visa" className="mister-visa-logo" />
         <p>Pergunta {currentStep + 1} de {questions.length}</p>
       </div>
 
