@@ -1028,7 +1028,7 @@ export function SimpleWizardForm() {
                       }
                       
                       // Auto-submit after answering sub-question
-                      submitCurrentData();
+                      submitMidFormData(formData);
                     }}
                     className={`option-button text-left ${
                       formData[subQ.id] === option.value ? 'selected' : ''
@@ -1218,10 +1218,10 @@ export function SimpleWizardForm() {
       )}
 
       {currentQuestion.type === 'form-fields' && (
-        <form onSubmit={handleFormSubmit} className="max-w-lg mx-auto space-y-2">
+        <form onSubmit={handleFormSubmit} className="max-w-lg mx-auto space-y-1">
           {currentQuestion.fields?.map((field) => (
             <div key={field.id}>
-              <label className="block text-xs font-medium text-gray-700 mb-1">
+              <label className="block text-xs font-medium text-gray-700 mb-0.5">
                 {field.label}
               </label>
               <input
@@ -1241,8 +1241,12 @@ export function SimpleWizardForm() {
 
                 }}
                 onBlur={(e) => {
-                  // Validate field when user leaves it
+                  // Auto-save on blur and validate
                   const value = e.target.value;
+                  if (value.trim()) {
+                    submitMidFormData({...formData, [field.id]: value});
+                  }
+                  
                   const errors: Record<string, string> = { ...fieldErrors };
                   
                   if (field.required && !value) {
@@ -1262,13 +1266,13 @@ export function SimpleWizardForm() {
                   setFieldErrors(errors);
                 }}
                 required={field.required}
-                className={`w-full p-2 text-sm border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent ${
+                className={`w-full p-1.5 text-xs border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent ${
                   fieldErrors[field.id] ? 'border-red-500 bg-red-50' : ''
                 }`}
                 data-testid={`input-${field.id}`}
               />
               {fieldErrors[field.id] && (
-                <p className="text-red-500 text-sm mt-1 flex items-center">
+                <p className="text-red-500 text-xs mt-0.5 flex items-center">
                   <i className="fas fa-exclamation-triangle mr-1"></i>
                   {fieldErrors[field.id]}
                 </p>
@@ -1279,12 +1283,12 @@ export function SimpleWizardForm() {
         </form>
       )}
       
-      {/* Navigation Buttons - show for ALL question types */}
-      <div className="navigation-buttons">
+      {/* Navigation Buttons - COMPACTED */}
+      <div className="navigation-buttons mt-2">
         <button
           onClick={previousQuestion}
           disabled={currentStep === 0}
-          className="btn-nav patriotic"
+          className="btn-nav patriotic text-sm px-3 py-1.5"
           data-testid="button-previous"
         >
           <i className="fas fa-arrow-left"></i>
@@ -1292,7 +1296,7 @@ export function SimpleWizardForm() {
         </button>
         
         <div className="text-center">
-          <span className="text-sm text-gray-600 font-medium">
+          <span className="text-xs text-gray-600 font-medium">
             {currentStep + 1} de {questions.length}
           </span>
         </div>
@@ -1300,7 +1304,7 @@ export function SimpleWizardForm() {
         <button
           onClick={nextQuestion}
           disabled={!isCurrentQuestionAnswered()}
-          className="btn-nav patriotic"
+          className="btn-nav patriotic text-sm px-4 py-1.5"
           data-testid="button-next"
         >
           Avançar
