@@ -14,13 +14,12 @@ export interface LeadFormData {
   
   // Family
   maritalStatus?: string;
+  hasChildren?: string;
   spouseName?: string;
   spouseAge?: string;
-  spouseProfession?: string;
-  children?: Array<{
-    name: string;
-    age: number;
-  }>;
+  spouseEducation?: string;
+  childrenCount?: string;
+  childrenAges?: string;
   citizenship?: string;
   citizenshipDetail?: string;
   

@@ -26,8 +26,15 @@ const getComment = (questionId: string, value: string): string => {
     },
     maritalStatus: {
       'solteiro': 'O processo para solteiros costuma ser mais simples e rápido. Ótimo!',
-      'casado': 'É uma jornada para toda a família! Quando você obtém o visto de imigrante, seu cônjuge e filhos menores de 21 anos também se qualificam.',
-      'casado-filhos': 'É uma jornada para toda a família! Quando você obtém o visto de imigrante, seu cônjuge e filhos menores de 21 anos também se qualificam.'
+      'casado': 'É uma jornada para toda a família! Quando você obtém o visto de imigrante, seu cônjuge também se qualifica.',
+      'divorciado': 'Sem problemas! Seu estado civil não impacta negativamente no processo de imigração.',
+      'viuvo': 'Entendemos sua situação. Há caminhos específicos para viúvos, especialmente se o cônjuge era cidadão americano.',
+      'separado': 'Tudo bem! Isso não afeta suas chances de imigração para os EUA.',
+      'uniao-estavel': 'É uma jornada para toda a família! Quando você obtém o visto de imigrante, seu companheiro(a) também pode se qualificar.'
+    },
+    hasChildren: {
+      'sim': 'Ótimo! Filhos menores de 21 anos podem ser incluídos no seu processo de imigração.',
+      'nao': 'Perfeito! Isso pode acelerar alguns processos de imigração.'
     },
     citizenship: {
       'sim': 'Isso pode acelerar ou até abrir novos caminhos! Algumas nacionalidades têm acordos especiais com os EUA.',
@@ -128,14 +135,28 @@ const questions: Question[] = [
   },
   {
     id: 'maritalStatus',
-    title: '💍 Bloco 3 - Família e Cidadania',
+    title: '💍 Bloco 3 - Estado Civil',
     subtitle: 'Qual o seu estado civil?',
     type: 'single-choice',
     icon: 'fas fa-users',
     options: [
       { value: 'solteiro', label: 'Solteiro(a)', icon: 'fas fa-user', score: 0 },
       { value: 'casado', label: 'Casado(a)', icon: 'fas fa-heart', score: 0, hasForm: true },
-      { value: 'casado-filhos', label: 'Casado(a) com filhos', icon: 'fas fa-home', score: 0, hasForm: true }
+      { value: 'divorciado', label: 'Divorciado(a)', icon: 'fas fa-user-times', score: 0 },
+      { value: 'viuvo', label: 'Viúvo(a)', icon: 'fas fa-cross', score: 0 },
+      { value: 'separado', label: 'Separado(a)', icon: 'fas fa-user-slash', score: 0 },
+      { value: 'uniao-estavel', label: 'União Estável', icon: 'fas fa-handshake', score: 0, hasForm: true }
+    ]
+  },
+  {
+    id: 'hasChildren',
+    title: '👨‍👩‍👧‍👦 Filhos',
+    subtitle: 'Você tem filhos?',
+    type: 'single-choice',
+    icon: 'fas fa-baby',
+    options: [
+      { value: 'nao', label: 'Não tenho filhos', icon: 'fas fa-times-circle', score: 0 },
+      { value: 'sim', label: 'Sim, tenho filhos', icon: 'fas fa-check-circle', score: 0, hasForm: true }
     ]
   },
   {
@@ -539,7 +560,13 @@ export function SimpleWizardForm() {
     if (hasInput) {
       setShowInput(currentQuestion.id);
     } else if (hasForm) {
-      setShowSubQuestions(currentQuestion.id);
+      if (currentQuestion.id === 'maritalStatus' && (value === 'casado' || value === 'uniao-estavel')) {
+        setShowSubQuestions('maritalStatus');
+      } else if (currentQuestion.id === 'hasChildren' && value === 'sim') {
+        setShowSubQuestions('hasChildren');
+      } else {
+        setShowSubQuestions(currentQuestion.id);
+      }
     }
   };
 
@@ -1015,10 +1042,10 @@ export function SimpleWizardForm() {
       {/* Show Sub-Questions for Marriage Details */}
       {showSubQuestions === 'maritalStatus' && (
         <div className="details-container">
-          <h3 className="text-xl font-semibold text-gray-800 mb-4">👨‍👩‍👧‍👦 Detalhes da Família</h3>
-          <form onSubmit={handleSubQuestionSubmit} className="space-y-4">
+          <h3 className="text-sm font-semibold text-gray-800 mb-2">💑 Detalhes do Cônjuge</h3>
+          <form onSubmit={handleSubQuestionSubmit} className="space-y-2">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-xs font-medium text-gray-700 mb-1">
                 Nome do(a) Cônjuge
               </label>
               <input
@@ -1029,7 +1056,7 @@ export function SimpleWizardForm() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-xs font-medium text-gray-700 mb-1">
                 Idade do(a) Cônjuge
               </label>
               <input
@@ -1040,7 +1067,7 @@ export function SimpleWizardForm() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-xs font-medium text-gray-700 mb-1">
                 Nível de Escolaridade do(a) Cônjuge
               </label>
               <select
@@ -1057,34 +1084,45 @@ export function SimpleWizardForm() {
               </select>
             </div>
             
-            {formData.maritalStatus === 'casado-filhos' && (
-              <>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Quantidade de Filhos
-                  </label>
-                  <input
-                    type="number"
-                    name="childrenCount"
-                    min="1"
-                    required
-                    className="w-full p-2 text-sm border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Idades dos Filhos (separadas por vírgula)
-                  </label>
-                  <input
-                    type="text"
-                    name="childrenAges"
-                    placeholder="Ex: 5, 8, 12"
-                    required
-                    className="w-full p-2 text-sm border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                  />
-                </div>
-              </>
-            )}
+            <button
+              type="submit"
+              className="px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg text-sm font-medium hover:from-blue-700 hover:to-purple-700 transition-all"
+            >
+              Salvar Informações
+            </button>
+          </form>
+        </div>
+      )}
+
+      {/* Show Sub-Questions for Children Details */}
+      {showSubQuestions === 'hasChildren' && (
+        <div className="details-container">
+          <h3 className="text-sm font-semibold text-gray-800 mb-2">👶 Detalhes dos Filhos</h3>
+          <form onSubmit={handleSubQuestionSubmit} className="space-y-2">
+            <div>
+              <label className="block text-xs font-medium text-gray-700 mb-1">
+                Quantos filhos você tem?
+              </label>
+              <input
+                type="number"
+                name="childrenCount"
+                min="1"
+                required
+                className="w-full p-2 text-sm border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-gray-700 mb-1">
+                Idades dos Filhos (separadas por vírgula)
+              </label>
+              <input
+                type="text"
+                name="childrenAges"
+                placeholder="Ex: 5, 8, 12"
+                required
+                className="w-full p-2 text-sm border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+              />
+            </div>
             
             <button
               type="submit"
