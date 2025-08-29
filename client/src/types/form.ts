@@ -76,6 +76,7 @@ export interface Option {
   score: number;
   hasInput?: boolean;
   hasForm?: boolean;
+  inputPlaceholder?: string;
 }
 
 export interface FormField {
