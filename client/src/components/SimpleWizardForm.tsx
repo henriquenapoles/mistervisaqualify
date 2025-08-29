@@ -843,7 +843,7 @@ export function SimpleWizardForm() {
     const personalizedReport = generatePersonalizedReport(formData, totalScore);
 
     return (
-      <div className="wizard-container rounded-lg shadow-lg p-4 text-center" data-testid="results-screen">
+      <div className="wizard-container rounded-lg shadow-lg p-2 text-center" data-testid="results-screen">
         <div className="mb-2">
           <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-2">
             <i className="fas fa-trophy text-white text-lg"></i>
@@ -904,7 +904,7 @@ export function SimpleWizardForm() {
   }
 
   return (
-    <div ref={containerRef} className="wizard-container rounded-lg shadow-lg p-4 relative">
+    <div ref={containerRef} className="wizard-container rounded-lg shadow-lg p-2 relative">
       {/* Score Display */}
       <div className="score-display">
         🏆 Pontuação:
@@ -944,27 +944,27 @@ export function SimpleWizardForm() {
         </div>
       )}
       
-      <div className="text-center mb-2">
-        <h2 className="text-base font-bold text-gray-800 mb-1">
+      <div className="text-center mb-1">
+        <h2 className="text-sm font-bold text-gray-800 mb-0.5">
           {currentQuestion.title}
         </h2>
-        <p className="text-xs text-gray-600">{currentQuestion.subtitle}</p>
+        <p className="text-xs text-gray-600 leading-tight">{currentQuestion.subtitle}</p>
       </div>
 
       {currentQuestion.type === 'single-choice' && (
-        <div className={`options-grid ${getColumnsClass(currentQuestion.options?.length || 0)}`}>
+        <div className={`options-grid ${getColumnsClass(currentQuestion.options?.length || 0)} gap-1`}>
           {currentQuestion.options?.map((option) => (
             <button
               key={option.value}
               onClick={(e) => handleOptionSelect(option.value, option.hasInput, option.hasForm, e)}
-              className={`option-button text-left ${
+              className={`option-button text-left p-2 text-xs ${
                 formData[currentQuestion.id] === option.value ? 'selected' : ''
               }`}
               data-testid={`option-${option.value}`}
             >
               <div className="flex items-center">
-                {option.icon && <i className={`${option.icon} mr-3 text-gray-700`}></i>}
-                <span className="font-medium">{option.label}</span>
+                {option.icon && <i className={`${option.icon} mr-2 text-gray-700 text-xs`}></i>}
+                <span className="font-medium text-xs leading-tight">{option.label}</span>
               </div>
             </button>
           ))}
@@ -973,9 +973,9 @@ export function SimpleWizardForm() {
 
       {/* Show saved details for current question */}
       {savedDetails[currentQuestion.id] && (
-        <div className="saved-details">
-          <i className="fas fa-info-circle"></i>
-          <span>Detalhes salvos: {savedDetails[currentQuestion.id]}</span>
+        <div className="saved-details p-2 text-xs">
+          <i className="fas fa-info-circle text-xs"></i>
+          <span className="text-xs">Detalhes salvos: {savedDetails[currentQuestion.id]}</span>
         </div>
       )}
 
@@ -1280,15 +1280,15 @@ export function SimpleWizardForm() {
         </form>
       )}
       
-      {/* Navigation Buttons - COMPACTED */}
-      <div className="navigation-buttons mt-2">
+      {/* Navigation Buttons - ULTRA COMPACTED */}
+      <div className="navigation-buttons mt-1">
         <button
           onClick={previousQuestion}
           disabled={currentStep === 0}
-          className="btn-nav patriotic text-sm px-3 py-1.5"
+          className="btn-nav patriotic text-xs px-2 py-1"
           data-testid="button-previous"
         >
-          <i className="fas fa-arrow-left"></i>
+          <i className="fas fa-arrow-left text-xs"></i>
           Voltar
         </button>
         
@@ -1301,11 +1301,11 @@ export function SimpleWizardForm() {
         <button
           onClick={nextQuestion}
           disabled={!isCurrentQuestionAnswered()}
-          className="btn-nav patriotic text-sm px-4 py-1.5"
+          className="btn-nav patriotic text-xs px-3 py-1"
           data-testid="button-next"
         >
           Avançar
-          <i className="fas fa-arrow-right"></i>
+          <i className="fas fa-arrow-right text-xs"></i>
         </button>
       </div>
 
