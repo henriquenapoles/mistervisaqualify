@@ -1025,7 +1025,7 @@ export function SimpleWizardForm() {
                 type="text"
                 name="spouseName"
                 required
-                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                className="w-full p-2 text-sm border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
               />
             </div>
             <div>
@@ -1036,7 +1036,7 @@ export function SimpleWizardForm() {
                 type="number"
                 name="spouseAge"
                 required
-                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                className="w-full p-2 text-sm border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
               />
             </div>
             <div>
@@ -1046,7 +1046,7 @@ export function SimpleWizardForm() {
               <select
                 name="spouseEducation"
                 required
-                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                className="w-full p-2 text-sm border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
               >
                 <option value="">Selecione...</option>
                 <option value="ensino-medio">Ensino Médio</option>
@@ -1068,7 +1068,7 @@ export function SimpleWizardForm() {
                     name="childrenCount"
                     min="1"
                     required
-                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                    className="w-full p-2 text-sm border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
                   />
                 </div>
                 <div>
@@ -1080,7 +1080,7 @@ export function SimpleWizardForm() {
                     name="childrenAges"
                     placeholder="Ex: 5, 8, 12"
                     required
-                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                    className="w-full p-2 text-sm border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
                   />
                 </div>
               </>
@@ -1088,7 +1088,7 @@ export function SimpleWizardForm() {
             
             <button
               type="submit"
-              className="btn-primary px-6 py-3 rounded-lg"
+              className="px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg text-sm font-medium hover:from-blue-700 hover:to-purple-700 transition-all"
             >
               Salvar Informações
             </button>
@@ -1099,19 +1099,19 @@ export function SimpleWizardForm() {
       {/* Show Input for Additional Details */}
       {showInput && (
         <div className="details-container">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">📝 Nos conte mais detalhes:</h3>
-          <div className="space-y-4">
+          <h3 className="text-sm font-semibold text-gray-800 mb-2">📝 Nos conte mais detalhes:</h3>
+          <div className="space-y-2">
             <input
               type="text"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               placeholder="Digite aqui para adicionar mais informações..."
-              className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+              className="w-full p-2 text-sm border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
               data-testid="input-details"
             />
             <button
               onClick={handleInputSubmit}
-              className="btn-primary px-6 py-3 rounded-lg"
+              className="px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg text-sm font-medium hover:from-blue-700 hover:to-purple-700 transition-all"
               data-testid="button-submit-details"
             >
               ✅ Salvar Detalhes
