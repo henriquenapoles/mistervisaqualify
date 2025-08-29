@@ -195,16 +195,30 @@
   .brand-header {
     background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 50%, #93c5fd 100%);
     color: #1e40af;
-    padding: 0.8rem;
-    text-align: center;
+    padding: 0.8rem 1.5rem;
     border-radius: 20px 20px 0 0;
     margin: -2rem -2rem 1rem -2rem;
     position: relative;
     overflow: hidden;
+  }
+
+  .brand-header-content {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
+    width: 100%;
+  }
+
+  .mister-visa-logo-left {
+    height: 45px;
+    width: auto;
+  }
+
+  .question-counter {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 500;
+    opacity: 0.8;
   }
 
   .brand-header::before {

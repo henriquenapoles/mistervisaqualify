@@ -887,8 +887,10 @@ export function SimpleWizardForm() {
 
       {/* Brand Header */}
       <div className="brand-header">
-        <img src={logoMisterVisa} alt="Mister Visa" className="mister-visa-logo" />
-        <p>Pergunta {currentStep + 1} de {questions.length}</p>
+        <div className="brand-header-content">
+          <img src={logoMisterVisa} alt="Mister Visa" className="mister-visa-logo-left" />
+          <p className="question-counter">Pergunta {currentStep + 1} de {questions.length}</p>
+        </div>
       </div>
 
 
