@@ -263,28 +263,25 @@ const questions: Question[] = [
     ]
   },
   {
-    id: 'leadership-recognition',
-    title: '🏆 Bloco 8 - Liderança e Reconhecimento',
-    subtitle: 'Experiência em liderança e reconhecimentos',
-    type: 'combined-questions',
-    icon: 'fas fa-crown',
-    subQuestions: [
-      {
-        id: 'hasRecognition',
-        subtitle: 'Já teve reconhecimento nacional/internacional (prêmios, publicações, etc.)?',
-        options: [
-          { value: 'sim', label: 'Sim', score: 25, hasInput: true },
-          { value: 'nao', label: 'Não', score: 0 }
-        ]
-      },
-      {
-        id: 'hasLeadership',
-        subtitle: 'Já exerceu cargos de liderança/gerência?',
-        options: [
-          { value: 'sim', label: 'Sim', score: 5, hasInput: true },
-          { value: 'nao', label: 'Não', score: 0 }
-        ]
-      }
+    id: 'hasRecognition',
+    title: '🏆 Bloco 8 - Reconhecimento',
+    subtitle: 'Já teve reconhecimento nacional/internacional (prêmios, publicações, etc.)?',
+    type: 'single-choice',
+    icon: 'fas fa-trophy',
+    options: [
+      { value: 'sim', label: 'Sim', score: 25, hasInput: true },
+      { value: 'nao', label: 'Não', score: 0 }
+    ]
+  },
+  {
+    id: 'hasLeadership',
+    title: '👔 Bloco 9 - Liderança',
+    subtitle: 'Já exerceu cargos de liderança/gerência?',
+    type: 'single-choice',
+    icon: 'fas fa-users',
+    options: [
+      { value: 'sim', label: 'Sim', score: 5, hasInput: true },
+      { value: 'nao', label: 'Não', score: 0 }
     ]
   },
   {
@@ -847,56 +844,56 @@ export function SimpleWizardForm() {
 
     return (
       <div className="wizard-container rounded-lg shadow-lg p-4 text-center" data-testid="results-screen">
-        <div className="mb-4">
-          <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-3">
-            <i className="fas fa-trophy text-white text-2xl"></i>
+        <div className="mb-2">
+          <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-2">
+            <i className="fas fa-trophy text-white text-lg"></i>
           </div>
           
-          <h2 className="text-2xl font-bold text-blue-600 mb-3">
+          <h2 className="text-lg font-bold text-blue-600 mb-2">
             🎉 Seu Resultado
           </h2>
           
-          <div className="bg-blue-600 text-white p-4 rounded-lg mb-4">
-            <p className="text-base mb-1">Sua pontuação é</p>
-            <p className="text-3xl font-bold" data-testid="total-score">{totalScore} pontos!</p>
+          <div className="bg-blue-600 text-white p-3 rounded-lg mb-3">
+            <p className="text-sm mb-1">Sua pontuação é</p>
+            <p className="text-2xl font-bold" data-testid="total-score">{totalScore} pontos!</p>
           </div>
           
-          <div className="bg-gray-100 p-3 rounded-lg mb-4">
-            <h3 className="text-lg font-bold text-blue-600 mb-3">
-              🎯 Vistos recomendados para seu perfil:
+          <div className="bg-gray-100 p-2 rounded-lg mb-3">
+            <h3 className="text-sm font-bold text-blue-600 mb-2">
+              🎯 Vistos recomendados:
             </h3>
             
-            <div className="space-y-2">
+            <div className="space-y-1">
               {visaRecommendations.map((visa, index) => (
-                <div key={index} className="bg-white p-3 rounded-lg border">
-                  <h4 className="font-bold text-blue-600 text-sm">{visa.name}</h4>
-                  <p className="text-xs text-gray-600">{visa.description}</p>
+                <div key={index} className="bg-white p-2 rounded border">
+                  <h4 className="font-bold text-blue-600 text-xs">{visa.name}</h4>
+                  <p className="text-xs text-gray-600 leading-tight">{visa.description}</p>
                 </div>
               ))}
             </div>
             
-            <div className="mt-3 p-3 bg-blue-50 rounded-lg border-l-4 border-blue-500">
-              <h4 className="font-bold text-blue-700 mb-1 text-sm">📋 Análise do Seu Perfil:</h4>
-              <p className="text-xs text-blue-700 leading-relaxed">{personalizedReport}</p>
+            <div className="mt-2 p-2 bg-blue-50 rounded border-l-4 border-blue-500">
+              <h4 className="font-bold text-blue-700 mb-1 text-xs">📋 Análise:</h4>
+              <p className="text-xs text-blue-700 leading-tight">{personalizedReport}</p>
             </div>
             
-            <div className="mt-2 p-3 bg-gray-50 rounded-lg">
-              <p className="text-xs text-gray-700 font-medium">{scoreMessage}</p>
+            <div className="mt-1 p-2 bg-gray-50 rounded">
+              <p className="text-xs text-gray-700 font-medium leading-tight">{scoreMessage}</p>
             </div>
           </div>
           
           <button
             onClick={submitLead}
             disabled={isSubmitting}
-            className="btn-primary text-base font-bold px-6 py-3 rounded-lg disabled:opacity-50"
+            className="btn-primary text-sm font-bold px-4 py-2 rounded-lg disabled:opacity-50"
             data-testid="button-submit-lead"
           >
             {isSubmitting ? 'Enviando...' : '✅ FINALIZAR CADASTRO'}
           </button>
           
-          <div className="mt-4 text-center">
-            <h3 className="text-lg font-bold text-blue-600 mb-2">Obrigado!</h3>
-            <p className="text-gray-700 text-sm">
+          <div className="mt-3 text-center">
+            <h3 className="text-sm font-bold text-blue-600 mb-1">Obrigado!</h3>
+            <p className="text-gray-700 text-xs leading-tight">
               Um consultor Mister Visa entrará em contato em breve 
               com as melhores estratégias para o seu perfil específico.
             </p>
@@ -935,23 +932,23 @@ export function SimpleWizardForm() {
       
       {/* Navigation Bar */}
       {currentStep > 0 && (
-        <div className="mb-3">
+        <div className="mb-2">
           <button
             onClick={() => goToStep(currentStep - 1)}
-            className="flex items-center text-gray-600 hover:text-gray-800 transition-colors text-sm"
+            className="flex items-center text-gray-600 hover:text-gray-800 transition-colors text-xs"
             data-testid="button-back"
           >
-            <i className="fas fa-arrow-left mr-2"></i>
+            <i className="fas fa-arrow-left mr-1"></i>
             Voltar à pergunta anterior
           </button>
         </div>
       )}
       
-      <div className="text-center mb-3">
-        <h2 className="text-lg font-bold text-gray-800 mb-1">
+      <div className="text-center mb-2">
+        <h2 className="text-base font-bold text-gray-800 mb-1">
           {currentQuestion.title}
         </h2>
-        <p className="text-sm text-gray-600">{currentQuestion.subtitle}</p>
+        <p className="text-xs text-gray-600">{currentQuestion.subtitle}</p>
       </div>
 
       {currentQuestion.type === 'single-choice' && (
