@@ -4,7 +4,7 @@ import { calculateScore } from "../utils/scoring";
 import { getVisaRecommendations, getScoreMessage, generatePersonalizedReport } from "../utils/visa-recommendations";
 import { useToast } from "@/hooks/use-toast";
 import { SimpleProgress } from "./ui/simple-progress";
-import flagGif from "@assets/flag-america-usa-35_1756390382970.gif";
+
 
 // Comentários interativos para cada resposta
 const getComment = (questionId: string, value: string): string => {
