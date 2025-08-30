@@ -571,29 +571,41 @@
   }
 
   .options-grid {
-    display: grid;
-    gap: 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
     justify-content: center;
+    align-items: stretch;
   }
 
-  .options-grid.cols-2 {
-    grid-template-columns: repeat(2, 1fr);
+  .options-grid.cols-2 .option-button {
+    flex: 1;
+    min-width: 200px;
+    max-width: 400px;
   }
 
-  .options-grid.cols-3 {
-    grid-template-columns: repeat(3, 1fr);
+  .options-grid.cols-3 .option-button {
+    flex: 1;
+    min-width: 180px;
+    max-width: 300px;
   }
 
-  .options-grid.cols-4 {
-    grid-template-columns: repeat(4, 1fr);
+  .options-grid.cols-4 .option-button {
+    flex: 1;
+    min-width: 150px;
+    max-width: 250px;
   }
 
-  .options-grid.cols-5 {
-    grid-template-columns: repeat(5, 1fr);
+  .options-grid.cols-5 .option-button {
+    flex: 1;
+    min-width: 120px;
+    max-width: 200px;
   }
 
-  .options-grid.cols-6 {
-    grid-template-columns: repeat(6, 1fr);
+  .options-grid.cols-6 .option-button {
+    flex: 1;
+    min-width: 100px;
+    max-width: 170px;
   }
 
   .option-button {
@@ -682,44 +694,57 @@
 
 /* Responsividade para tablet */
 @media (max-width: 1024px) {
+  .options-grid {
+    display: grid;
+    gap: 0.6rem;
+  }
+  
+  .options-grid.cols-5,
   .options-grid.cols-6 {
     grid-template-columns: repeat(3, 1fr);
   }
   
-  .options-grid.cols-5 {
-    grid-template-columns: repeat(3, 1fr);
+  .options-grid.cols-2,
+  .options-grid.cols-3,
+  .options-grid.cols-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .option-button {
+    min-width: auto;
+    max-width: none;
+    flex: none;
   }
 }
 
 /* Responsividade para mobile */
 @media (max-width: 768px) {
-  .options-grid.cols-3 {
+  .options-grid {
+    display: grid !important;
+    gap: 0.4rem;
+  }
+  
+  .options-grid.cols-2 {
     grid-template-columns: repeat(2, 1fr);
   }
   
-  .options-grid.cols-4 {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
-  .options-grid.cols-5 {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
+  .options-grid.cols-3,
+  .options-grid.cols-4,
+  .options-grid.cols-5,
   .options-grid.cols-6 {
     grid-template-columns: repeat(2, 1fr);
   }
   
-  .options-grid {
-    gap: 0.4rem;
-  }
-  
   .option-button {
-    padding: 0.7rem 0.5rem;
-    font-size: 0.75rem;
-    line-height: 1.2;
-    min-height: 3.5rem;
-    word-break: break-word;
-    hyphens: auto;
+    padding: 0.7rem 0.5rem !important;
+    font-size: 0.75rem !important;
+    line-height: 1.2 !important;
+    min-height: 3.5rem !important;
+    word-break: break-word !important;
+    hyphens: auto !important;
+    min-width: auto !important;
+    max-width: none !important;
+    flex: none !important;
   }
   
   .details-container {
