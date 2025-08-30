@@ -389,11 +389,11 @@
     right: 20px;
     background: linear-gradient(135deg, #10b981 0%, #059669 100%);
     color: white;
-    padding: 15px 25px;
-    border-radius: 15px;
-    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+    padding: 12px 20px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
     font-weight: 600;
-    font-size: 1.1rem;
+    font-size: 0.95rem;
     z-index: 100;
     border: 2px solid rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(10px);
@@ -657,45 +657,59 @@
 @media (max-width: 768px) {
   .cols-3 { grid-template-columns: repeat(2, 1fr) !important; }
   .cols-4 { grid-template-columns: repeat(2, 1fr) !important; }
+  .cols-6 { grid-template-columns: repeat(3, 1fr) !important; }
   
   .option-button {
     min-width: auto !important;
-    padding: 0.5rem !important;
-    font-size: 0.85rem !important;
+    padding: 0.4rem !important;
+    font-size: 0.7rem !important;
+    text-align: center !important;
   }
   
   .details-container {
-    padding: 0.5rem !important;
-    margin: 0.5rem 0 !important;
+    padding: 0.4rem !important;
+    margin: 0.4rem 0 !important;
   }
   
   .wizard-container {
-    padding: 1rem !important;
+    padding: 0.5rem !important;
+    margin: 0.5rem !important;
+    border-radius: 12px !important;
   }
   
   .brand-header {
-    padding: 0.5rem 1rem !important;
+    padding: 0.4rem 0.5rem !important;
+    margin: -0.5rem -0.5rem 0.4rem -0.5rem !important;
   }
   
   .mister-visa-logo-left {
-    height: 35px !important;
+    height: 32px !important;
   }
   
   .question-counter {
+    font-size: 0.7rem !important;
+  }
+  
+  .score-display {
+    position: fixed !important;
+    top: 10px !important;
+    right: 10px !important;
+    padding: 8px 12px !important;
     font-size: 0.8rem !important;
+    border-radius: 8px !important;
   }
   
-  h2 {
-    font-size: 1.25rem !important;
+  .score-display .score-number {
+    font-size: 1.1rem !important;
   }
   
-  .text-center.mb-4 h2 {
-    font-size: 1.25rem !important;
-    margin-bottom: 0.5rem !important;
+  .navigation-buttons {
+    gap: 0.5rem !important;
   }
   
-  .text-center.mb-4 p {
-    font-size: 0.9rem !important;
+  .navigation-buttons button {
+    padding: 0.4rem 0.8rem !important;
+    font-size: 0.7rem !important;
   }
 }
 
