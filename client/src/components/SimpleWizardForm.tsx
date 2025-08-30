@@ -353,9 +353,11 @@ export function SimpleWizardForm() {
 
 
   const getColumnsClass = (optionsCount: number) => {
-    if (optionsCount <= 3) return 'cols-1';
-    if (optionsCount <= 6) return 'cols-2';
-    return 'cols-3';
+    if (optionsCount <= 2) return 'cols-2';
+    if (optionsCount <= 3) return 'cols-3';
+    if (optionsCount <= 4) return 'cols-4';
+    if (optionsCount <= 5) return 'cols-5';
+    return 'cols-6';
   };
 
   const isCurrentQuestionAnswered = () => {
