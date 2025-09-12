@@ -11,9 +11,9 @@ import logoMisterVisa from "@assets/Logo2_1756485333265.png";
 const getComment = (questionId: string, value: string): string => {
   const comments: Record<string, Record<string, string>> = {
     objective: {
-      'trabalho': 'Ótimo! Os EUA buscam talentos em diversas áreas. Seu perfil pode ser ideal para vistos de trabalho como o H1B ou EB-2.',
+      'trabalho': 'Ótimo! Os EUA buscam talentos em diversas áreas. Seu perfil pode ser ideal para vistos de trabalho como o EB1, EB2 (EB2 NIW).',
       'estudo': 'As universidades americanas são de nível mundial. O visto de estudante (F-1) pode ser um caminho para oportunidades futuras no país.',
-      'investimento': 'Esse é um dos caminhos mais diretos para um Green Card! O visto de investidor (EB-5) pode ser a sua porta de entrada.',
+      'investimento': 'Esse é um dos caminhos mais diretos para um Green Card! Os vistos de investidor (E2, EB-5) podem ser a sua porta de entrada.',
       'familia': 'A base de toda imigração é a família. Este é um processo prioritário para o governo americano.',
       'turismo': 'Uma ótima forma de conhecer o país e suas oportunidades! O visto de turista (B1/B2) é o primeiro passo.',
       'outro': 'Entendido. Sua jornada é única, e estamos prontos para traçar o mapa ideal para você.'
@@ -42,10 +42,10 @@ const getComment = (questionId: string, value: string): string => {
     },
     education: {
       'ensino-medio': 'Perfeito! Vamos focar em outras áreas do seu perfil, como experiência profissional e vínculos familiares, para encontrar o visto ideal.',
-      'graduacao': 'Ótimo! Sua formação acadêmica é um dos principais pilares para vistos de trabalho, especialmente o EB-2 e o H1B.',
-      'pos': 'Ótimo! Sua formação acadêmica é um dos principais pilares para vistos de trabalho, especialmente o EB-2 e o H1B.',
-      'mestrado': 'Ótimo! Sua formação acadêmica é um dos principais pilares para vistos de trabalho, especialmente o EB-2 e o H1B.',
-      'doutorado': 'Ótimo! Sua formação acadêmica é um dos principais pilares para vistos de trabalho, especialmente o EB-2 e o H1B.'
+      'graduacao': 'Ótimo! Sua formação acadêmica é um dos principais pilares para vistos de trabalho, especialmente o EB1, EB2 (EB2 NIW).',
+      'pos': 'Ótimo! Sua formação acadêmica é um dos principais pilares para vistos de trabalho, especialmente o EB1, EB2 (EB2 NIW).',
+      'mestrado': 'Ótimo! Sua formação acadêmica é um dos principais pilares para vistos de trabalho, especialmente o EB1, EB2 (EB2 NIW).',
+      'doutorado': 'Ótimo! Sua formação acadêmica é um dos principais pilares para vistos de trabalho, especialmente o EB1, EB2 (EB2 NIW).',
     },
     englishLevel: {
       'basico': 'Não se preocupe, a falta de fluência não impede a maioria dos processos. No entanto, é algo que podemos trabalhar juntos para melhorar.',
@@ -447,11 +447,11 @@ export function SimpleWizardForm() {
   const getComment = (questionId: string, value: string): string => {
     const comments: Record<string, Record<string, string>> = {
       objective: {
-        trabalho: "Ótimo! Os EUA buscam talentos em diversas áreas. Seu perfil pode ser ideal para vistos de trabalho como o H1B ou EB-2.",
+        trabalho: "Ótimo! Os EUA buscam talentos em diversas áreas. Seu perfil pode ser ideal para vistos de trabalho como o EB1, EB2 (EB2 NIW).",
         negocios: "Empreendedores são muito bem-vindos! E-2 e EB-5 são excelentes opções de visto para negócios.",
         estudo: "As universidades americanas são de nível mundial. O visto de estudante (F-1) pode ser um caminho para oportunidades futuras no país.",
         familia: "A base de toda imigração é a família. Este é um processo prioritário para o governo americano.",
-        investimento: "Esse é um dos caminhos mais diretos para um Green Card! O visto de investidor (EB-5) pode ser a sua porta de entrada."
+        investimento: "Esse é um dos caminhos mais diretos para um Green Card! Os vistos de investidor (E2, EB-5) podem ser a sua porta de entrada."
       },
       capital: {
         'menos-20k': "Não se preocupe, existem diversas opções para quem não possui alto capital. Vamos explorar todas elas!",
@@ -470,7 +470,7 @@ export function SimpleWizardForm() {
       },
       education: {
         'ensino-medio': "Perfeito! Vamos focar em outras áreas do seu perfil, como experiência profissional e vínculos familiares, para encontrar o visto ideal.",
-        graduacao: "Ótimo! Sua formação acadêmica é um dos principais pilares para vistos de trabalho, especialmente o EB-2 e o H1B.",
+        graduacao: "Ótimo! Sua formação acadêmica é um dos principais pilares para vistos de trabalho, especialmente o EB1, EB2 (EB2 NIW).",
         pos: "Excelente! Pós-graduação é muito valorizada e abre portas para EB-2 Advanced Degree.",
         mestrado: "Fantástico! Mestrado acelera significativamente processos EB-2 e aumenta suas chances no H1B.",
         doutorado: "Incrível! PhD é altamente valorizado e pode qualificar para EB-1 Extraordinary Ability."
