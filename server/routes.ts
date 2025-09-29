@@ -40,7 +40,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Submit to webhook
       try {
-        const webhookUrl = "https://2n8n.ominicrm.com/webhook-test/ef793db4-4f98-4013-839c-3c965a7b4f2c";
+        const webhookUrl = "https://n8n.stratia.app.br/webhook-test/650b310d-cd0b-465a-849d-7c7a3991572e";
         const webhookPayload = {
           leadId: lead.id,
           formData: lead.formData,
