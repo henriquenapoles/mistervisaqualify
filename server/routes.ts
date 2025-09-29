@@ -66,7 +66,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
 
         if (!webhookResponse.ok) {
-          console.error("Webhook submission failed:", webhookResponse.statusText);
+          const errorText = await webhookResponse.text();
+          console.error("Webhook submission failed:", {
+            status: webhookResponse.status,
+            statusText: webhookResponse.statusText,
+            error: errorText,
+            url: webhookUrl
+          });
+        } else {
+          console.log("Webhook submitted successfully:", webhookUrl);
         }
       } catch (webhookError) {
         console.error("Webhook error:", webhookError);
