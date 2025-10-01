@@ -27,12 +27,25 @@ function showComment(text) {
     }, 4000);
 }
 
+// Função para mostrar pergunta específica
+function showQuestion(index) {
+    const questions = document.querySelectorAll('.question');
+    questions.forEach((q, i) => {
+        q.classList.remove('active');
+        if (i === index) {
+            q.classList.add('active');
+        }
+    });
+}
+
 // Função para avançar pergunta
 function nextQuestion() {
     if (currentQuestion < TOTAL_QUESTIONS - 1) {
         currentQuestion++;
         updateProgress();
         showQuestion(currentQuestion);
+    } else {
+        submitForm();
     }
 }
 
