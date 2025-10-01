@@ -61,7 +61,7 @@
                 <input type="text" id="fullName" placeholder="Nome Completo *" class="input-field" required>
                 <input type="email" id="email" placeholder="Email *" class="input-field" required>
                 <small id="emailError" class="error-msg"></small>
-                <input type="tel" id="phone" placeholder="Telefone com DDD *" class="input-field" required>
+                <input type="tel" id="phone" placeholder="Telefone com DDD *" class="input-field" required pattern="[0-9+\s\(\)\-]*" oninput="this.value = this.value.replace(/[^0-9+\s\(\)\-]/g, '')">
                 <small id="phoneError" class="error-msg"></small>
                 <input type="date" id="birthDate" class="input-field" required>
                 <small id="birthError" class="error-msg"></small>
