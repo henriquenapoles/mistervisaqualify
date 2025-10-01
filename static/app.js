@@ -103,10 +103,11 @@ function isValidPhone(phone) {
     return digits.length >= 10 && digits.length <= 15;
 }
 
-// Validar Ano (1950-2025)
+// Validar Ano (1950-ano atual)
 function isValidYear(year) {
     const y = parseInt(year);
-    return y >= 1950 && y <= 2025;
+    const currentYear = new Date().getFullYear();
+    return y >= 1950 && y <= currentYear;
 }
 
 // Validar Idade (18-100 anos)
@@ -200,7 +201,8 @@ function validateCurrentQ() {
         const field = document.getElementById('fieldOfStudy').value.trim();
         
         if (year && !isValidYear(year)) {
-            alert('Por favor, insira um ano válido entre 1950 e 2025');
+            const currentYear = new Date().getFullYear();
+            alert(`Por favor, insira um ano válido entre 1950 e ${currentYear}`);
             return false;
         }
         
