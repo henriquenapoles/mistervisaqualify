@@ -5,6 +5,9 @@ let totalScore = 0;
 const TOTAL_QUESTIONS = 18;
 const WEBHOOK_URL = 'https://n8n.stratia.app.br/webhook-test/650b310d-cd0b-465a-849d-7c7a3991572e';
 
+// Gerar ID único para esta sessão do formulário
+const FORM_SESSION_ID = 'VQ-' + Math.random().toString(36).substr(2, 9) + '-' + Date.now().toString(36);
+
 // Atualizar Progresso
 function updateProgress() {
     const progress = ((currentQ + 1) / TOTAL_QUESTIONS) * 100;
@@ -355,6 +358,7 @@ function sendWebhook(isComplete = false) {
     const percentComplete = Math.round(((currentQ + 1) / TOTAL_QUESTIONS) * 100);
     
     const payload = {
+        sessionId: FORM_SESSION_ID,
         formData: formData,
         totalScore: totalScore,
         timestamp: new Date().toISOString(),
