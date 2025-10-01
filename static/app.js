@@ -175,11 +175,14 @@ function nextQ() {
         updateProgress();
         
         // Mostrar/ocultar botões
-        document.getElementById('btnBack').style.display = currentQ > 0 ? 'block' : 'none';
+        const btnBack = document.getElementById('btnBack');
+        const btnNext = document.getElementById('btnNext');
         
-        // Mostrar botão Next apenas em telas com input
+        if (btnBack) btnBack.style.display = currentQ > 0 ? 'block' : 'none';
+        
+        // Mostrar botão Next apenas em telas com input obrigatório
         const needsNext = [2, 8, 12].includes(currentQ); // Dados Pessoais, Detalhes Educação, Cargo
-        document.getElementById('btnNext').style.display = needsNext ? 'block' : 'none';
+        if (btnNext) btnNext.style.display = needsNext ? 'block' : 'none';
         
         // Scroll to top suave
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -241,3 +244,13 @@ document.getElementById('country').addEventListener('change', function() {
 
 // Inicializar
 updateProgress();
+
+// Mostrar botão Next na primeira tela se necessário
+document.addEventListener('DOMContentLoaded', () => {
+    const btnNext = document.getElementById('btnNext');
+    const btnBack = document.getElementById('btnBack');
+    
+    // Primeira tela não precisa de Next (auto-avança)
+    if (btnNext) btnNext.style.display = 'none';
+    if (btnBack) btnBack.style.display = 'none';
+});
