@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VisaQualify - Avaliação Gratuita | Mister Visa</title>
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Badge de Pontuação -->
+    <div class="score-badge">
+        🏆 Pontuação: <span id="scoreValue">0</span>
+    </div>
+
+    <!-- Balão de Comentário Animado -->
+    <div id="commentBalloon" class="comment-balloon">
+        <span id="commentText"></span>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <img src="assets/logo.png" alt="Mister Visa" class="logo" onerror="this.style.display='none'">
+            <p class="subtitle">Consultoria Especializada em Vistos e Imigração</p>
+        </div>
+
+        <!-- Barra de Progresso -->
+        <div class="progress-container">
+            <div id="progressBar" class="progress-bar" style="width: 5.5%"></div>
+        </div>
+        <div id="progressText" class="progress-text">Pergunta 1 de 18</div>
+
+        <!-- Formulário -->
+        <div id="formContainer" class="form-content">
+            <form id="visaForm">
+                <!-- Pergunta 1: Objetivo -->
+                <div class="question active" data-question="1">
+                    <h2>🎯 Bloco 1 - Seus Objetivos</h2>
+                    <p style="margin-bottom: 20px; color: #6b7280;">O que você busca nos EUA?</p>
+                    <div class="options">
+                        <div class="option-card" onclick="selectOption(this, 'objetivo', 'trabalho', 10, 'Ótimo! Os EUA buscam talentos em diversas áreas.')">
+                            💼 Trabalho
+                        </div>
+                        <div class="option-card" onclick="selectOption(this, 'objetivo', 'estudo', 8, 'As universidades americanas são de nível mundial!')">
+                            🎓 Estudo
+                        </div>
+                        <div class="option-card" onclick="selectOption(this, 'objetivo', 'investimento', 15, 'Caminho direto para Green Card!')">
+                            💰 Investimento
+                        </div>
+                        <div class="option-card" onclick="selectOption(this, 'objetivo', 'familia', 12, 'A família é a base da imigração!')">
+                            ❤️ Reunião Familiar
+                        </div>
+                    </div>
+                    <div class="button-group">
+                        <button type="button" class="btn btn-primary" onclick="nextQuestion()">Avançar →</button>
+                    </div>
+                </div>
+
+                <!-- Mais perguntas serão adicionadas via JavaScript -->
+                <!-- Por enquanto mostrando estrutura base -->
+            </form>
+        </div>
+
+        <!-- Tela de Resultados -->
+        <div id="resultsContainer" class="results-container">
+            <h1>🎉 Seu Resultado</h1>
+            <div class="score-circle">
+                <span class="score-number" id="finalScore">0</span>
+                <span class="score-label">pontos</span>
+            </div>
+            <p style="margin-top: 20px; color: #4b5563;">
+                <strong>Obrigado!</strong><br>
+                Nossa equipe entrará em contato em breve com as melhores opções para seu perfil.
+            </p>
+        </div>
+    </div>
+
+    <script src="comments.js"></script>
+    <script src="app.js"></script>
+    <script>
+        function selectOption(element, field, value, points, comment) {
+            // Remove seleção anterior
+            element.parentElement.querySelectorAll('.option-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Marca como selecionado
+            element.classList.add('selected');
+            
+            // Salva dados
+            formData[field] = value;
+            
+            // Atualiza pontuação
+            updateScore(points);
+            
+            // Mostra comentário
+            showComment(comment);
+            
+            // Avança automaticamente após 2 segundos
+            setTimeout(() => nextQuestion(), 2000);
+        }
+    </script>
+</body>
+</html>
