@@ -27,6 +27,25 @@ function showComment(text) {
     setTimeout(() => balloon.classList.remove('show'), 3500);
 }
 
+// Esconder subformulários e campos extras
+function hideSubForms() {
+    // Esconder campos "outro"
+    const otherFields = document.querySelectorAll('.question.active input[id$="_outro"]');
+    otherFields.forEach(field => field.style.display = 'none');
+    
+    // Esconder campo indicação
+    const indicacaoField = document.getElementById('source_indicacao');
+    if (indicacaoField) indicacaoField.style.display = 'none';
+    
+    // Esconder subform cônjuge
+    const spouseForm = document.getElementById('spouseForm');
+    if (spouseForm) spouseForm.style.display = 'none';
+    
+    // Esconder subform filhos
+    const childrenForm = document.getElementById('childrenForm');
+    if (childrenForm) childrenForm.style.display = 'none';
+}
+
 // Resposta Simples - SEM auto-avanço
 function answer(field, value, points, comment) {
     formData[field] = value;
@@ -36,6 +55,9 @@ function answer(field, value, points, comment) {
     // Marca seleção visual
     document.querySelectorAll('.question.active .option-card').forEach(c => c.classList.remove('selected'));
     event.target.classList.add('selected');
+    
+    // Esconder todos os subformulários e campos extras da tela atual
+    hideSubForms();
     
     // Habilitar botão Next
     const btnNext = document.getElementById('btnNext');
@@ -48,6 +70,9 @@ function answer(field, value, points, comment) {
 
 // Mostrar campo "Outro"
 function showOther(field, points, comment) {
+    // Esconder outros subforms primeiro
+    hideSubForms();
+    
     const input = document.getElementById(field + '_outro');
     input.style.display = 'block';
     input.focus();
@@ -426,6 +451,15 @@ function validateDadosPessoais() {
     btnNext.style.opacity = isValid ? '1' : '0.5';
 }
 
+// Habilitar botão em telas de formulário opcional
+function enableNextOnInput() {
+    const btnNext = document.getElementById('btnNext');
+    if (btnNext) {
+        btnNext.disabled = false;
+        btnNext.style.opacity = '1';
+    }
+}
+
 // Inicializar botões
 document.addEventListener('DOMContentLoaded', () => {
     const btnNext = document.getElementById('btnNext');
@@ -439,13 +473,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (btnBack) btnBack.style.display = 'none';
     
-    // Adicionar listeners para validação em tempo real (tela 2)
+    // Adicionar listeners para validação em tempo real (tela 2 - Dados Pessoais)
     const fieldsToWatch = ['fullName', 'email', 'phone', 'birthDate', 'country'];
     fieldsToWatch.forEach(fieldId => {
         const field = document.getElementById(fieldId);
         if (field) {
             field.addEventListener('input', validateDadosPessoais);
             field.addEventListener('change', validateDadosPessoais);
+        }
+    });
+    
+    // Habilitar botão em telas de formulário opcional (tela 9 - Detalhes Educação)
+    const optionalFields = ['graduationYear', 'institution', 'fieldOfStudy', 'currentJob'];
+    optionalFields.forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        if (field) {
+            field.addEventListener('input', enableNextOnInput);
+            field.addEventListener('focus', enableNextOnInput);
         }
     });
 });
