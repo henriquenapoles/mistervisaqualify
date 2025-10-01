@@ -16,93 +16,92 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
+            padding: 5px;
         }
 
         .results-container {
             background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            max-width: 900px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,.25);
+            max-width: 600px;
             width: 100%;
-            padding: 50px 40px;
+            margin: 0 auto;
+            padding: 20px 15px;
             text-align: center;
         }
 
         .score-circle {
-            width: 120px;
-            height: 120px;
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
             background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
             color: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 30px;
-            font-size: 48px;
-            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
+            margin: 0 auto 15px;
+            font-size: 36px;
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
         }
 
         h1 {
             color: #2563eb;
-            font-size: 28px;
-            margin-bottom: 30px;
+            font-size: 20px;
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
+            font-weight: 700;
         }
 
         .score-box {
             background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
             color: white;
-            padding: 30px;
-            border-radius: 15px;
-            margin-bottom: 30px;
+            padding: 20px 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
         }
 
         .score-label {
-            font-size: 16px;
+            font-size: 13px;
             opacity: 0.9;
-            margin-bottom: 10px;
+            margin-bottom: 6px;
         }
 
         .score-value {
-            font-size: 48px;
+            font-size: 32px;
             font-weight: bold;
         }
 
         .visa-section {
-            margin-bottom: 30px;
+            margin-bottom: 15px;
         }
 
         .section-title {
             color: #2563eb;
-            font-size: 18px;
+            font-size: 14px;
             font-weight: 600;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .visa-cards {
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            margin-bottom: 30px;
+            gap: 10px;
+            margin-bottom: 15px;
         }
 
         .visa-card {
             background: #f9fafb;
             border: 2px solid #e5e7eb;
-            border-radius: 12px;
-            padding: 20px;
-            transition: all 0.3s;
+            border-radius: 8px;
+            padding: 12px;
+            transition: all 0.2s;
         }
 
         .visa-card:hover {
@@ -114,55 +113,56 @@
         .visa-name {
             color: #2563eb;
             font-weight: 700;
-            font-size: 18px;
-            margin-bottom: 8px;
+            font-size: 14px;
+            margin-bottom: 4px;
         }
 
         .visa-description {
             color: #6b7280;
-            font-size: 14px;
-            line-height: 1.5;
+            font-size: 12px;
+            line-height: 1.4;
         }
 
         .analysis-section {
             background: linear-gradient(135deg, rgba(37, 99, 235, 0.05) 0%, rgba(29, 78, 216, 0.05) 100%);
-            border-left: 4px solid #2563eb;
-            padding: 25px;
-            border-radius: 10px;
+            border-left: 3px solid #2563eb;
+            padding: 15px;
+            border-radius: 8px;
             text-align: left;
-            margin-bottom: 30px;
+            margin-bottom: 15px;
         }
 
         .analysis-title {
             color: #2563eb;
-            font-size: 16px;
+            font-size: 13px;
             font-weight: 600;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .analysis-text {
             color: #374151;
-            line-height: 1.6;
-            margin-bottom: 10px;
+            line-height: 1.5;
+            margin-bottom: 8px;
+            font-size: 12px;
         }
 
         .cta-button {
             background: linear-gradient(135deg, #10b981 0%, #059669 100%);
             color: white;
             border: none;
-            padding: 18px 50px;
-            border-radius: 50px;
-            font-size: 18px;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-size: 14px;
             font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);
+            transition: all 0.2s;
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
             display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .cta-button:hover {
@@ -171,40 +171,42 @@
         }
 
         .footer-message {
-            margin-top: 30px;
-            padding-top: 30px;
-            border-top: 2px solid #e5e7eb;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e5e7eb;
         }
 
         .footer-title {
             color: #2563eb;
             font-weight: 600;
-            font-size: 18px;
-            margin-bottom: 10px;
+            font-size: 14px;
+            margin-bottom: 6px;
         }
 
         .footer-text {
             color: #6b7280;
-            font-size: 14px;
-            line-height: 1.5;
+            font-size: 12px;
+            line-height: 1.4;
         }
 
         @media (max-width: 640px) {
             .results-container {
-                padding: 30px 20px;
+                padding: 15px 12px;
             }
 
             h1 {
-                font-size: 22px;
+                font-size: 18px;
             }
 
             .score-value {
-                font-size: 36px;
+                font-size: 28px;
             }
 
             .cta-button {
                 width: 100%;
                 justify-content: center;
+                padding: 11px 25px;
+                font-size: 13px;
             }
         }
     </style>

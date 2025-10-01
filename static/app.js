@@ -352,6 +352,8 @@ function prevQ() {
 
 // Enviar Webhook
 function sendWebhook(isComplete = false) {
+    const percentComplete = Math.round(((currentQ + 1) / TOTAL_QUESTIONS) * 100);
+    
     const payload = {
         formData: formData,
         totalScore: totalScore,
@@ -359,8 +361,15 @@ function sendWebhook(isComplete = false) {
         source: 'visaqualify-static',
         currentQuestion: currentQ + 1,
         totalQuestions: TOTAL_QUESTIONS,
-        status: isComplete ? 'COMPLETO' : 'INCOMPLETO',
-        completionPercentage: Math.round(((currentQ + 1) / TOTAL_QUESTIONS) * 100)
+        formCompleted: isComplete,
+        formStatus: isComplete ? 'COMPLETO' : 'INCOMPLETO',
+        completionPercentage: percentComplete,
+        progressInfo: {
+            completed: isComplete,
+            currentStep: currentQ + 1,
+            totalSteps: TOTAL_QUESTIONS,
+            percentComplete: percentComplete
+        }
     };
     
     fetch(WEBHOOK_URL, {
