@@ -3,104 +3,283 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VisaQualify - Avaliação Gratuita | Mister Visa</title>
+    <title>VisaQualify - Avaliação | Mister Visa</title>
     <link rel="icon" type="image/png" href="assets/favicon.png">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <!-- Badge de Pontuação -->
-    <div class="score-badge">
-        🏆 Pontuação: <span id="scoreValue">0</span>
-    </div>
+    <div class="score-badge">🏆 <span id="scoreValue">0</span></div>
 
     <div class="container">
         <!-- Header -->
         <div class="header">
             <img src="assets/logo.png" alt="Mister Visa" class="logo" onerror="this.style.display='none'">
-            <p class="subtitle">Consultoria Especializada em Vistos e Imigração</p>
         </div>
 
         <!-- Barra de Progresso -->
         <div class="progress-container">
-            <div id="progressBar" class="progress-bar" style="width: 5.5%"></div>
+            <div id="progressBar" class="progress-bar"></div>
         </div>
         <div id="progressText" class="progress-text">Pergunta 1 de 18</div>
 
         <!-- Formulário -->
         <div id="formContainer" class="form-content">
-            <form id="visaForm">
-                <!-- Pergunta 1: Objetivo -->
-                <div class="question active" data-question="1">
-                    <h2>🎯 Bloco 1 - Seus Objetivos</h2>
-                    <p style="margin-bottom: 20px; color: #6b7280;">O que você busca nos EUA?</p>
-                    <div class="options">
-                        <div class="option-card" onclick="selectOption(this, 'objetivo', 'trabalho', 10, 'Ótimo! Os EUA buscam talentos em diversas áreas.')">
-                            💼 Trabalho
-                        </div>
-                        <div class="option-card" onclick="selectOption(this, 'objetivo', 'estudo', 8, 'As universidades americanas são de nível mundial!')">
-                            🎓 Estudo
-                        </div>
-                        <div class="option-card" onclick="selectOption(this, 'objetivo', 'investimento', 15, 'Caminho direto para Green Card!')">
-                            💰 Investimento
-                        </div>
-                        <div class="option-card" onclick="selectOption(this, 'objetivo', 'familia', 12, 'A família é a base da imigração!')">
-                            ❤️ Reunião Familiar
-                        </div>
-                    </div>
-                    
-                    <!-- Balão de Comentário -->
-                    <div id="commentBalloon" class="comment-balloon">
-                        <span id="commentText"></span>
-                    </div>
-                    
-                    <div class="button-group">
-                        <button type="button" class="btn btn-primary" onclick="nextQuestion()">Avançar →</button>
-                    </div>
+            <!-- Tela 1: Objetivos -->
+            <div class="question active" data-q="0">
+                <h2>🎯 Bloco 1 - Seus Objetivos</h2>
+                <p class="subtitle">O que você busca nos EUA?</p>
+                <div class="options">
+                    <div class="option-card" onclick="answer('objetivo','trabalho',10,'Ótimo! Os EUA buscam talentos em diversas áreas. Seu perfil pode ser ideal para vistos de trabalho como o H1B ou EB-2.')">💼 Trabalho</div>
+                    <div class="option-card" onclick="answer('objetivo','estudo',8,'As universidades americanas são de nível mundial. O visto de estudante (F-1) pode ser um caminho para oportunidades futuras no país.')">🎓 Estudo</div>
+                    <div class="option-card" onclick="answer('objetivo','investimento',15,'Esse é um dos caminhos mais diretos para um Green Card! O visto de investidor (EB-5) pode ser a sua porta de entrada.')">💰 Investimento</div>
+                    <div class="option-card" onclick="answer('objetivo','familia',12,'A base de toda imigração é a família. Este é um processo prioritário para o governo americano.')">❤️ Reunião Familiar</div>
+                    <div class="option-card" onclick="answer('objetivo','turismo',0,'Uma ótima forma de conhecer o país e suas oportunidades! O visto de turista (B1/B2) é o primeiro passo.')">✈️ Turismo</div>
+                    <div class="option-card" onclick="showOther('objetivo',0,'Entendido. Sua jornada é única, e estamos prontos para traçar o mapa ideal para você.')">📌 Outro</div>
                 </div>
+                <div class="comment-balloon" id="comment"></div>
+                <input type="text" id="objetivo_outro" placeholder="Especifique seu objetivo" style="display:none" class="input-field">
+            </div>
 
-                <!-- Mais perguntas serão adicionadas via JavaScript -->
-                <!-- Por enquanto mostrando estrutura base -->
-            </form>
+            <!-- Tela 2: Capital -->
+            <div class="question" data-q="1">
+                <h2>💵 Capital Disponível</h2>
+                <p class="subtitle">Capital disponível para investir (USD)?</p>
+                <div class="options">
+                    <div class="option-card" onclick="answer('capital','menos20k',0,'Não se preocupe, existem diversas opções para quem não possui alto capital. Vamos explorar todas elas!')">Menos de $20.000</div>
+                    <div class="option-card" onclick="answer('capital','20k-500k',5,'Esse capital pode ser um diferencial para vistos de empreendedorismo ou para dar suporte ao processo.')">$20.000 – $500.000</div>
+                    <div class="option-card" onclick="answer('capital','500k-1m',10,'Excelente! Você se enquadra na faixa de investimento para o visto EB-5 em determinadas áreas. Isso é uma vantagem enorme.')">$500.001 – $1.000.000</div>
+                    <div class="option-card" onclick="answer('capital','mais1m',20,'Isso abre as portas para todas as oportunidades de visto de investidor (EB-5), inclusive em centros regionais de alta demanda.')">Mais de $1.000.000</div>
+                </div>
+                <div class="comment-balloon" id="comment"></div>
+            </div>
+
+            <!-- Tela 3: Dados Pessoais -->
+            <div class="question" data-q="2">
+                <h2>📝 Bloco 2 - Dados Pessoais</h2>
+                <p class="subtitle">Suas informações pessoais</p>
+                <input type="text" id="fullName" placeholder="Nome Completo *" class="input-field" required>
+                <input type="email" id="email" placeholder="Email *" class="input-field" required>
+                <input type="tel" id="phone" placeholder="Telefone com DDD *" class="input-field" required>
+                <input type="date" id="birthDate" class="input-field" required>
+                <select id="country" class="input-field">
+                    <option value="">País de Residência *</option>
+                    <option value="brasil">Brasil</option>
+                    <option value="outro">Outro</option>
+                </select>
+                <input type="text" id="country_outro" placeholder="Qual país?" style="display:none" class="input-field">
+                <div class="comment-balloon" id="comment"></div>
+            </div>
+
+            <!-- Tela 4: Estado Civil -->
+            <div class="question" data-q="3">
+                <h2>💍 Bloco 3 - Estado Civil</h2>
+                <p class="subtitle">Qual o seu estado civil?</p>
+                <div class="options">
+                    <div class="option-card" onclick="answer('maritalStatus','solteiro',0,'O processo para solteiros costuma ser mais simples e rápido. Ótimo!')">👤 Solteiro(a)</div>
+                    <div class="option-card" onclick="showSpouse('casado','É uma jornada para toda a família! Quando você obtém o visto de imigrante, seu cônjuge também se qualifica.')">💍 Casado(a)</div>
+                    <div class="option-card" onclick="answer('maritalStatus','divorciado',0,'Sem problemas! Seu estado civil não impacta negativamente no processo de imigração.')">📋 Divorciado(a)</div>
+                    <div class="option-card" onclick="answer('maritalStatus','viuvo',0,'Entendemos sua situação. Há caminhos específicos para viúvos, especialmente se o cônjuge era cidadão americano.')">🕊️ Viúvo(a)</div>
+                    <div class="option-card" onclick="answer('maritalStatus','separado',0,'Tudo bem! Isso não afeta suas chances de imigração para os EUA.')">📄 Separado(a)</div>
+                    <div class="option-card" onclick="showSpouse('uniao','É uma jornada para toda a família! Quando você obtém o visto de imigrante, seu companheiro(a) também pode se qualificar.')">🤝 União Estável</div>
+                </div>
+                <div id="spouseForm" style="display:none">
+                    <input type="text" id="spouseName" placeholder="Nome do(a) Cônjuge" class="input-field">
+                    <input type="number" id="spouseAge" placeholder="Idade do(a) Cônjuge" class="input-field">
+                    <select id="spouseEducation" class="input-field">
+                        <option value="">Escolaridade do(a) Cônjuge</option>
+                        <option value="medio">Ensino Médio</option>
+                        <option value="graduacao">Graduação</option>
+                        <option value="pos">Pós-graduação</option>
+                        <option value="mestrado">Mestrado</option>
+                        <option value="doutorado">Doutorado</option>
+                    </select>
+                </div>
+                <div class="comment-balloon" id="comment"></div>
+            </div>
+
+            <!-- Tela 5: Filhos -->
+            <div class="question" data-q="4">
+                <h2>👨‍👩‍👧‍👦 Filhos</h2>
+                <p class="subtitle">Você tem filhos?</p>
+                <div class="options">
+                    <div class="option-card" onclick="answer('hasChildren','nao',0,'Perfeito! Isso pode acelerar alguns processos de imigração.')">❌ Não tenho filhos</div>
+                    <div class="option-card" onclick="showChildren('Ótimo! Filhos menores de 21 anos podem ser incluídos no seu processo de imigração.')">✅ Sim, tenho filhos</div>
+                </div>
+                <div id="childrenForm" style="display:none">
+                    <input type="number" id="childrenCount" placeholder="Quantos filhos?" class="input-field">
+                    <input type="text" id="childrenAges" placeholder="Idades (ex: 5, 8, 12)" class="input-field">
+                </div>
+                <div class="comment-balloon" id="comment"></div>
+            </div>
+
+            <!-- Tela 6: Cidadania -->
+            <div class="question" data-q="5">
+                <h2>🌐 Cidadania</h2>
+                <p class="subtitle">Possui outra cidadania além da brasileira?</p>
+                <div class="options">
+                    <div class="option-card" onclick="showOther('citizenship',5,'Isso pode acelerar ou até abrir novos caminhos! Algumas nacionalidades têm acordos especiais com os EUA.')">✅ Sim</div>
+                    <div class="option-card" onclick="answer('citizenship','nao',0,'Não há problema! A cidadania brasileira já é um ótimo ponto de partida para a maioria dos processos.')">❌ Não</div>
+                </div>
+                <input type="text" id="citizenship_outro" placeholder="Qual cidadania?" style="display:none" class="input-field">
+                <div class="comment-balloon" id="comment"></div>
+            </div>
+
+            <!-- Tela 7: Origem Contato -->
+            <div class="question" data-q="6">
+                <h2>📢 Bloco 4 - Origem do Contato</h2>
+                <p class="subtitle">Como chegou até nós?</p>
+                <div class="options-grid">
+                    <div class="option-card" onclick="answer('source','instagram',0,'')">📸 Instagram</div>
+                    <div class="option-card" onclick="answer('source','facebook',0,'')">📘 Facebook</div>
+                    <div class="option-card" onclick="answer('source','google',0,'')">🔍 Google</div>
+                    <div class="option-card" onclick="answer('source','linkedin',0,'')">💼 LinkedIn</div>
+                    <div class="option-card" onclick="answer('source','youtube',0,'')">📺 YouTube</div>
+                    <div class="option-card" onclick="answer('source','whatsapp',0,'')">💬 WhatsApp</div>
+                    <div class="option-card" onclick="answer('source','site',0,'')">🌐 Site</div>
+                    <div class="option-card" onclick="showOther('source',0,'')">🤝 Indicação</div>
+                    <div class="option-card" onclick="answer('source','evento',0,'')">🎪 Evento</div>
+                    <div class="option-card" onclick="showOther('source',0,'')">📌 Outro</div>
+                </div>
+                <input type="text" id="source_outro" placeholder="Quem indicou você? (Nome da pessoa ou empresa)" style="display:none" class="input-field">
+                <div class="comment-balloon" id="comment"></div>
+            </div>
+
+            <!-- Tela 8: Educação -->
+            <div class="question" data-q="7">
+                <h2>🎓 Bloco 5 - Educação</h2>
+                <p class="subtitle">Qual o seu nível de escolaridade mais alto?</p>
+                <div class="options">
+                    <div class="option-card" onclick="answer('education','medio',0,'Perfeito! Vamos focar em outras áreas do seu perfil, como experiência profissional e vínculos familiares, para encontrar o visto ideal.')">📚 Ensino Médio Completo</div>
+                    <div class="option-card" onclick="answer('education','graduacao',5,'Ótimo! Sua formação acadêmica é um dos principais pilares para vistos de trabalho, especialmente o EB-2 e o H1B.')">🎓 Graduação</div>
+                    <div class="option-card" onclick="answer('education','pos',8,'Ótimo! Sua formação acadêmica é um dos principais pilares para vistos de trabalho, especialmente o EB-2 e o H1B.')">📖 Pós-Graduação/Especialização</div>
+                    <div class="option-card" onclick="answer('education','mestrado',10,'Ótimo! Sua formação acadêmica é um dos principais pilares para vistos de trabalho, especialmente o EB-2 e o H1B.')">🎖️ Mestrado</div>
+                    <div class="option-card" onclick="answer('education','doutorado',15,'Ótimo! Sua formação acadêmica é um dos principais pilares para vistos de trabalho, especialmente o EB-2 e o H1B.')">👨‍🎓 Doutorado</div>
+                </div>
+                <div class="comment-balloon" id="comment"></div>
+            </div>
+
+            <!-- Tela 9: Detalhes Educação -->
+            <div class="question" data-q="8">
+                <h2>📚 Detalhes da Educação</h2>
+                <p class="subtitle">Ótimo! Para qualificar melhor, nos diga...</p>
+                <input type="number" id="graduationYear" placeholder="Ano de formação (1950-2025)" min="1950" max="2025" class="input-field">
+                <input type="text" id="institution" placeholder="Instituição de Ensino" class="input-field">
+                <input type="text" id="fieldOfStudy" placeholder="Área de Formação" class="input-field">
+                <div class="comment-balloon" id="comment"></div>
+            </div>
+
+            <!-- Tela 10: Certificações -->
+            <div class="question" data-q="9">
+                <h2>📜 Certificações</h2>
+                <p class="subtitle">Você possui certificações profissionais relevantes?</p>
+                <div class="options">
+                    <div class="option-card" onclick="showOther('certifications',2,'')">✅ Sim</div>
+                    <div class="option-card" onclick="answer('certifications','nao',0,'')">❌ Não</div>
+                </div>
+                <input type="text" id="certifications_outro" placeholder="Quais certificações?" style="display:none" class="input-field">
+                <div class="comment-balloon" id="comment"></div>
+            </div>
+
+            <!-- Tela 11: Inglês -->
+            <div class="question" data-q="10">
+                <h2>🗣️ Nível de Inglês</h2>
+                <p class="subtitle">Qual o seu nível de inglês?</p>
+                <div class="options">
+                    <div class="option-card" onclick="answer('englishLevel','basico',0,'Não se preocupe, a falta de fluência não impede a maioria dos processos. No entanto, é algo que podemos trabalhar juntos para melhorar.')">🔤 Básico</div>
+                    <div class="option-card" onclick="answer('englishLevel','intermediario',3,'Bom nível! Isso já é um diferencial importante para muitos processos de imigração.')">📝 Intermediário</div>
+                    <div class="option-card" onclick="answer('englishLevel','avancado',5,'Isso é um grande diferencial! A fluência em inglês é muito valorizada por empregadores e é um ponto forte no seu perfil.')">💬 Avançado</div>
+                    <div class="option-card" onclick="answer('englishLevel','fluente',8,'Isso é um grande diferencial! A fluência em inglês é muito valorizada por empregadores e é um ponto forte no seu perfil.')">🌟 Fluente</div>
+                </div>
+                <div class="comment-balloon" id="comment"></div>
+            </div>
+
+            <!-- Tela 12: Experiência -->
+            <div class="question" data-q="11">
+                <h2>⏳ Bloco 6 - Experiência Profissional</h2>
+                <p class="subtitle">Anos de experiência profissional relevante</p>
+                <div class="options">
+                    <div class="option-card" onclick="answer('experience','menos1',0,'Todo profissional começou de algum lugar! Vamos focar em outras fortalezas do seu perfil.')">🌱 < 1 ano</div>
+                    <div class="option-card" onclick="answer('experience','1-5',5,'Boa experiência inicial! Isso já demonstra conhecimento prático na sua área.')">📊 1-5 anos</div>
+                    <div class="option-card" onclick="answer('experience','5-10',8,'Sua experiência é um ativo muito valioso! Profissionais experientes são extremamente procurados nos EUA.')">🏅 5-10 anos</div>
+                    <div class="option-card" onclick="answer('experience','10plus',10,'Sua experiência é um ativo muito valioso! Profissionais experientes são extremamente procurados nos EUA.')">🏆 10+ anos</div>
+                </div>
+                <div class="comment-balloon" id="comment"></div>
+            </div>
+
+            <!-- Tela 13: Cargo Atual -->
+            <div class="question" data-q="12">
+                <h2>💼 Cargo Atual</h2>
+                <p class="subtitle">Qual o seu cargo atual ou mais recente?</p>
+                <input type="text" id="currentJob" placeholder="Cargo atual ou mais recente" class="input-field">
+                <div class="comment-balloon" id="comment"></div>
+            </div>
+
+            <!-- Tela 14: Reconhecimento -->
+            <div class="question" data-q="13">
+                <h2>🏆 Bloco 10 - Reconhecimento</h2>
+                <p class="subtitle">Já teve reconhecimento nacional/internacional (prêmios, publicações, etc.)?</p>
+                <div class="options">
+                    <div class="option-card" onclick="showOther('recognition',25,'Fantástico! Liderança e reconhecimento podem qualificar você para vistos de habilidade extraordinária, como o EB-1 ou o O-1, o caminho mais rápido para um Green Card.')">✅ Sim</div>
+                    <div class="option-card" onclick="answer('recognition','nao',0,'Tudo bem! O mais importante é a sua experiência prática e qualificações técnicas.')">❌ Não</div>
+                </div>
+                <input type="text" id="recognition_outro" placeholder="Especifique seus reconhecimentos" style="display:none" class="input-field">
+                <div class="comment-balloon" id="comment"></div>
+            </div>
+
+            <!-- Tela 15: Liderança -->
+            <div class="question" data-q="14">
+                <h2>👔 Bloco 11 - Liderança</h2>
+                <p class="subtitle">Já exerceu cargos de liderança/gerência?</p>
+                <div class="options">
+                    <div class="option-card" onclick="showOther('leadership',5,'Fantástico! Liderança e reconhecimento podem qualificar você para vistos de habilidade extraordinária, como o EB-1 ou o O-1.')">✅ Sim</div>
+                    <div class="option-card" onclick="answer('leadership','nao',0,'Não há problema! Sua experiência técnica e outras qualificações são igualmente valiosas.')">❌ Não</div>
+                </div>
+                <input type="text" id="leadership_outro" placeholder="Especifique seus cargos de liderança" style="display:none" class="input-field">
+                <div class="comment-balloon" id="comment"></div>
+            </div>
+
+            <!-- Tela 16: Família nos EUA -->
+            <div class="question" data-q="15">
+                <h2>👨‍👩‍👧‍👦 Bloco 7 - Família nos EUA</h2>
+                <p class="subtitle">Tem familiares diretos nos EUA (pais, irmãos, filhos) com Green Card ou cidadania?</p>
+                <div class="options">
+                    <div class="option-card" onclick="answer('familyInUS','sim',10,'Isso é uma grande vantagem! Vistos de família são uma das vias mais seguras e diretas para a imigração.')">✅ Sim, tenho família nos EUA</div>
+                    <div class="option-card" onclick="answer('familyInUS','nao',0,'Não se preocupe! Há muitos outros caminhos através de qualificação profissional e outras habilidades.')">❌ Não tenho família nos EUA</div>
+                </div>
+                <div class="comment-balloon" id="comment"></div>
+            </div>
+
+            <!-- Tela 17: Oferta Emprego -->
+            <div class="question" data-q="16">
+                <h2>💼 Bloco 8 - Oferta de Emprego</h2>
+                <p class="subtitle">Tem oferta de emprego confirmada de empresa americana?</p>
+                <div class="options">
+                    <div class="option-card" onclick="answer('jobOffer','sim',20,'Você encontrou o bilhete de ouro! Com uma oferta de emprego, seu processo de visto de trabalho se torna muito mais forte e focado.')">✅ Sim, tenho oferta confirmada</div>
+                    <div class="option-card" onclick="answer('jobOffer','nao',0,'Tudo bem! Muitos conseguem ofertas de emprego durante o processo ou usam outros caminhos.')">❌ Não tenho oferta ainda</div>
+                </div>
+                <div class="comment-balloon" id="comment"></div>
+            </div>
+
+            <!-- Tela 18: Empresa Multinacional -->
+            <div class="question" data-q="17">
+                <h2>🏢 Bloco 9 - Empresa Multinacional</h2>
+                <p class="subtitle">Trabalha em empresa multinacional com filial nos EUA?</p>
+                <div class="options">
+                    <div class="option-card" onclick="answer('companyTransfer','sim',10,'Essa é uma das formas mais comuns de imigração para executivos e profissionais especializados. O visto L-1 pode ser a sua opção!')">✅ Sim, possibilidade de transferência</div>
+                    <div class="option-card" onclick="answer('companyTransfer','nao',0,'Sem problemas! Existem muitas outras formas de conseguir oportunidades de trabalho nos EUA.')">❌ Não trabalho em multinacional</div>
+                </div>
+                <div class="comment-balloon" id="comment"></div>
+            </div>
         </div>
 
-        <!-- Tela de Resultados -->
-        <div id="resultsContainer" class="results-container">
-            <h1>🎉 Seu Resultado</h1>
-            <div class="score-circle">
-                <span class="score-number" id="finalScore">0</span>
-                <span class="score-label">pontos</span>
-            </div>
-            <p style="margin-top: 20px; color: #4b5563;">
-                <strong>Obrigado!</strong><br>
-                Nossa equipe entrará em contato em breve com as melhores opções para seu perfil.
-            </p>
+        <!-- Botões Navegação -->
+        <div class="nav-buttons">
+            <button id="btnBack" class="btn btn-secondary" onclick="prevQ()" style="display:none">← Voltar</button>
+            <button id="btnNext" class="btn btn-primary" onclick="nextQ()">Avançar →</button>
         </div>
     </div>
 
-    <script src="comments.js"></script>
     <script src="app.js"></script>
-    <script>
-        function selectOption(element, field, value, points, comment) {
-            // Remove seleção anterior
-            element.parentElement.querySelectorAll('.option-card').forEach(card => {
-                card.classList.remove('selected');
-            });
-            
-            // Marca como selecionado
-            element.classList.add('selected');
-            
-            // Salva dados
-            formData[field] = value;
-            
-            // Atualiza pontuação
-            updateScore(points);
-            
-            // Mostra comentário
-            showComment(comment);
-            
-            // Avança automaticamente após 2 segundos
-            setTimeout(() => nextQuestion(), 2000);
-        }
-    </script>
 </body>
 </html>
