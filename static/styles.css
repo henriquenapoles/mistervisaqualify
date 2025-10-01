@@ -37,10 +37,14 @@ h2{color:#1e3a8a;font-size:16px;margin-bottom:6px;font-weight:600;line-height:1.
 .option-card.selected{border-color:#667eea;background:linear-gradient(135deg,rgba(102,126,234,.15),rgba(118,75,162,.15))}
 
 /* Input Fields - ULTRA COMPACTO */
-.input-field{width:100%;padding:10px;border:2px solid #e5e7eb;border-radius:7px;font-size:13px;margin-bottom:8px;font-family:inherit;transition:border-color .3s}
+.input-field{width:100%;padding:10px;border:2px solid #e5e7eb;border-radius:7px;font-size:13px;margin-bottom:3px;font-family:inherit;transition:border-color .3s}
 .input-field:focus{outline:none;border-color:#667eea}
+.input-field.error{border-color:#ef4444}
 select.input-field{cursor:pointer}
 textarea.input-field{resize:vertical;min-height:50px;line-height:1.3}
+
+/* Error Messages */
+.error-msg{display:block;color:#ef4444;font-size:11px;margin-bottom:8px;min-height:14px;line-height:1.2}
 
 /* Comment Balloon - ULTRA COMPACTO */
 .comment-balloon{background:linear-gradient(135deg,#8b5cf6 0%,#6d28d9 100%);color:#fff;padding:8px 14px;border-radius:8px;margin:6px 0;font-size:12px;line-height:1.3;opacity:0;max-height:0;overflow:hidden;transition:all .25s}
