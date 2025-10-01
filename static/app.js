@@ -27,21 +27,19 @@ function showComment(text) {
     setTimeout(() => balloon.classList.remove('show'), 3500);
 }
 
-// Resposta Simples - AUTO-AVANÇA
+// Resposta Simples - SEM auto-avanço
 function answer(field, value, points, comment) {
     formData[field] = value;
     updateScore(points);
+    showComment(comment);
     
     // Marca seleção visual
     document.querySelectorAll('.question.active .option-card').forEach(c => c.classList.remove('selected'));
     event.target.classList.add('selected');
     
-    if (comment) {
-        showComment(comment);
-        setTimeout(() => nextQ(), 1500); // 1.5s com comentário
-    } else {
-        setTimeout(() => nextQ(), 300); // 0.3s sem comentário
-    }
+    // Mostrar botão Next
+    const btnNext = document.getElementById('btnNext');
+    if (btnNext) btnNext.style.display = 'block';
 }
 
 // Mostrar campo "Outro"
@@ -55,6 +53,10 @@ function showOther(field, points, comment) {
     
     document.querySelectorAll('.question.active .option-card').forEach(c => c.classList.remove('selected'));
     event.target.classList.add('selected');
+    
+    // Mostrar botão Next
+    const btnNext = document.getElementById('btnNext');
+    if (btnNext) btnNext.style.display = 'block';
 }
 
 // Mostrar form Cônjuge
@@ -65,6 +67,10 @@ function showSpouse(value, comment) {
     
     document.querySelectorAll('.question.active .option-card').forEach(c => c.classList.remove('selected'));
     event.target.classList.add('selected');
+    
+    // Mostrar botão Next
+    const btnNext = document.getElementById('btnNext');
+    if (btnNext) btnNext.style.display = 'block';
 }
 
 // Mostrar form Filhos
@@ -75,6 +81,10 @@ function showChildren(comment) {
     
     document.querySelectorAll('.question.active .option-card').forEach(c => c.classList.remove('selected'));
     event.target.classList.add('selected');
+    
+    // Mostrar botão Next
+    const btnNext = document.getElementById('btnNext');
+    if (btnNext) btnNext.style.display = 'block';
 }
 
 // Validar Tela Atual
@@ -180,9 +190,8 @@ function nextQ() {
         
         if (btnBack) btnBack.style.display = currentQ > 0 ? 'block' : 'none';
         
-        // Mostrar botão Next apenas em telas com input obrigatório
-        const needsNext = [2, 8, 12].includes(currentQ); // Dados Pessoais, Detalhes Educação, Cargo
-        if (btnNext) btnNext.style.display = needsNext ? 'block' : 'none';
+        // Esconder botão Next (será mostrado quando clicar em opção)
+        if (btnNext) btnNext.style.display = 'none';
         
         // Scroll to top suave
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -245,12 +254,12 @@ document.getElementById('country').addEventListener('change', function() {
 // Inicializar
 updateProgress();
 
-// Mostrar botão Next na primeira tela se necessário
+// Inicializar botões
 document.addEventListener('DOMContentLoaded', () => {
     const btnNext = document.getElementById('btnNext');
     const btnBack = document.getElementById('btnBack');
     
-    // Primeira tela não precisa de Next (auto-avança)
+    // Esconder ambos botões no início (Next aparece ao clicar em opção)
     if (btnNext) btnNext.style.display = 'none';
     if (btnBack) btnBack.style.display = 'none';
 });
