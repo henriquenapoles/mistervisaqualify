@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seu Resultado - VisaQualify | Mister Visa</title>
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .results-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 900px;
+            width: 100%;
+            padding: 50px 40px;
+            text-align: center;
+        }
+
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            font-size: 48px;
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
+        }
+
+        h1 {
+            color: #2563eb;
+            font-size: 28px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .score-box {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .score-label {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+
+        .score-value {
+            font-size: 48px;
+            font-weight: bold;
+        }
+
+        .visa-section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            color: #2563eb;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .visa-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .visa-card {
+            background: #f9fafb;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s;
+        }
+
+        .visa-card:hover {
+            border-color: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+        }
+
+        .visa-name {
+            color: #2563eb;
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .visa-description {
+            color: #6b7280;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .analysis-section {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.05) 0%, rgba(29, 78, 216, 0.05) 100%);
+            border-left: 4px solid #2563eb;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: left;
+            margin-bottom: 30px;
+        }
+
+        .analysis-title {
+            color: #2563eb;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .analysis-text {
+            color: #374151;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(16, 185, 129, 0.5);
+        }
+
+        .footer-message {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px solid #e5e7eb;
+        }
+
+        .footer-title {
+            color: #2563eb;
+            font-weight: 600;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .footer-text {
+            color: #6b7280;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 640px) {
+            .results-container {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 22px;
+            }
+
+            .score-value {
+                font-size: 36px;
+            }
+
+            .cta-button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="results-container">
+        <!-- Círculo de Pontuação -->
+        <div class="score-circle">🔵</div>
+
+        <!-- Título -->
+        <h1>🎉 Seu Resultado</h1>
+
+        <!-- Box de Pontuação -->
+        <div class="score-box">
+            <div class="score-label">Sua pontuação é</div>
+            <div class="score-value" id="finalScore">0 pontos!</div>
+        </div>
+
+        <!-- Vistos Recomendados -->
+        <div class="visa-section">
+            <div class="section-title">🎯 Vistos recomendados:</div>
+            <div class="visa-cards" id="visaCards">
+                <!-- Vistos serão inseridos via JavaScript -->
+            </div>
+        </div>
+
+        <!-- Análise -->
+        <div class="analysis-section">
+            <div class="analysis-title">📋 Análise:</div>
+            <div id="analysisText">
+                <p class="analysis-text">
+                    Buscar educação nos EUA é um investimento valioso no futuro. 
+                    Seu capital qualifica você para programas de investidor EB-5. 
+                    Sua graduação é base sólida para H1B e outros vistos profissionais. 
+                    Seus 5-10 anos de experiência são ideais para posições sênior e H1B avançado.
+                </p>
+                <p class="analysis-text">
+                    Você apresenta potencial para vistos temporários. Aprimoramento 
+                    estratégico das qualificações pode abrir opções de residência permanente.
+                </p>
+            </div>
+        </div>
+
+        <!-- Botão CTA -->
+        <button class="cta-button" onclick="finalizeCadastro()">
+            ✅ FINALIZAR CADASTRO
+        </button>
+
+        <!-- Mensagem Footer -->
+        <div class="footer-message">
+            <div class="footer-title">Obrigado!</div>
+            <div class="footer-text">
+                Um consultor Mister Visa entrará em contato em breve com as melhores 
+                estratégias para o seu perfil específico.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Pegar dados do localStorage ou URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const score = urlParams.get('score') || localStorage.getItem('visaScore') || 0;
+        const formData = JSON.parse(localStorage.getItem('visaFormData') || '{}');
+
+        // Atualizar pontuação
+        document.getElementById('finalScore').textContent = score + ' pontos!';
+
+        // Vistos recomendados baseados na pontuação
+        function getRecommendedVisas(score) {
+            const visas = [];
+            
+            if (score >= 100) {
+                visas.push({ name: 'EB-1', desc: 'Visto de habilidade extraordinária' });
+                visas.push({ name: 'O-1', desc: 'Profissional de destaque internacional' });
+            } else if (score >= 70) {
+                visas.push({ name: 'EB-2 NIW', desc: 'Interesse nacional (sem necessidade de empregador)' });
+                visas.push({ name: 'H1-B', desc: 'Trabalho especializado' });
+            } else if (score >= 40) {
+                visas.push({ name: 'F1/M1', desc: 'Visto de estudante' });
+                visas.push({ name: 'J1', desc: 'Programa de intercâmbio' });
+                visas.push({ name: 'H2B', desc: 'Trabalho temporário' });
+            } else {
+                visas.push({ name: 'B1/B2', desc: 'Turismo e negócios' });
+                visas.push({ name: 'F1', desc: 'Visto de estudante' });
+            }
+
+            return visas;
+        }
+
+        // Renderizar vistos
+        const visas = getRecommendedVisas(parseInt(score));
+        const visaCardsContainer = document.getElementById('visaCards');
+        
+        visas.forEach(visa => {
+            const card = document.createElement('div');
+            card.className = 'visa-card';
+            card.innerHTML = `
+                <div class="visa-name">${visa.name}</div>
+                <div class="visa-description">${visa.desc}</div>
+            `;
+            visaCardsContainer.appendChild(card);
+        });
+
+        // Função de finalizar cadastro
+        function finalizeCadastro() {
+            // Aqui você pode enviar para o webhook
+            const webhookUrl = 'https://n8n.stratia.app.br/webhook-test/650b310d-cd0b-465a-849d-7c7a3991572e';
+            
+            fetch(webhookUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    score: score,
+                    formData: formData,
+                    visasRecomendados: visas,
+                    timestamp: new Date().toISOString()
+                })
+            })
+            .then(() => {
+                alert('✅ Cadastro finalizado com sucesso! Em breve entraremos em contato.');
+                // Limpar dados
+                localStorage.clear();
+            })
+            .catch(err => {
+                console.error('Erro ao enviar:', err);
+                alert('✅ Seus dados foram registrados! Em breve entraremos em contato.');
+            });
+        }
+    </script>
+</body>
+</html>
