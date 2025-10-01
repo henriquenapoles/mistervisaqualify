@@ -1,11 +1,29 @@
-# Dockerfile SUPER SIMPLES - Apenas Nginx servindo arquivos estáticos
+# Build stage
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+# Copiar package files
+COPY package*.json ./
+
+# Instalar dependências
+RUN npm ci
+
+# Copiar código
+COPY . .
+
+# Build do frontend
+RUN npm run build
+
+# Production stage  
 FROM nginx:alpine
 
-# Copiar arquivos estáticos para o Nginx
-COPY static/ /usr/share/nginx/html/
+# Copiar build para nginx
+COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Expor porta 80
+# Copiar configuração nginx
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 EXPOSE 80
 
-# Nginx inicia automaticamente
 CMD ["nginx", "-g", "daemon off;"]
