@@ -37,9 +37,13 @@ function answer(field, value, points, comment) {
     document.querySelectorAll('.question.active .option-card').forEach(c => c.classList.remove('selected'));
     event.target.classList.add('selected');
     
-    // Mostrar botão Next
+    // Habilitar botão Next
     const btnNext = document.getElementById('btnNext');
-    if (btnNext) btnNext.style.display = 'block';
+    if (btnNext) {
+        btnNext.style.display = 'block';
+        btnNext.disabled = false;
+        btnNext.style.opacity = '1';
+    }
 }
 
 // Mostrar campo "Outro"
@@ -87,6 +91,32 @@ function showChildren(comment) {
     if (btnNext) btnNext.style.display = 'block';
 }
 
+// Validar Email
+function isValidEmail(email) {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+}
+
+// Validar Telefone (mínimo 10 dígitos)
+function isValidPhone(phone) {
+    const digits = phone.replace(/\D/g, '');
+    return digits.length >= 10 && digits.length <= 15;
+}
+
+// Validar Ano (1950-2025)
+function isValidYear(year) {
+    const y = parseInt(year);
+    return y >= 1950 && y <= 2025;
+}
+
+// Validar Idade (18-100 anos)
+function isValidBirthDate(date) {
+    const birth = new Date(date);
+    const today = new Date();
+    const age = today.getFullYear() - birth.getFullYear();
+    return age >= 18 && age <= 100;
+}
+
 // Validar Tela Atual
 function validateCurrentQ() {
     const q = document.querySelector(`.question[data-q="${currentQ}"]`);
@@ -101,6 +131,21 @@ function validateCurrentQ() {
         
         if (!name || !email || !phone || !birth || !country) {
             alert('Por favor, preencha todos os campos obrigatórios');
+            return false;
+        }
+        
+        if (!isValidEmail(email)) {
+            alert('Por favor, insira um email válido (ex: seunome@email.com)');
+            return false;
+        }
+        
+        if (!isValidPhone(phone)) {
+            alert('Por favor, insira um telefone válido com DDD (mínimo 10 dígitos)');
+            return false;
+        }
+        
+        if (!isValidBirthDate(birth)) {
+            alert('Idade deve estar entre 18 e 100 anos');
             return false;
         }
         
@@ -154,6 +199,11 @@ function validateCurrentQ() {
         const inst = document.getElementById('institution').value.trim();
         const field = document.getElementById('fieldOfStudy').value.trim();
         
+        if (year && !isValidYear(year)) {
+            alert('Por favor, insira um ano válido entre 1950 e 2025');
+            return false;
+        }
+        
         if (year) formData.graduationYear = year;
         if (inst) formData.institution = inst;
         if (field) formData.fieldOfStudy = field;
@@ -190,8 +240,11 @@ function nextQ() {
         
         if (btnBack) btnBack.style.display = currentQ > 0 ? 'block' : 'none';
         
-        // Esconder botão Next (será mostrado quando clicar em opção)
-        if (btnNext) btnNext.style.display = 'none';
+        // Desabilitar botão Next (será habilitado quando clicar em opção ou preencher campos)
+        if (btnNext) {
+            btnNext.disabled = true;
+            btnNext.style.opacity = '0.5';
+        }
         
         // Scroll to top suave
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -254,12 +307,46 @@ document.getElementById('country').addEventListener('change', function() {
 // Inicializar
 updateProgress();
 
+// Validação em tempo real para tela de Dados Pessoais
+function validateDadosPessoais() {
+    if (currentQ !== 2) return;
+    
+    const name = document.getElementById('fullName').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const birth = document.getElementById('birthDate').value;
+    const country = document.getElementById('country').value;
+    
+    const btnNext = document.getElementById('btnNext');
+    if (!btnNext) return;
+    
+    const isValid = name && email && phone && birth && country &&
+                   isValidEmail(email) && isValidPhone(phone) && isValidBirthDate(birth);
+    
+    btnNext.disabled = !isValid;
+    btnNext.style.opacity = isValid ? '1' : '0.5';
+}
+
 // Inicializar botões
 document.addEventListener('DOMContentLoaded', () => {
     const btnNext = document.getElementById('btnNext');
     const btnBack = document.getElementById('btnBack');
     
-    // Esconder ambos botões no início (Next aparece ao clicar em opção)
-    if (btnNext) btnNext.style.display = 'none';
+    // Botão Next sempre visível, mas inicialmente desabilitado
+    if (btnNext) {
+        btnNext.style.display = 'block';
+        btnNext.disabled = true;
+        btnNext.style.opacity = '0.5';
+    }
     if (btnBack) btnBack.style.display = 'none';
+    
+    // Adicionar listeners para validação em tempo real (tela 2)
+    const fieldsToWatch = ['fullName', 'email', 'phone', 'birthDate', 'country'];
+    fieldsToWatch.forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        if (field) {
+            field.addEventListener('input', validateDadosPessoais);
+            field.addEventListener('change', validateDadosPessoais);
+        }
+    });
 });
