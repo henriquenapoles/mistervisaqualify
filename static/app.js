@@ -27,18 +27,21 @@ function showComment(text) {
     setTimeout(() => balloon.classList.remove('show'), 3500);
 }
 
-// Resposta Simples
+// Resposta Simples - AUTO-AVANÇA
 function answer(field, value, points, comment) {
     formData[field] = value;
     updateScore(points);
-    showComment(comment);
     
     // Marca seleção visual
     document.querySelectorAll('.question.active .option-card').forEach(c => c.classList.remove('selected'));
     event.target.classList.add('selected');
     
-    // Auto-avança após comentário
-    setTimeout(() => nextQ(), comment ? 2000 : 500);
+    if (comment) {
+        showComment(comment);
+        setTimeout(() => nextQ(), 1500); // 1.5s com comentário
+    } else {
+        setTimeout(() => nextQ(), 300); // 0.3s sem comentário
+    }
 }
 
 // Mostrar campo "Outro"
@@ -171,11 +174,15 @@ function nextQ() {
         document.querySelector(`.question[data-q="${currentQ}"]`).classList.add('active');
         updateProgress();
         
-        // Mostrar/ocultar botão voltar
+        // Mostrar/ocultar botões
         document.getElementById('btnBack').style.display = currentQ > 0 ? 'block' : 'none';
         
-        // Scroll to top
-        document.querySelector('.container').scrollIntoView({ behavior: 'smooth' });
+        // Mostrar botão Next apenas em telas com input
+        const needsNext = [2, 8, 12].includes(currentQ); // Dados Pessoais, Detalhes Educação, Cargo
+        document.getElementById('btnNext').style.display = needsNext ? 'block' : 'none';
+        
+        // Scroll to top suave
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
         finishForm();
     }
