@@ -40,6 +40,7 @@ h2{color:#1e3a8a;font-size:18px;margin-bottom:10px;font-weight:600}
 .input-field{width:100%;padding:12px;border:2px solid #e5e7eb;border-radius:8px;font-size:14px;margin-bottom:10px;font-family:inherit;transition:border-color .3s}
 .input-field:focus{outline:none;border-color:#667eea}
 select.input-field{cursor:pointer}
+textarea.input-field{resize:vertical;min-height:60px;line-height:1.4}
 
 /* Comment Balloon - COMPACTO */
 .comment-balloon{background:linear-gradient(135deg,#8b5cf6 0%,#6d28d9 100%);color:#fff;padding:12px 20px;border-radius:10px;margin:10px 0;font-size:13px;line-height:1.4;opacity:0;max-height:0;overflow:hidden;transition:all .3s}

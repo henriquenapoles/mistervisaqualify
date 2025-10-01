@@ -109,9 +109,12 @@ function validateCurrentQ() {
         if (formData.maritalStatus === 'casado' || formData.maritalStatus === 'uniao') {
             const spouseName = document.getElementById('spouseName').value.trim();
             if (spouseName) {
-                formData.spouseName = spouseName;
-                formData.spouseAge = document.getElementById('spouseAge').value;
-                formData.spouseEducation = document.getElementById('spouseEducation').value;
+                formData.spouse = {
+                    name: spouseName,
+                    age: document.getElementById('spouseAge').value,
+                    education: document.getElementById('spouseEducation').value,
+                    details: document.getElementById('spouseDetails').value.trim()
+                };
             }
         }
         return formData.maritalStatus ? true : false;
@@ -122,8 +125,11 @@ function validateCurrentQ() {
         if (formData.hasChildren === 'sim') {
             const count = document.getElementById('childrenCount').value;
             if (count) {
-                formData.childrenCount = count;
-                formData.childrenAges = document.getElementById('childrenAges').value;
+                formData.children = {
+                    count: count,
+                    ages: document.getElementById('childrenAges').value,
+                    details: document.getElementById('childrenDetails').value.trim()
+                };
             }
         }
         return formData.hasChildren ? true : false;
@@ -189,13 +195,16 @@ function prevQ() {
 }
 
 // Enviar Webhook
-function sendWebhook() {
+function sendWebhook(isComplete = false) {
     const payload = {
         formData: formData,
         totalScore: totalScore,
         timestamp: new Date().toISOString(),
         source: 'visaqualify-static',
-        currentQuestion: currentQ + 1
+        currentQuestion: currentQ + 1,
+        totalQuestions: TOTAL_QUESTIONS,
+        status: isComplete ? 'COMPLETO' : 'INCOMPLETO',
+        completionPercentage: Math.round(((currentQ + 1) / TOTAL_QUESTIONS) * 100)
     };
     
     fetch(WEBHOOK_URL, {
@@ -207,7 +216,8 @@ function sendWebhook() {
 
 // Finalizar Formulário
 function finishForm() {
-    sendWebhook();
+    // Enviar webhook COMPLETO
+    sendWebhook(true);
     
     // Salvar no localStorage
     localStorage.setItem('visaScore', totalScore);
