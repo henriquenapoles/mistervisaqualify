@@ -142,11 +142,12 @@
                     <div class="option-card" onclick="answer('source','youtube',0,'')">📺 YouTube</div>
                     <div class="option-card" onclick="answer('source','whatsapp',0,'')">💬 WhatsApp</div>
                     <div class="option-card" onclick="answer('source','site',0,'')">🌐 Site</div>
-                    <div class="option-card" onclick="showOther('source',0,'')">🤝 Indicação</div>
+                    <div class="option-card" onclick="showIndicacao()">🤝 Indicação</div>
                     <div class="option-card" onclick="answer('source','evento',0,'')">🎪 Evento</div>
-                    <div class="option-card" onclick="showOther('source',0,'')">📌 Outro</div>
+                    <div class="option-card" onclick="showSourceOutro()">📌 Outro</div>
                 </div>
-                <input type="text" id="source_outro" placeholder="Quem indicou você? (Nome da pessoa ou empresa)" style="display:none" class="input-field">
+                <input type="text" id="source_indicacao" placeholder="Quem indicou você? (Nome da pessoa ou empresa)" style="display:none" class="input-field">
+                <input type="text" id="source_outro" placeholder="Especifique como nos conheceu" style="display:none" class="input-field">
                 <div class="comment-balloon" id="comment"></div>
             </div>
 

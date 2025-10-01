@@ -66,6 +66,42 @@ function showOther(field, points, comment) {
     }
 }
 
+// Mostrar campo Indicação
+function showIndicacao() {
+    const input = document.getElementById('source_indicacao');
+    input.style.display = 'block';
+    input.focus();
+    formData.source = 'indicacao';
+    
+    document.querySelectorAll('.question.active .option-card').forEach(c => c.classList.remove('selected'));
+    event.target.classList.add('selected');
+    
+    // Habilitar botão Next
+    const btnNext = document.getElementById('btnNext');
+    if (btnNext) {
+        btnNext.disabled = false;
+        btnNext.style.opacity = '1';
+    }
+}
+
+// Mostrar campo Outro (Origem)
+function showSourceOutro() {
+    const input = document.getElementById('source_outro');
+    input.style.display = 'block';
+    input.focus();
+    formData.source = 'outro';
+    
+    document.querySelectorAll('.question.active .option-card').forEach(c => c.classList.remove('selected'));
+    event.target.classList.add('selected');
+    
+    // Habilitar botão Next
+    const btnNext = document.getElementById('btnNext');
+    if (btnNext) {
+        btnNext.disabled = false;
+        btnNext.style.opacity = '1';
+    }
+}
+
 // Mostrar form Cônjuge
 function showSpouse(value, comment) {
     formData.maritalStatus = value;
@@ -201,6 +237,18 @@ function validateCurrentQ() {
             }
         }
         return formData.hasChildren ? true : false;
+    }
+    
+    // Tela 6: Origem Contato
+    if (currentQ === 6) {
+        if (formData.source === 'indicacao') {
+            const indicacao = document.getElementById('source_indicacao').value.trim();
+            if (indicacao) formData.sourceIndicacao = indicacao;
+        } else if (formData.source === 'outro') {
+            const outro = document.getElementById('source_outro').value.trim();
+            if (outro) formData.sourceOutro = outro;
+        }
+        return formData.source ? true : false;
     }
     
     // Tela 8: Detalhes Educação
